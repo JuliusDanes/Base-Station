@@ -27,13 +27,36 @@ namespace BaseStation
         }
 
         HelperClass hc = new HelperClass();
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();        
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tbxIPBS.Text /*= GetIPAddress()*/ = "169.254.162.201";
-            tbxPortBS.Text = "28097";
+            tbxIPBS.Text /*= GetIPAddress()*/ = "192.168.165.10";
+            tbxPortBS.Text = "8686";
+            tbxIPRefBox.Text = "169.254.162.201";
+            tbxPortRefBox.Text = "28097";
             tbxIPRobot1.Text /*= "169.254.162.201"*/ = GetIPAddress();
-            tbxPortRobot1.Text = "28097";
+            tbxPortRobot1.Text = "8686";
+
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = 1000;
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            string time = lblTimer.Text;
+            var _time = time.Split(':');        // split minute and second
+            int count = int.Parse(_time[1]);
+
+            if ((count < 59) && (count < 9))
+                lblTimer.Text = _time[0] + ":0" + (count + 1).ToString();
+            else if ((count < 59) && (count >= 9))
+                lblTimer.Text = _time[0] + ":" + (count + 1).ToString();
+            else if (int.Parse(_time[0]) < 9)   // for every 60 seconds
+                lblTimer.Text = ("0" + int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+            else                                // for every 60 seconds
+                lblTimer.Text = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
         }
 
 
@@ -143,7 +166,7 @@ namespace BaseStation
             var _data = text.Split('|');
             addCommand("> " + socketToIP(socket) + " : " + _data[0]);
 
-            string respone = ResponeCallback(_data[0]);
+            string respone = ResponeCallback(_data[0], socket);
             if (!string.IsNullOrEmpty(respone))
             {
                 if (_data.Count() == 1)
@@ -177,25 +200,27 @@ namespace BaseStation
             _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
         }
 
-        string ResponeCallback(dynamic text)
+        string ResponeCallback(dynamic text, Socket socket)
         {
             string respone = string.Empty;
             if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
             {
-                // If message is position X & Y from encoder
+                // If message is data X & Y from encoder
                 var posXY = text.Split(',');
                 hc.SetText(this, tbxX, posXY[0].Split(':')[1]);
                 hc.SetText(this, tbxY, posXY[1].Split(':')[1]);
             }
             else
-            { 
+            {  
                 switch (text)
                 {
                     /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
+                        timer.Stop();
                         respone = "STOP";
                         break;
                     case "s": //START
+                        timer.Start();
                         respone = "START";
                         break;
                     case "W": //WELCOME (welcome message)
@@ -312,7 +337,6 @@ namespace BaseStation
                         break;
                 }
             }
-
             byte[] data = Encoding.ASCII.GetBytes(respone);
             return respone;
         }
@@ -327,6 +351,7 @@ namespace BaseStation
                 tbxStatus.ResetText();
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst);
+                _socketDict.Add("RefereeBox", _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
@@ -391,6 +416,12 @@ namespace BaseStation
         {
             tbxStatus.SelectionStart = tbxStatus.Text.Length;
             tbxStatus.ScrollToCaret();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
+            MessageBox.Show(a.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)

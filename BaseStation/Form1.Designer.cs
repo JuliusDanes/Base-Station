@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbxX = new System.Windows.Forms.TextBox();
             this.lblX = new System.Windows.Forms.Label();
@@ -40,14 +38,8 @@
             this.Robot2 = new System.Windows.Forms.PictureBox();
             this.Robot1 = new System.Windows.Forms.PictureBox();
             this.Bola = new System.Windows.Forms.PictureBox();
-            this.posX = new System.Windows.Forms.TextBox();
-            this.btnRight = new System.Windows.Forms.Button();
-            this.btnLeft = new System.Windows.Forms.Button();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.btnUp = new System.Windows.Forms.Button();
             this.Point1 = new System.Windows.Forms.RadioButton();
             this.Lap = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.gbxRefBox = new System.Windows.Forms.GroupBox();
             this.tbxIPRefBox = new System.Windows.Forms.TextBox();
             this.lblPortRefBox = new System.Windows.Forms.Label();
@@ -86,8 +78,8 @@
             this.btnOpenServer = new System.Windows.Forms.Button();
             this.btnCloseServer = new System.Windows.Forms.Button();
             this.tbxMessage = new System.Windows.Forms.RichTextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.txtResult = new System.Windows.Forms.TextBox();
+            this.lblTimer = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Robot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Robot2)).BeginInit();
@@ -101,26 +93,9 @@
             this.gbxBS.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1114, 620);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 31;
-            this.button2.Text = "-";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // btnReset
-            // 
-            this.btnReset.Location = new System.Drawing.Point(1014, 620);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 30;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.groupBox1.Controls.Add(this.tbxX);
             this.groupBox1.Controls.Add(this.lblX);
             this.groupBox1.Controls.Add(this.lblY);
@@ -214,49 +189,6 @@
             this.Bola.TabIndex = 25;
             this.Bola.TabStop = false;
             // 
-            // posX
-            // 
-            this.posX.Location = new System.Drawing.Point(967, 294);
-            this.posX.Name = "posX";
-            this.posX.Size = new System.Drawing.Size(100, 20);
-            this.posX.TabIndex = 24;
-            // 
-            // btnRight
-            // 
-            this.btnRight.Location = new System.Drawing.Point(1147, 552);
-            this.btnRight.Name = "btnRight";
-            this.btnRight.Size = new System.Drawing.Size(75, 23);
-            this.btnRight.TabIndex = 23;
-            this.btnRight.Text = "Right";
-            this.btnRight.UseVisualStyleBackColor = true;
-            // 
-            // btnLeft
-            // 
-            this.btnLeft.Location = new System.Drawing.Point(987, 552);
-            this.btnLeft.Name = "btnLeft";
-            this.btnLeft.Size = new System.Drawing.Size(75, 23);
-            this.btnLeft.TabIndex = 22;
-            this.btnLeft.Text = "Left";
-            this.btnLeft.UseVisualStyleBackColor = true;
-            // 
-            // btnDown
-            // 
-            this.btnDown.Location = new System.Drawing.Point(1068, 576);
-            this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(75, 23);
-            this.btnDown.TabIndex = 21;
-            this.btnDown.Text = "Down";
-            this.btnDown.UseVisualStyleBackColor = true;
-            // 
-            // btnUp
-            // 
-            this.btnUp.Location = new System.Drawing.Point(1068, 527);
-            this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(75, 23);
-            this.btnUp.TabIndex = 20;
-            this.btnUp.Text = "Up";
-            this.btnUp.UseVisualStyleBackColor = true;
-            // 
             // Point1
             // 
             this.Point1.AutoSize = true;
@@ -279,18 +211,9 @@
             this.Lap.TabIndex = 18;
             this.Lap.TabStop = false;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(214, 153);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 40;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // gbxRefBox
             // 
+            this.gbxRefBox.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.gbxRefBox.Controls.Add(this.tbxIPRefBox);
             this.gbxRefBox.Controls.Add(this.lblPortRefBox);
             this.gbxRefBox.Controls.Add(this.tbxPortRefBox);
@@ -368,6 +291,7 @@
             // tbxStatus
             // 
             this.tbxStatus.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.tbxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbxStatus.ForeColor = System.Drawing.SystemColors.Info;
             this.tbxStatus.Location = new System.Drawing.Point(407, 488);
             this.tbxStatus.Name = "tbxStatus";
@@ -378,6 +302,7 @@
             // 
             // gbxRobot2
             // 
+            this.gbxRobot2.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.gbxRobot2.Controls.Add(this.tbxIPRobot2);
             this.gbxRobot2.Controls.Add(this.lblPortRobot2);
             this.gbxRobot2.Controls.Add(this.tbxPortRobot2);
@@ -444,6 +369,7 @@
             // 
             // gbxRobot3
             // 
+            this.gbxRobot3.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.gbxRobot3.Controls.Add(this.tbxIPRobot3);
             this.gbxRobot3.Controls.Add(this.lblPortRobot3);
             this.gbxRobot3.Controls.Add(this.tbxPortRobot3);
@@ -510,6 +436,7 @@
             // 
             // gbxRobot1
             // 
+            this.gbxRobot1.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.gbxRobot1.Controls.Add(this.tbxIPRobot1);
             this.gbxRobot1.Controls.Add(this.lblPortRobot1);
             this.gbxRobot1.Controls.Add(this.tbxPortRobot1);
@@ -576,6 +503,7 @@
             // 
             // gbxBS
             // 
+            this.gbxBS.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.gbxBS.Controls.Add(this.tbxIPBS);
             this.gbxBS.Controls.Add(this.lblPortBS);
             this.gbxBS.Controls.Add(this.tbxPortBS);
@@ -642,6 +570,7 @@
             // 
             // tbxMessage
             // 
+            this.tbxMessage.BackColor = System.Drawing.SystemColors.MenuBar;
             this.tbxMessage.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbxMessage.Location = new System.Drawing.Point(12, 558);
             this.tbxMessage.Name = "tbxMessage";
@@ -650,28 +579,36 @@
             this.tbxMessage.Text = "";
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
-            // textBox1
+            // lblTimer
             // 
-            this.textBox1.Location = new System.Drawing.Point(967, 363);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 41;
+            this.lblTimer.AutoSize = true;
+            this.lblTimer.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimer.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblTimer.Location = new System.Drawing.Point(521, 78);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(230, 69);
+            this.lblTimer.TabIndex = 43;
+            this.lblTimer.Text = "00:00";
             // 
-            // txtResult
+            // button1
             // 
-            this.txtResult.Location = new System.Drawing.Point(967, 408);
-            this.txtResult.Name = "txtResult";
-            this.txtResult.Size = new System.Drawing.Size(100, 20);
-            this.txtResult.TabIndex = 42;
+            this.button1.Location = new System.Drawing.Point(234, 153);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 44;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.txtResult);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.gbxRefBox);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tbxStatus);
@@ -680,20 +617,14 @@
             this.Controls.Add(this.gbxRobot1);
             this.Controls.Add(this.gbxBS);
             this.Controls.Add(this.tbxMessage);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Robot3);
             this.Controls.Add(this.Robot2);
             this.Controls.Add(this.Robot1);
             this.Controls.Add(this.Bola);
-            this.Controls.Add(this.posX);
-            this.Controls.Add(this.btnRight);
-            this.Controls.Add(this.btnLeft);
-            this.Controls.Add(this.btnDown);
-            this.Controls.Add(this.btnUp);
             this.Controls.Add(this.Point1);
             this.Controls.Add(this.Lap);
+            this.DoubleBuffered = true;
             this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -722,9 +653,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbxX;
         private System.Windows.Forms.Label lblX;
@@ -734,14 +662,8 @@
         private System.Windows.Forms.PictureBox Robot2;
         private System.Windows.Forms.PictureBox Robot1;
         private System.Windows.Forms.PictureBox Bola;
-        private System.Windows.Forms.TextBox posX;
-        private System.Windows.Forms.Button btnRight;
-        private System.Windows.Forms.Button btnLeft;
-        private System.Windows.Forms.Button btnDown;
-        private System.Windows.Forms.Button btnUp;
         public System.Windows.Forms.RadioButton Point1;
         private System.Windows.Forms.PictureBox Lap;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox gbxRefBox;
         private System.Windows.Forms.TextBox tbxIPRefBox;
         private System.Windows.Forms.Label lblPortRefBox;
@@ -780,8 +702,8 @@
         private System.Windows.Forms.Button btnCloseServer;
         private System.Windows.Forms.RichTextBox tbxMessage;
         public System.Windows.Forms.TextBox tbxIPBS;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox txtResult;
+        private System.Windows.Forms.Label lblTimer;
+        private System.Windows.Forms.Button button1;
     }
 }
 
