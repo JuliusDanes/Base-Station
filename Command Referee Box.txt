@@ -1,0 +1,45 @@
+--- Command Referee Box ---
+
+1. Default Commands
+STOP 			= 'S'
+START 			= 's'
+WELCOME 		= 'W' (welcome message)
+RESET 			= 'Z' (Reset Game)
+TESTMODE_ON 	= 'U' (TestMode On)
+TESTMODE_OFF	= 'u' (TestMode Off)
+
+2. Penalty Commands
+YELLOW_CARD_MAGENTA		= 'y'
+YELLOW_CARD_CYAN		= 'Y'
+RED_CARD_MAGENTA		= 'r'
+RED_CARD_CYAN			= 'R'
+DOUBLE_YELLOW_MAGENTA	= 'b'
+DOUBLE_YELLOW_CYAN		= 'B'
+
+3. Game flow commands
+FIRST_HALF 				= '1'
+SECOND_HALF				= '2'
+FIRST_HALF_OVERTIME		= '3' 
+SECOND_HALF_OVERTIME	= '3' 
+HALF_TIME 				= 'h'
+END_GAME				= 'e' (ends 2nd part, may go into overtime)
+GAMEOVER 				= 'z' (Game Over)
+PARKING					= 'L'
+
+4. Goal status
+GOAL_MAGENTA		= 'a'
+GOAL_CYAN			= 'A'
+SUBGOAL_MAGENTA		= 'd'
+SUBGOAL_CYAN		= 'D'
+
+5. Game flow commands
+KICKOFF_MAGENTA		= 'k'
+KICKOFF_CYAN		= 'K'
+FREEKICK_MAGENTA	= 'f'
+FREEKICK_CYAN		= 'F'
+KICK_MAGENTA 		= 'g'
+GOALKICK_CYAN		= 'G'
+THROWN_MAGENTA		= 't'
+THROWN_CYAN			= 'T'
+CORNER_MAGENTA		= 'c'
+CORNER_CYAN			= 'C'

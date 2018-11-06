@@ -648,6 +648,7 @@
             this.tbxMessage.Size = new System.Drawing.Size(381, 85);
             this.tbxMessage.TabIndex = 32;
             this.tbxMessage.Text = "";
+            this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
             // textBox1
             // 
