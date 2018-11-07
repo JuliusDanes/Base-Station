@@ -193,10 +193,14 @@ namespace BaseStation
                 var hostList = inputHostList.Split(',');
                 foreach (var _hostList in hostList)
                 {
-                    if (_socketDict.ContainsKey(_hostList))
+                    try
+                    {
                         SendCallBack(_socketDict[_socketDict.Keys.Where(host => host.StartsWith(_hostList)).ElementAtOrDefault(0).ToString()], txtMsg);
-                    else
-                        continue;   // If host not found => Skip
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;   // If host not found then Skip
+                    }
                 }
             }
             catch (Exception e)
@@ -350,12 +354,11 @@ namespace BaseStation
                         break;
                 }
             }
-            MessageBox.Show("wkwkw 3");
             goto end;
 
             broadcast:
-            MessageBox.Show("wkwkw 2");
             sendByHostList("192.168.1.105,Robot1,Robot2,Robot3", respone);
+            respone = string.Empty;
 
             multicast:
 
