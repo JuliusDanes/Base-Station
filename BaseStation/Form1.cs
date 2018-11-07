@@ -210,8 +210,16 @@ namespace BaseStation
                 hc.SetText(this, tbxX, posXY[0].Split(':')[1]);
                 hc.SetText(this, tbxY, posXY[1].Split(':')[1]);
             }
-            else
-            {  
+            else if (Regex.IsMatch(text, @"Robot[0-9]")) 
+            {
+                // If will rename key in socket dictionary
+                Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
+                _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
+                _socketDict.Add(Text, temp);                                    // Add with new key
+            }
+            else if (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString()))
+            {
+                // If socket is Referee Box socket
                 switch (text)
                 {
                     /// 1. DEFAULT COMMANDS ///
