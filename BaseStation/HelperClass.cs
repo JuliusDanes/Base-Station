@@ -16,6 +16,7 @@ namespace BaseStation
     class HelperClass
     {
         delegate void SetTextCallback(Form f, Control ctrl, string text);
+        delegate void SetLocationCallback(Form f, Control ctrl, Point point);
         /// Set text property of various controls
 
         public void SetText(Form form, Control ctrl, string text)
@@ -29,9 +30,19 @@ namespace BaseStation
                 form.Invoke(d, new object[] { form, ctrl, text });
             }
             else
-            {
                 ctrl.Text = text;
+        }
+
+        public void SetLocation(Form form, Control ctrl, Point point)
+        {
+            MessageBox.Show("lalala 1");
+            if (ctrl.InvokeRequired)
+            {
+                SetLocationCallback d = new SetLocationCallback(SetLocation);
+                form.Invoke(d, new object[] { form, ctrl, point });
             }
+            else
+                ctrl.Location = point;
         }
     }
 }

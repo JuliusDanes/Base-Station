@@ -50,13 +50,14 @@ namespace BaseStation
             int count = int.Parse(_time[1]);
 
             if ((count < 59) && (count < 9))        // Seconds increment
-                lblTimer.Text = _time[0] + ":0" + (count + 1).ToString();
+                time = _time[0] + ":0" + (count + 1).ToString();
             else if ((count < 59) && (count >= 9))  // Seconds increment
-                lblTimer.Text = _time[0] + ":" + (count + 1).ToString();
+                time = _time[0] + ":" + (count + 1).ToString();
             else if (int.Parse(_time[0]) < 9)       // Minutes increment
-                lblTimer.Text = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                time = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
             else                                    // Minutes increment
-                lblTimer.Text = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+            hc.SetText(this, lblTimer, time);
         }
 
 
@@ -75,7 +76,7 @@ namespace BaseStation
             Point point00Lap = new Point(26, 20);
             Point point00Robot = new Point(robot.Size.Width/2, robot.Size.Height/2);
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
-            robot.Location = newLoc;
+            hc.SetLocation(this, robot, newLoc);
         }
 
         void changeCounter(object sender, KeyEventArgs e)
@@ -92,7 +93,7 @@ namespace BaseStation
 
         void tbxXYChanged(object sender, EventArgs e)
         {
-            moveLoc(int.Parse(tbxX.Text), int.Parse(tbxY.Text), Robot1);
+            //moveLoc(int.Parse(tbxX.Text), int.Parse(tbxY.Text), Robot1);
         }
 
 
@@ -197,7 +198,7 @@ namespace BaseStation
                     {
                         SendCallBack(_socketDict[_socketDict.Keys.Where(host => host.StartsWith(_hostList)).ElementAtOrDefault(0).ToString()], txtMsg);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         continue;   // If host not found then Skip
                     }
@@ -208,18 +209,31 @@ namespace BaseStation
                 MessageBox.Show("host Not Found :<");
             }
         }
-
+        
         string ResponeCallback(dynamic text, Socket socket)
         {
             string respone = string.Empty;
+            string objName = null;
             if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
             {
                 // If message is data X & Y from encoder
                 var posXY = text.Split(',');
-                hc.SetText(this, tbxX, posXY[0].Split(':')[1]);
-                hc.SetText(this, tbxY, posXY[1].Split(':')[1]);
+                int[] _posXY = { int.Parse(posXY[0].Split(':')[1]), int.Parse(posXY[1].Split(':')[1]) }; 
+                hc.SetText(this, tbxX, _posXY[0].ToString());
+                hc.SetText(this, tbxY, _posXY[1].ToString());
+
+                foreach (var _temp in _socketDict)
+                    if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
+                        objName = _temp.Key.ToString();
+
+                if (objName == "Robot1")
+                    moveLoc(_posXY[0], _posXY[1], Robot1);
+                else if (objName == "Robot2")
+                    moveLoc(_posXY[0], _posXY[1], Robot2);
+                else if (objName == "Robot3")
+                    moveLoc(_posXY[0], _posXY[1], Robot3);
             }
-            else if (Regex.IsMatch(text, @"Robot[0-9]")) 
+            else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
                 // If will rename key in socket dictionary
                 Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
@@ -241,13 +255,13 @@ namespace BaseStation
                 // If socket is Referee Box socket
                 switch (text)
                 {
-                    /// 1. DEFAULT COMMANDS ///
+                /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
                         timer.Stop();
                         respone = "STOP";
                         goto broadcast;
                     case "s": //START
-                        timer.Start();
+                        //timer.Start();
                         respone = "START";
                         goto broadcast;
                     case "W": //WELCOME (welcome message)
@@ -263,7 +277,7 @@ namespace BaseStation
                         respone = "TESTMODE_OFF";
                         break;
 
-                    /// 2. PENALTY COMMANDS ///
+                /// 2. PENALTY COMMANDS ///
                     case "y": //YELLOW_CARD_MAGENTA	
                         respone = "YELLOW_CARD_MAGENTA";
                         break;
@@ -283,33 +297,33 @@ namespace BaseStation
                         respone = "DOUBLE_YELLOW_CYAN";
                         break;
 
-                    /// 3. GAME FLOW COMMANDS ///
+                /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
                         respone = "FIRST_HALF";
-                        break;
+                        goto broadcast;
                     case "2": //SECOND_HALF
                         respone = "SECOND_HALF";
-                        break;
+                        goto broadcast;
                     case "3": //FIRST_HALF_OVERTIME
                         respone = "FIRST_HALF_OVERTIME";
-                        break;
+                        goto broadcast; ;
                     case "4": //SECOND_HALF_OVERTIME
                         respone = "SECOND_HALF_OVERTIME";
-                        break;
+                        goto broadcast;;
                     case "h": //HALF_TIME
                         respone = "HALF_TIME";
-                        break;
+                        goto broadcast;;
                     case "e": //END_GAME (ends 2nd part, may go into overtime)
                         respone = "END_GAME";
-                        break;
+                        goto broadcast;;
                     case "z": //GAMEOVER (Game Over)
                         respone = "GAMEOVER";
-                        break;
+                        goto broadcast;;
                     case "L": //PARKING
                         respone = "PARKING";
                         break;
 
-                    /// 4. GOAL STATUS ///
+                /// 4. GOAL STATUS ///
                     case "a": //GOAL_MAGENTA
                         respone = "GOAL_MAGENTA";
                         break;
@@ -323,7 +337,7 @@ namespace BaseStation
                         respone = "SUBGOAL_CYAN";
                         break;
 
-                    /// 5. GAME FLOW COMMANDS ///
+                /// 5. GAME FLOW COMMANDS ///
                     case "k": //KICKOFF_MAGENTA
                         respone = "KICKOFF_MAGENTA";
                         break;
@@ -355,7 +369,7 @@ namespace BaseStation
                         respone = "CORNER_CYAN";
                         break;
 
-                    /// 6. OTHERS ///
+                /// 6. OTHERS ///
                     case "get time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
                         break;
@@ -367,10 +381,12 @@ namespace BaseStation
             goto end;
 
             broadcast:
-            sendByHostList("Robot1,Robot2,192.168.1.105,Robot3", respone);
+            sendByHostList("Robot1,Robot2,Robot3", respone);
             respone = string.Empty;
 
             multicast:
+            sendByHostList("Robot2,Robot3", respone);
+            respone = string.Empty;
 
             end:
             return respone;
@@ -456,8 +472,9 @@ namespace BaseStation
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
-            MessageBox.Show(a.ToString());
+            //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
+            //MessageBox.Show(a.ToString());
+            timer.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
