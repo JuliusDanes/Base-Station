@@ -54,7 +54,7 @@ namespace BaseStation
             else if ((count < 59) && (count >= 9))
                 lblTimer.Text = _time[0] + ":" + (count + 1).ToString();
             else if (int.Parse(_time[0]) < 9)   // for every 60 seconds
-                lblTimer.Text = ("0" + int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                lblTimer.Text = (/*"0" +*/ int.Parse(_time[0]) + 1).ToString() + ":" + "00";
             else                                // for every 60 seconds
                 lblTimer.Text = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
         }
@@ -172,25 +172,11 @@ namespace BaseStation
                 if (_data.Count() == 1)
                     SendCallBack(socket, respone);
                 else
-                    sendByIPList(_data[1], respone);
+                    sendByHostList(_data[1], respone);
             }
             socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
         }
 
-        void sendByIPList(dynamic inputListIP, string txtMsg)
-        {
-            try
-            {
-                var listIP = inputListIP.Split(',');
-                foreach (var _listIP in listIP)
-                    SendCallBack(_socketDict[_socketDict.Keys.Where(IP => IP.StartsWith(_listIP)).ElementAtOrDefault(0).ToString()], txtMsg);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("IP Not Found :<");
-            }
-        }
-        
         void SendCallBack(Socket _dstSocket, string txtMessage)
         {
             //MessageBox.Show("wkkwkw 3 " + txtMessage + " --- " + typeMsg);
@@ -199,6 +185,25 @@ namespace BaseStation
             _dstSocket.Send(buffer);
             _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
         }
+
+        void sendByHostList(dynamic inputHostList, string txtMsg)
+        {
+            try
+            {
+                var hostList = inputHostList.Split(',');
+                foreach (var _hostList in hostList)
+                {
+                    if (_socketDict.ContainsKey(_hostList))
+                        SendCallBack(_socketDict[_socketDict.Keys.Where(host => host.StartsWith(_hostList)).ElementAtOrDefault(0).ToString()], txtMsg);
+                    else
+                        continue;   // If host not found => Skip
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("host Not Found :<");
+            }
+        }      
 
         string ResponeCallback(dynamic text, Socket socket)
         {
@@ -217,7 +222,7 @@ namespace BaseStation
                 _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
                 _socketDict.Add(Text, temp);                                    // Add with new key
             }
-            else if (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString()))
+            else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             {
                 // If socket is Referee Box socket
                 switch (text)
@@ -233,7 +238,7 @@ namespace BaseStation
                         break;
                     case "W": //WELCOME (welcome message)
                         respone = "WELCOME";
-                        break;
+                        goto broadcast;
                     case "Z": //RESET (Reset Game)
                         respone = "RESET";
                         break;
@@ -345,7 +350,16 @@ namespace BaseStation
                         break;
                 }
             }
-            byte[] data = Encoding.ASCII.GetBytes(respone);
+            MessageBox.Show("wkwkw 3");
+            goto end;
+
+            broadcast:
+            MessageBox.Show("wkwkw 2");
+            sendByHostList("192.168.1.105,Robot1,Robot2,Robot3", respone);
+
+            multicast:
+
+            end:
             return respone;
         }
 
@@ -383,7 +397,7 @@ namespace BaseStation
             if (dataMessage.Count() == 1) //for to be Client
                 SendCallBack(_toServerSocket, dataMessage[0]);
             else if (dataMessage.Count() == 2)  //for to be Server
-                sendByIPList(dataMessage[1], dataMessage[0]);
+                sendByHostList(dataMessage[1], dataMessage[0]);
             else
                 MessageBox.Show("Incorrect Format!");
             tbxMessage.ResetText();
