@@ -40,7 +40,7 @@ namespace BaseStation
 
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 1000;
-            timer.Start();
+            //timer.Start();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace BaseStation
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
         internal int port, attempts = 0;
-        internal string myIP/*, typeMessage*/;
+        internal string myIP;
 
         string GetIPAddress()
         {
@@ -139,7 +139,7 @@ namespace BaseStation
         {
             addCommand("# Setting up server...");
             addCommand("# IP "+ this.Text +"  : " + tbxIPBS.Text);
-            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, int.Parse(port)));
+            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
             _serverSocket.Listen(1);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -207,7 +207,7 @@ namespace BaseStation
             {
                 MessageBox.Show("host Not Found :<");
             }
-        }      
+        }
 
         string ResponeCallback(dynamic text, Socket socket)
         {
@@ -224,7 +224,17 @@ namespace BaseStation
                 // If will rename key in socket dictionary
                 Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
                 _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
-                _socketDict.Add(Text, temp);                                    // Add with new key
+                _socketDict.Add(text, temp);                                    // Add with new key
+                Dictionary<Control, Control> ctrl = new Dictionary<Control, Control>();
+                if (text == "Robot1")
+                    ctrl.Add(tbxIPRobot1,tbxPortRobot1);
+                else if (text == "Robot2")
+                    ctrl.Add(tbxIPRobot2, tbxPortRobot2);
+                else if (text == "Robot3")
+                    ctrl.Add(tbxIPRobot3, tbxPortRobot3);
+                
+                hc.SetText(this, (ctrl.Keys.ElementAtOrDefault(0)), socketToIP(socket));
+                hc.SetText(this, ctrl[ctrl.Keys.ElementAtOrDefault(0)], this.port.ToString());
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             {
@@ -235,17 +245,17 @@ namespace BaseStation
                     case "S": //STOP
                         timer.Stop();
                         respone = "STOP";
-                        break;
+                        goto broadcast;
                     case "s": //START
                         timer.Start();
                         respone = "START";
-                        break;
+                        goto broadcast;
                     case "W": //WELCOME (welcome message)
                         respone = "WELCOME";
                         goto broadcast;
                     case "Z": //RESET (Reset Game)
                         respone = "RESET";
-                        break;
+                        goto broadcast;
                     case "U": //TESTMODE_ON (TestMode On)
                         respone = "TESTMODE_ON";
                         break;
