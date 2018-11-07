@@ -54,7 +54,7 @@ namespace BaseStation
             else if ((count < 59) && (count >= 9))
                 lblTimer.Text = _time[0] + ":" + (count + 1).ToString();
             else if (int.Parse(_time[0]) < 9)   // for every 60 seconds
-                lblTimer.Text = (/*"0" +*/ int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                lblTimer.Text = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
             else                                // for every 60 seconds
                 lblTimer.Text = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
         }
@@ -357,7 +357,7 @@ namespace BaseStation
             goto end;
 
             broadcast:
-            sendByHostList("192.168.1.105,Robot1,Robot2,Robot3", respone);
+            sendByHostList("Robot1,Robot2,192.168.1.105,Robot3", respone);
             respone = string.Empty;
 
             multicast:
