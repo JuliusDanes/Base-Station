@@ -46,16 +46,16 @@ namespace BaseStation
         private void timer_Tick(object sender, EventArgs e)
         {
             string time = lblTimer.Text;
-            var _time = time.Split(':');        // split minute and second
+            var _time = time.Split(':');            // split minute and second
             int count = int.Parse(_time[1]);
 
-            if ((count < 59) && (count < 9))
+            if ((count < 59) && (count < 9))        // Seconds increment
                 lblTimer.Text = _time[0] + ":0" + (count + 1).ToString();
-            else if ((count < 59) && (count >= 9))
+            else if ((count < 59) && (count >= 9))  // Seconds increment
                 lblTimer.Text = _time[0] + ":" + (count + 1).ToString();
-            else if (int.Parse(_time[0]) < 9)   // for every 60 seconds
+            else if (int.Parse(_time[0]) < 9)       // Minutes increment
                 lblTimer.Text = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
-            else                                // for every 60 seconds
+            else                                    // Minutes increment
                 lblTimer.Text = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
         }
 
@@ -365,18 +365,19 @@ namespace BaseStation
             end:
             return respone;
         }
-
-        void reqConnect(string ipDst, dynamic port)
+        
+        void reqConnect(string ipDst, dynamic port, string keyName)
         {
             try
             {
                 attempts++;
+                _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
                 tbxStatus.ResetText();
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst);
-                _socketDict.Add("RefereeBox", _toServerSocket);
+                _socketDict.Add(keyName.ToString(), _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
@@ -419,22 +420,22 @@ namespace BaseStation
 
         private void btnConnectRefBox_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRefBox.Text, tbxPortRefBox.Text);
+            reqConnect(tbxIPRefBox.Text, tbxPortRefBox.Text, "RefereeBox");
         }
 
         private void btnConnnectRobot1_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRobot1.Text, tbxPortRobot1.Text);
+            reqConnect(tbxIPRobot1.Text, tbxPortRobot1.Text, "Robot1");
         }
 
         private void btnConnnectRobot2_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRobot2.Text, tbxPortRobot2.Text);
+            reqConnect(tbxIPRobot2.Text, tbxPortRobot2.Text, "Robot2");
         }
 
         private void btnConnnectRobot3_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxPortRobot3.Text, tbxPortRobot3.Text);
+            reqConnect(tbxPortRobot3.Text, tbxPortRobot3.Text, "Robot3");
         }
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)

@@ -225,7 +225,7 @@
             this.gbxRefBox.Size = new System.Drawing.Size(303, 85);
             this.gbxRefBox.TabIndex = 36;
             this.gbxRefBox.TabStop = false;
-            this.gbxRefBox.Text = "RefreeBox";
+            this.gbxRefBox.Text = "RefereeBox";
             // 
             // tbxIPRefBox
             // 
@@ -515,7 +515,7 @@
             this.gbxBS.Size = new System.Drawing.Size(303, 85);
             this.gbxBS.TabIndex = 34;
             this.gbxBS.TabStop = false;
-            this.gbxBS.Text = "Base Station";
+            this.gbxBS.Text = "BaseStation";
             // 
             // tbxIPBS
             // 
