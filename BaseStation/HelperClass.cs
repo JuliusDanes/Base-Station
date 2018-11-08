@@ -35,7 +35,7 @@ namespace BaseStation
 
         public void SetLocation(Form form, Control ctrl, Point point)
         {
-            MessageBox.Show("lalala 1");
+            //MessageBox.Show("lalala 1");
             if (ctrl.InvokeRequired)
             {
                 SetLocationCallback d = new SetLocationCallback(SetLocation);

@@ -214,18 +214,28 @@ namespace BaseStation
         {
             string respone = string.Empty;
             string objName = null;
+            int[] _posXY = new int[2];
             if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
             {
                 // If message is data X & Y from encoder
                 var posXY = text.Split(',');
-                int[] _posXY = { int.Parse(posXY[0].Split(':')[1]), int.Parse(posXY[1].Split(':')[1]) }; 
+                if (posXY.Length == 2) // If data receive only one X & Y
+                {
+                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]);
+                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]);
+                }
+                else // If data receive multi X & Y (error problem)
+                {
+                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
+                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
+                }
+                
                 hc.SetText(this, tbxX, _posXY[0].ToString());
                 hc.SetText(this, tbxY, _posXY[1].ToString());
 
                 foreach (var _temp in _socketDict)
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
-
                 if (objName == "Robot1")
                     moveLoc(_posXY[0], _posXY[1], Robot1);
                 else if (objName == "Robot2")
