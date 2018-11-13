@@ -207,7 +207,7 @@
             this.Lap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Lap.Location = new System.Drawing.Point(416, 210);
             this.Lap.Name = "Lap";
-            this.Lap.Size = new System.Drawing.Size(450, 300);
+            this.Lap.Size = new System.Drawing.Size(510, 342);
             this.Lap.TabIndex = 18;
             this.Lap.TabStop = false;
             this.Lap.Click += new System.EventHandler(this.Lap_Click);

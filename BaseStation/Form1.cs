@@ -413,6 +413,7 @@ namespace BaseStation
                 tbxStatus.ResetText();
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst);
+                SendCallBack(_toServerSocket, gbxBS.Text);
                 _socketDict.Add(keyName.ToString(), _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
