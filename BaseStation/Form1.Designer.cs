@@ -100,7 +100,7 @@
             this.groupBox1.Controls.Add(this.lblX);
             this.groupBox1.Controls.Add(this.lblY);
             this.groupBox1.Controls.Add(this.tbxY);
-            this.groupBox1.Location = new System.Drawing.Point(930, 182);
+            this.groupBox1.Location = new System.Drawing.Point(992, 247);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 75);
             this.groupBox1.TabIndex = 29;
@@ -205,11 +205,12 @@
             this.Lap.BackColor = System.Drawing.SystemColors.Control;
             this.Lap.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Lap.BackgroundImage")));
             this.Lap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Lap.Location = new System.Drawing.Point(407, 182);
+            this.Lap.Location = new System.Drawing.Point(416, 210);
             this.Lap.Name = "Lap";
             this.Lap.Size = new System.Drawing.Size(450, 300);
             this.Lap.TabIndex = 18;
             this.Lap.TabStop = false;
+            this.Lap.Click += new System.EventHandler(this.Lap_Click);
             // 
             // gbxRefBox
             // 
@@ -220,7 +221,7 @@
             this.gbxRefBox.Controls.Add(this.lblIPRefBox);
             this.gbxRefBox.Controls.Add(this.btnConnectRefBox);
             this.gbxRefBox.Controls.Add(this.btnDisconnectRefBox);
-            this.gbxRefBox.Location = new System.Drawing.Point(12, 181);
+            this.gbxRefBox.Location = new System.Drawing.Point(3, 237);
             this.gbxRefBox.Name = "gbxRefBox";
             this.gbxRefBox.Size = new System.Drawing.Size(303, 85);
             this.gbxRefBox.TabIndex = 36;
@@ -280,7 +281,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(318, 649);
+            this.btnSend.Location = new System.Drawing.Point(315, 615);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 33;
@@ -290,12 +291,12 @@
             // 
             // tbxStatus
             // 
-            this.tbxStatus.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.tbxStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.tbxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbxStatus.ForeColor = System.Drawing.SystemColors.Info;
-            this.tbxStatus.Location = new System.Drawing.Point(407, 488);
+            this.tbxStatus.Location = new System.Drawing.Point(396, 530);
             this.tbxStatus.Name = "tbxStatus";
-            this.tbxStatus.Size = new System.Drawing.Size(450, 193);
+            this.tbxStatus.Size = new System.Drawing.Size(490, 159);
             this.tbxStatus.TabIndex = 39;
             this.tbxStatus.Text = "";
             this.tbxStatus.TextChanged += new System.EventHandler(this.tbxStatus_TextChanged);
@@ -309,7 +310,7 @@
             this.gbxRobot2.Controls.Add(this.lblIPRobot2);
             this.gbxRobot2.Controls.Add(this.btnConnnectRobot2);
             this.gbxRobot2.Controls.Add(this.btnDisconnnectRobot2);
-            this.gbxRobot2.Location = new System.Drawing.Point(12, 363);
+            this.gbxRobot2.Location = new System.Drawing.Point(3, 419);
             this.gbxRobot2.Name = "gbxRobot2";
             this.gbxRobot2.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot2.TabIndex = 37;
@@ -376,7 +377,7 @@
             this.gbxRobot3.Controls.Add(this.lblIPRobot3);
             this.gbxRobot3.Controls.Add(this.btnConnnectRobot3);
             this.gbxRobot3.Controls.Add(this.btnDisconnnectRobot3);
-            this.gbxRobot3.Location = new System.Drawing.Point(12, 454);
+            this.gbxRobot3.Location = new System.Drawing.Point(3, 510);
             this.gbxRobot3.Name = "gbxRobot3";
             this.gbxRobot3.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot3.TabIndex = 38;
@@ -443,7 +444,7 @@
             this.gbxRobot1.Controls.Add(this.lblIPCRobot1);
             this.gbxRobot1.Controls.Add(this.btnConnnectRobot1);
             this.gbxRobot1.Controls.Add(this.btnDisconnnectRobot1);
-            this.gbxRobot1.Location = new System.Drawing.Point(12, 272);
+            this.gbxRobot1.Location = new System.Drawing.Point(3, 328);
             this.gbxRobot1.Name = "gbxRobot1";
             this.gbxRobot1.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot1.TabIndex = 35;
@@ -510,7 +511,7 @@
             this.gbxBS.Controls.Add(this.lblIPBS);
             this.gbxBS.Controls.Add(this.btnOpenServer);
             this.gbxBS.Controls.Add(this.btnCloseServer);
-            this.gbxBS.Location = new System.Drawing.Point(12, 62);
+            this.gbxBS.Location = new System.Drawing.Point(3, 118);
             this.gbxBS.Name = "gbxBS";
             this.gbxBS.Size = new System.Drawing.Size(303, 85);
             this.gbxBS.TabIndex = 34;
@@ -572,11 +573,12 @@
             // 
             this.tbxMessage.BackColor = System.Drawing.SystemColors.MenuBar;
             this.tbxMessage.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxMessage.Location = new System.Drawing.Point(12, 558);
+            this.tbxMessage.Location = new System.Drawing.Point(1, 606);
             this.tbxMessage.Name = "tbxMessage";
-            this.tbxMessage.Size = new System.Drawing.Size(381, 85);
+            this.tbxMessage.Size = new System.Drawing.Size(308, 83);
             this.tbxMessage.TabIndex = 32;
             this.tbxMessage.Text = "";
+            this.tbxMessage.TextChanged += new System.EventHandler(this.tbxMessage_TextChanged);
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
             // lblTimer
@@ -584,7 +586,7 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimer.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblTimer.Location = new System.Drawing.Point(521, 78);
+            this.lblTimer.Location = new System.Drawing.Point(955, 38);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(230, 69);
             this.lblTimer.TabIndex = 43;
@@ -592,7 +594,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(234, 153);
+            this.button1.Location = new System.Drawing.Point(225, 209);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 44;

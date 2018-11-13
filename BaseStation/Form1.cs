@@ -487,6 +487,16 @@ namespace BaseStation
             timer.Start();
         }
 
+        private void Lap_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbxMessage_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_toServerSocket.RemoteEndPoint.ToString());
