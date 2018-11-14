@@ -37,8 +37,7 @@
             this.Robot3 = new System.Windows.Forms.PictureBox();
             this.Robot2 = new System.Windows.Forms.PictureBox();
             this.Robot1 = new System.Windows.Forms.PictureBox();
-            this.Bola = new System.Windows.Forms.PictureBox();
-            this.Point1 = new System.Windows.Forms.RadioButton();
+            this.Ball = new System.Windows.Forms.PictureBox();
             this.Lap = new System.Windows.Forms.PictureBox();
             this.gbxRefBox = new System.Windows.Forms.GroupBox();
             this.tbxIPRefBox = new System.Windows.Forms.TextBox();
@@ -80,11 +79,13 @@
             this.tbxMessage = new System.Windows.Forms.RichTextBox();
             this.lblTimer = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.tbxGotoX = new System.Windows.Forms.TextBox();
+            this.tbxGotoY = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Robot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Robot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Robot1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Bola)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ball)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lap)).BeginInit();
             this.gbxRefBox.SuspendLayout();
             this.gbxRobot2.SuspendLayout();
@@ -100,7 +101,7 @@
             this.groupBox1.Controls.Add(this.lblX);
             this.groupBox1.Controls.Add(this.lblY);
             this.groupBox1.Controls.Add(this.tbxY);
-            this.groupBox1.Location = new System.Drawing.Point(992, 247);
+            this.groupBox1.Location = new System.Drawing.Point(942, 606);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 75);
             this.groupBox1.TabIndex = 29;
@@ -109,9 +110,9 @@
             // 
             // tbxX
             // 
-            this.tbxX.Location = new System.Drawing.Point(37, 19);
+            this.tbxX.Location = new System.Drawing.Point(26, 17);
             this.tbxX.Name = "tbxX";
-            this.tbxX.Size = new System.Drawing.Size(100, 20);
+            this.tbxX.Size = new System.Drawing.Size(40, 20);
             this.tbxX.TabIndex = 4;
             this.tbxX.Text = "0";
             this.tbxX.TextChanged += new System.EventHandler(this.tbxXYChanged);
@@ -120,16 +121,17 @@
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(17, 22);
+            this.lblX.Location = new System.Drawing.Point(6, 20);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(14, 13);
             this.lblX.TabIndex = 2;
             this.lblX.Text = "X";
+            this.lblX.Click += new System.EventHandler(this.lblX_Click);
             // 
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(17, 46);
+            this.lblY.Location = new System.Drawing.Point(72, 20);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 13);
             this.lblY.TabIndex = 3;
@@ -137,9 +139,9 @@
             // 
             // tbxY
             // 
-            this.tbxY.Location = new System.Drawing.Point(37, 43);
+            this.tbxY.Location = new System.Drawing.Point(92, 17);
             this.tbxY.Name = "tbxY";
-            this.tbxY.Size = new System.Drawing.Size(100, 20);
+            this.tbxY.Size = new System.Drawing.Size(40, 20);
             this.tbxY.TabIndex = 5;
             this.tbxY.Text = "0";
             this.tbxY.TextChanged += new System.EventHandler(this.tbxXYChanged);
@@ -178,34 +180,24 @@
             this.Robot1.TabIndex = 26;
             this.Robot1.TabStop = false;
             // 
-            // Bola
+            // Ball
             // 
-            this.Bola.BackColor = System.Drawing.Color.Transparent;
-            this.Bola.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Bola.BackgroundImage")));
-            this.Bola.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Bola.Location = new System.Drawing.Point(548, 288);
-            this.Bola.Name = "Bola";
-            this.Bola.Size = new System.Drawing.Size(18, 18);
-            this.Bola.TabIndex = 25;
-            this.Bola.TabStop = false;
-            // 
-            // Point1
-            // 
-            this.Point1.AutoSize = true;
-            this.Point1.BackColor = System.Drawing.Color.Transparent;
-            this.Point1.Location = new System.Drawing.Point(584, 432);
-            this.Point1.Name = "Point1";
-            this.Point1.Size = new System.Drawing.Size(14, 13);
-            this.Point1.TabIndex = 19;
-            this.Point1.TabStop = true;
-            this.Point1.UseVisualStyleBackColor = false;
+            this.Ball.BackColor = System.Drawing.Color.Transparent;
+            this.Ball.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Ball.BackgroundImage")));
+            this.Ball.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Ball.Enabled = false;
+            this.Ball.Location = new System.Drawing.Point(661, 373);
+            this.Ball.Name = "Ball";
+            this.Ball.Size = new System.Drawing.Size(18, 18);
+            this.Ball.TabIndex = 25;
+            this.Ball.TabStop = false;
             // 
             // Lap
             // 
             this.Lap.BackColor = System.Drawing.SystemColors.Control;
             this.Lap.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Lap.BackgroundImage")));
             this.Lap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Lap.Location = new System.Drawing.Point(416, 210);
+            this.Lap.Location = new System.Drawing.Point(385, 149);
             this.Lap.Name = "Lap";
             this.Lap.Size = new System.Drawing.Size(510, 342);
             this.Lap.TabIndex = 18;
@@ -221,7 +213,7 @@
             this.gbxRefBox.Controls.Add(this.lblIPRefBox);
             this.gbxRefBox.Controls.Add(this.btnConnectRefBox);
             this.gbxRefBox.Controls.Add(this.btnDisconnectRefBox);
-            this.gbxRefBox.Location = new System.Drawing.Point(3, 237);
+            this.gbxRefBox.Location = new System.Drawing.Point(968, 232);
             this.gbxRefBox.Name = "gbxRefBox";
             this.gbxRefBox.Size = new System.Drawing.Size(303, 85);
             this.gbxRefBox.TabIndex = 36;
@@ -310,7 +302,7 @@
             this.gbxRobot2.Controls.Add(this.lblIPRobot2);
             this.gbxRobot2.Controls.Add(this.btnConnnectRobot2);
             this.gbxRobot2.Controls.Add(this.btnDisconnnectRobot2);
-            this.gbxRobot2.Location = new System.Drawing.Point(3, 419);
+            this.gbxRobot2.Location = new System.Drawing.Point(968, 414);
             this.gbxRobot2.Name = "gbxRobot2";
             this.gbxRobot2.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot2.TabIndex = 37;
@@ -377,7 +369,7 @@
             this.gbxRobot3.Controls.Add(this.lblIPRobot3);
             this.gbxRobot3.Controls.Add(this.btnConnnectRobot3);
             this.gbxRobot3.Controls.Add(this.btnDisconnnectRobot3);
-            this.gbxRobot3.Location = new System.Drawing.Point(3, 510);
+            this.gbxRobot3.Location = new System.Drawing.Point(968, 505);
             this.gbxRobot3.Name = "gbxRobot3";
             this.gbxRobot3.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot3.TabIndex = 38;
@@ -444,7 +436,7 @@
             this.gbxRobot1.Controls.Add(this.lblIPCRobot1);
             this.gbxRobot1.Controls.Add(this.btnConnnectRobot1);
             this.gbxRobot1.Controls.Add(this.btnDisconnnectRobot1);
-            this.gbxRobot1.Location = new System.Drawing.Point(3, 328);
+            this.gbxRobot1.Location = new System.Drawing.Point(968, 323);
             this.gbxRobot1.Name = "gbxRobot1";
             this.gbxRobot1.Size = new System.Drawing.Size(303, 85);
             this.gbxRobot1.TabIndex = 35;
@@ -511,7 +503,7 @@
             this.gbxBS.Controls.Add(this.lblIPBS);
             this.gbxBS.Controls.Add(this.btnOpenServer);
             this.gbxBS.Controls.Add(this.btnCloseServer);
-            this.gbxBS.Location = new System.Drawing.Point(3, 118);
+            this.gbxBS.Location = new System.Drawing.Point(968, 113);
             this.gbxBS.Name = "gbxBS";
             this.gbxBS.Size = new System.Drawing.Size(303, 85);
             this.gbxBS.TabIndex = 34;
@@ -586,7 +578,7 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimer.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblTimer.Location = new System.Drawing.Point(955, 38);
+            this.lblTimer.Location = new System.Drawing.Point(955, 41);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(230, 69);
             this.lblTimer.TabIndex = 43;
@@ -594,13 +586,30 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(225, 209);
+            this.button1.Location = new System.Drawing.Point(1170, 203);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 44;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // tbxGotoX
+            // 
+            this.tbxGotoX.Location = new System.Drawing.Point(1183, 618);
+            this.tbxGotoX.Name = "tbxGotoX";
+            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoX.TabIndex = 45;
+            this.tbxGotoX.Text = "0";
+            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // tbxGotoY
+            // 
+            this.tbxGotoY.Location = new System.Drawing.Point(1183, 644);
+            this.tbxGotoY.Name = "tbxGotoY";
+            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoY.TabIndex = 46;
+            this.tbxGotoY.Text = "0";
             // 
             // Form1
             // 
@@ -609,6 +618,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.tbxGotoY);
+            this.Controls.Add(this.tbxGotoX);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.gbxRefBox);
@@ -623,8 +634,7 @@
             this.Controls.Add(this.Robot3);
             this.Controls.Add(this.Robot2);
             this.Controls.Add(this.Robot1);
-            this.Controls.Add(this.Bola);
-            this.Controls.Add(this.Point1);
+            this.Controls.Add(this.Ball);
             this.Controls.Add(this.Lap);
             this.DoubleBuffered = true;
             this.KeyPreview = true;
@@ -637,7 +647,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Robot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Robot2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Robot1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Bola)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ball)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lap)).EndInit();
             this.gbxRefBox.ResumeLayout(false);
             this.gbxRefBox.PerformLayout();
@@ -663,8 +673,7 @@
         private System.Windows.Forms.PictureBox Robot3;
         private System.Windows.Forms.PictureBox Robot2;
         private System.Windows.Forms.PictureBox Robot1;
-        private System.Windows.Forms.PictureBox Bola;
-        public System.Windows.Forms.RadioButton Point1;
+        private System.Windows.Forms.PictureBox Ball;
         private System.Windows.Forms.PictureBox Lap;
         private System.Windows.Forms.GroupBox gbxRefBox;
         private System.Windows.Forms.TextBox tbxIPRefBox;
@@ -706,6 +715,8 @@
         public System.Windows.Forms.TextBox tbxIPBS;
         private System.Windows.Forms.Label lblTimer;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tbxGotoX;
+        private System.Windows.Forms.TextBox tbxGotoY;
     }
 }
 

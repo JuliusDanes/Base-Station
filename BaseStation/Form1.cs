@@ -19,11 +19,10 @@ namespace BaseStation
         public Form1()
         {
             InitializeComponent();
-            setTransparent(Lap, Bola);
+            setTransparent(Lap, Ball);
             setTransparent(Lap, Robot1);
             setTransparent(Lap, Robot2);
             setTransparent(Lap, Robot3);
-            setTransparent(Lap, Point1);
         }
 
         HelperClass hc = new HelperClass();
@@ -93,7 +92,9 @@ namespace BaseStation
 
         void tbxXYChanged(object sender, EventArgs e)
         {
-            //moveLoc(int.Parse(tbxX.Text), int.Parse(tbxY.Text), Robot1);
+            string dtEncoder = "X:" + tbxX.Text + ",Y:" + tbxY.Text;
+            Thread th_Send = new Thread(obj => SendCallBack(_socketDict["Robot1"], dtEncoder));
+            th_Send.Start();
         }
 
 
@@ -218,16 +219,17 @@ namespace BaseStation
             if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
             {
                 // If message is data X & Y from encoder
+                /// Scale is 1 : 20 
                 var posXY = text.Split(',');
                 if (posXY.Length == 2) // If data receive only one X & Y
                 {
-                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]);
-                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]);
+                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]) / 20;
+                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]) / 20;
                 }
                 else // If data receive multi X & Y (error problem)
                 {
-                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
-                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
+                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]) / 20;
+                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]) / 20;
                 }
                 
                 hc.SetText(this, tbxX, _posXY[0].ToString());
@@ -480,7 +482,7 @@ namespace BaseStation
             tbxStatus.SelectionStart = tbxStatus.Text.Length;
             tbxStatus.ScrollToCaret();
         }
-
+        
         private void button1_Click_1(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
@@ -494,6 +496,30 @@ namespace BaseStation
         }
 
         private void tbxMessage_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tbxGotoX.Text))
+            {
+                new Thread(obj => GotoLoc(tbxX.Text, tbxGotoX.Text, 1)).Start();
+                new Thread(obj => GotoLoc(tbxY.Text, tbxGotoY.Text, 1)).Start();
+            }
+        }
+        
+        void GotoLoc(dynamic start, dynamic end, int anker)
+        {
+            for (int i = int.Parse(start); i < int.Parse(end); i += anker)
+            {
+                string dtGoto = "X:" + i + ",Y:" + tbxY.Text;
+                //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
+                moveLoc(i, int.Parse(tbxY.Text), Robot1);
+            }
+        }
+
+        private void lblX_Click(object sender, EventArgs e)
         {
 
         }
