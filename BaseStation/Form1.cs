@@ -12,17 +12,35 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 namespace BaseStation
 {  
-    public partial class Form1 : Form
+    public partial class Form1 /*: MaterialForm*/ : Form
     {
         public Form1()
         {
             InitializeComponent();
-            setTransparent(Lap, Ball);
-            setTransparent(Lap, Robot1);
-            setTransparent(Lap, Robot2);
-            setTransparent(Lap, Robot3);
+            setTransparent(Lap, new dynamic[] { PointBall, PointRobot1, PointRobot2, PointRobot3 });
+            setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBSa, tbxPortBSa, lblPipeBS });
+            setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRBa, tbxPortRBa, lblPipeRB });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
+
+
+            // Create a material theme manager and add the form to manage (this)
+            //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
+            //materialSkinManager.AddFormToManage(this);
+            //materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+
+            // Configure color schema
+            //Robot1.SkinManager.ColorScheme = new ColorScheme(
+            //    Primary.Blue400, Primary.Blue500,
+            //    Primary.Blue500, Accent.LightBlue200,
+            //    TextShade.WHITE
+            //);
         }
 
         HelperClass hc = new HelperClass();
@@ -62,12 +80,15 @@ namespace BaseStation
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
-        void setTransparent(dynamic backImage, dynamic frontImage)
+        void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
-            var pos = this.PointToScreen(frontImage.Location);
-            pos = backImage.PointToClient(pos);
-            frontImage.Parent = backImage;
-            frontImage.Location = pos;
+            foreach (var frontImage in frontImages)
+            {
+                var pos = this.PointToScreen(frontImage.Location);
+                pos = backImage.PointToClient(pos);
+                frontImage.Parent = backImage;
+                frontImage.Location = pos;
+            }
         }
 
         void moveLoc(int encodX, int encodY, dynamic robot)
@@ -239,11 +260,11 @@ namespace BaseStation
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
                 if (objName == "Robot1")
-                    moveLoc(_posXY[0], _posXY[1], Robot1);
+                    moveLoc(_posXY[0], _posXY[1], PointRobot1);
                 else if (objName == "Robot2")
-                    moveLoc(_posXY[0], _posXY[1], Robot2);
+                    moveLoc(_posXY[0], _posXY[1], PointRobot2);
                 else if (objName == "Robot3")
-                    moveLoc(_posXY[0], _posXY[1], Robot3);
+                    moveLoc(_posXY[0], _posXY[1], PointRobot3);
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -490,16 +511,6 @@ namespace BaseStation
             timer.Start();
         }
 
-        private void Lap_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbxMessage_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(tbxGotoX.Text))
@@ -515,15 +526,10 @@ namespace BaseStation
             {
                 string dtGoto = "X:" + i + ",Y:" + tbxY.Text;
                 //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
-                moveLoc(i, int.Parse(tbxY.Text), Robot1);
+                moveLoc(i, int.Parse(tbxY.Text), PointRobot1);
             }
         }
-
-        private void lblX_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_toServerSocket.RemoteEndPoint.ToString());
