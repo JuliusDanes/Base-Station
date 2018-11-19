@@ -285,10 +285,10 @@ namespace BaseStation
                     _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
                 }
                 
-                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());     // On encoder tbx
+                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());          // On encoder tbx
                 hc.SetText(this, tbxEncYR1, _posXY[1].ToString());
-                hc.SetText(this, tbxScrXR1, (_posXY[0]/=20).ToString());          // On screen tbx
-                hc.SetText(this, tbxScrYR1, (_posXY[1]/=20).ToString());
+                hc.SetText(this, tbxScrXR1, (_posXY[0] /= 20).ToString());  // On screen tbx
+                hc.SetText(this, tbxScrYR1, (_posXY[1] /= 20).ToString());
 
                 foreach (var _temp in _socketDict)
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
@@ -518,7 +518,7 @@ namespace BaseStation
         void sendFromTextBox()
         {
             var dataMessage = tbxMessage.Text.Trim().Split('|');
-            if (dataMessage.Count() == 1) //for to be Client
+            if (dataMessage.Count() == 1)       //for to be Client
                 SendCallBack(_toServerSocket, dataMessage[0]);
             else if (dataMessage.Count() == 2)  //for to be Server
                 sendByHostList(dataMessage[1], dataMessage[0]);
@@ -567,20 +567,36 @@ namespace BaseStation
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(tbxGotoX.Text))
-            {
-                new Thread(obj => GotoLoc(tbxEncXR1.Text, tbxGotoX.Text, 1)).Start();
-                new Thread(obj => GotoLoc(tbxEncYR1.Text, tbxGotoY.Text, 1)).Start();
-            }
+            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
+                new Thread(obj => GotoLoc(int.Parse(tbxEncXR1.Text), int.Parse(tbxGotoX.Text), 1, int.Parse(tbxEncYR1.Text), int.Parse(tbxGotoY.Text), 1)).Start();
         }
         
-        void GotoLoc(dynamic start, dynamic end, int anker)
+        void GotoLoc(int startX, int endX, int shiftX, int startY, int endY, int shiftY)
         {
-            for (int i = int.Parse(start); i < int.Parse(end); i += anker)
+            if (startX > endX)
+                shiftX *= -1;
+            if (startY > endY)
+                shiftY *= -1;
+            bool[] chk = { true, true };
+            while (chk[0] |= chk[1])
             {
-                string dtGoto = "X:" + i + ",Y:" + tbxEncYR1.Text;
-                //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
-                moveLoc(i, int.Parse(tbxEncYR1.Text), PointRobot1);
+                if (startX != endX)
+                    startX += shiftX;
+                else
+                    chk[0] = false;
+                if (startY != endY)
+                    startY += shiftY;
+                else
+                    chk[1] = false;
+
+                string dtGoto = "X:" + startX + ",Y:" + startY;
+                new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
+                new Thread(obj => moveLoc(startX / 20, startY / 20, PointRobot1)).Start();
+                hc.SetText(this, tbxEncXR1, startX.ToString());         // On encoder tbx
+                hc.SetText(this, tbxEncYR1, startY.ToString());
+                hc.SetText(this, tbxScrXR1, (startX / 20).ToString());  // On screen tbx
+                hc.SetText(this, tbxScrYR1, (startY / 20).ToString());
+                Thread.Sleep(1);    // limit per time
             }
         }
 
@@ -594,7 +610,7 @@ namespace BaseStation
         {
             if (e.KeyCode == Keys.Enter)
                 SetupServer(tbxPortBS.Text);
-        }
+        }        
 
         private void button1_Click(object sender, EventArgs e)
         {

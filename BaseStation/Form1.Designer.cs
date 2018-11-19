@@ -289,6 +289,7 @@
             this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
             this.tbxGotoY.TabIndex = 46;
             this.tbxGotoY.Text = "0";
+            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
             // grpRobot1
             // 
@@ -455,6 +456,7 @@
             this.tbxEncXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR1.TabIndex = 61;
+            this.tbxEncXR1.Text = "300";
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tbxEncYR1
@@ -476,6 +478,7 @@
             this.tbxEncYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR1.TabIndex = 63;
+            this.tbxEncYR1.Text = "300";
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // lblEncCommaR1
