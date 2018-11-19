@@ -172,7 +172,7 @@ namespace BaseStation
                 }
                 catch(Exception e)
                 {
-                    addCommand("# FAILED to open server connection +\n\n" + e);
+                    addCommand("# FAILED to open server connection \n\n" + e);
                 }
             }
         }
@@ -193,7 +193,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to connected +\n\n" + e);
+                addCommand("# FAILED to connected \n\n" + e);
             }
         }
 
@@ -221,7 +221,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to receive message +\n\n" + e);
+                addCommand("# FAILED to receive message \n\n" + e);
             }
         }
 
@@ -236,7 +236,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to send message + \n\n" + e);
+                addCommand("# FAILED to send message \n\n" + e);
             }
         }
 
@@ -259,13 +259,16 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to send message + \n\n" + e);
+                addCommand("# FAILED to send message \n\n" + e);
                 MessageBox.Show("host Not Found :<");
             }
         }
         
         string ResponeCallback(dynamic text, Socket socket)
         {
+            //MessageBox.Show("wkwkwk 1");
+            //foreach(var a in _socketDict.Keys)
+            //MessageBox.Show(a.ToString());
             string respone = string.Empty;
             string objName = null;
             int[] _posXY = new int[2];
@@ -345,22 +348,46 @@ namespace BaseStation
                 /// 2. PENALTY COMMANDS ///
                     case "y": //YELLOW_CARD_MAGENTA	
                         respone = "YELLOW_CARD_MAGENTA";
-                        break;
+                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        goto broadcast;
                     case "Y": //YELLOW_CARD_CYAN
                         respone = "YELLOW_CARD_CYAN";
-                        break;
+                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        goto broadcast;
                     case "r": //RED_CARD_MAGENTA
                         respone = "RED_CARD_MAGENTA";
-                        break;
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
                     case "R": //RED_CARD_CYAN
                         respone = "RED_CARD_CYAN";
-                        break;
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
                     case "b": //DOUBLE_YELLOW_MAGENTA
                         respone = "DOUBLE_YELLOW_MAGENTA";
-                        break;
+                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
                     case "B": //DOUBLE_YELLOW_CYAN
                         respone = "DOUBLE_YELLOW_CYAN";
-                        break;
+                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
 
                 /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
@@ -471,6 +498,7 @@ namespace BaseStation
                 connection.Text = "Connected";
                 SendCallBack(_toServerSocket, this.Text);
                 _socketDict.Add(keyName.ToString(), _toServerSocket);
+                //MessageBox.Show(keyName.ToString());
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
@@ -514,7 +542,7 @@ namespace BaseStation
         private void Connection_byDistinct(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblConnectionRB, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -535,6 +563,7 @@ namespace BaseStation
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
             timer.Start();
+            //YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
         }
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
