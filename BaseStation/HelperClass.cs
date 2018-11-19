@@ -19,7 +19,7 @@ namespace BaseStation
         delegate void SetLocationCallback(Form f, Control ctrl, Point point);
         /// Set text property of various controls
 
-        public void SetText(Form form, Control ctrl, string text)
+        internal void SetText(Form form, Control ctrl, string text)
         {
             // InvokeRequired required compares the thread ID of the 
             // calling thread to the thread ID of the creating thread. 
@@ -33,7 +33,7 @@ namespace BaseStation
                 ctrl.Text = text;
         }
 
-        public void SetLocation(Form form, Control ctrl, Point point)
+        internal void SetLocation(Form form, Control ctrl, Point point)
         {
             if (ctrl.InvokeRequired)
             {

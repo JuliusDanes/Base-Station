@@ -23,13 +23,12 @@ namespace BaseStation
         {
             InitializeComponent();
             setTransparent(Lap, new dynamic[] { PointBall, PointRobot1, PointRobot2, PointRobot3 });
-            setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBSa, tbxPortBSa, lblPipeBS });
-            setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRBa, tbxPortRBa, lblPipeRB });
+            setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
+            setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
             setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
             setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
             setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
-
-
+            
             // Create a material theme manager and add the form to manage (this)
             //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             //materialSkinManager.AddFormToManage(this);
@@ -50,10 +49,10 @@ namespace BaseStation
         {
             tbxIPBS.Text /*= GetIPAddress()*/ = "192.168.165.10";
             tbxPortBS.Text = "8686";
-            tbxIPRefBox.Text = "169.254.162.201";
-            tbxPortRefBox.Text = "28097";
-            tbxIPRobot1.Text /*= "169.254.162.201"*/ = GetIPAddress();
-            tbxPortRobot1.Text = "8686";
+            tbxIPRB.Text = "169.254.162.201";
+            tbxPortRB.Text = "28097";
+            tbxIPR1.Text /*= "169.254.162.201"*/ = GetIPAddress();
+            tbxPortR1.Text = "8686";
 
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 1000;
@@ -102,18 +101,18 @@ namespace BaseStation
         void changeCounter(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Right)
-                tbxX.Text = (int.Parse(tbxX.Text) + 1).ToString();
+                tbxEncXR1.Text = (int.Parse(tbxEncXR1.Text) + 1).ToString();
             else if (e.KeyCode == Keys.Left)
-                tbxX.Text = (int.Parse(tbxX.Text) - 1).ToString();
+                tbxEncXR1.Text = (int.Parse(tbxEncXR1.Text) - 1).ToString();
             else if (e.KeyCode == Keys.Up)
-                tbxY.Text = (int.Parse(tbxY.Text) - 1).ToString();
+                tbxEncYR1.Text = (int.Parse(tbxEncYR1.Text) - 1).ToString();
             else if (e.KeyCode == Keys.Down)
-                tbxY.Text = (int.Parse(tbxY.Text) + 1).ToString();
+                tbxEncYR1.Text = (int.Parse(tbxEncYR1.Text) + 1).ToString();
         }
 
         void tbxXYChanged(object sender, EventArgs e)
         {
-            string dtEncoder = "X:" + tbxX.Text + ",Y:" + tbxY.Text;
+            string dtEncoder = "X:" + tbxEncXR1.Text + ",Y:" + tbxEncYR1.Text;
             Thread th_Send = new Thread(obj => SendCallBack(_socketDict["Robot1"], dtEncoder));
             th_Send.Start();
         }
@@ -162,6 +161,7 @@ namespace BaseStation
         {
             addCommand("# Setting up server...");
             addCommand("# IP "+ this.Text +"  : " + tbxIPBS.Text);
+            lblConnectionBS.Text = "Open";
             _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
             _serverSocket.Listen(1);
             _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
@@ -253,8 +253,8 @@ namespace BaseStation
                     _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]) / 20;
                 }
                 
-                hc.SetText(this, tbxX, _posXY[0].ToString());
-                hc.SetText(this, tbxY, _posXY[1].ToString());
+                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());
+                hc.SetText(this, tbxEncYR1, _posXY[1].ToString());
 
                 foreach (var _temp in _socketDict)
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
@@ -274,11 +274,11 @@ namespace BaseStation
                 _socketDict.Add(text, temp);                                    // Add with new key
                 Dictionary<Control, Control> ctrl = new Dictionary<Control, Control>();
                 if (text == "Robot1")
-                    ctrl.Add(tbxIPRobot1,tbxPortRobot1);
+                    ctrl.Add(tbxIPR1,tbxPortR1);
                 else if (text == "Robot2")
-                    ctrl.Add(tbxIPRobot2, tbxPortRobot2);
+                    ctrl.Add(tbxIPR2, tbxPortR2);
                 else if (text == "Robot3")
-                    ctrl.Add(tbxIPRobot3, tbxPortRobot3);
+                    ctrl.Add(tbxIPR3, tbxPortR3);
                 
                 hc.SetText(this, (ctrl.Keys.ElementAtOrDefault(0)), socketToIP(socket));
                 hc.SetText(this, ctrl[ctrl.Keys.ElementAtOrDefault(0)], this.port.ToString());
@@ -425,34 +425,43 @@ namespace BaseStation
             return respone;
         }
         
-        void reqConnect(string ipDst, dynamic port, string keyName)
+        void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
         {
-            try
+            if ((!string.IsNullOrWhiteSpace(ipDst)) && (!string.IsNullOrWhiteSpace(port)))
             {
-                attempts++;
-                _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
-                _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                tbxStatus.ResetText();
-                if (_toServerSocket.Connected)
-                    addCommand("# Success Connecting to: " + ipDst);
-                SendCallBack(_toServerSocket, gbxBS.Text);
-                _socketDict.Add(keyName.ToString(), _toServerSocket);
-                _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
-            }
-            catch (SocketException)
-            {
-                tbxStatus.ResetText();
-                addCommand("# IP This Device  : " + myIP);
-                addCommand("# IP Destination  : " + ipDst);
-                addCommand("# Connection attempts: " + attempts.ToString());
+                try
+                {
+                    attempts++;
+                    _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
+                    _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
+                    tbxStatus.ResetText();
+                    if (_toServerSocket.Connected)
+                        addCommand("# Success Connecting to: " + ipDst);
+                    connection.Text = "Connected";
+                    SendCallBack(_toServerSocket, this.Text);
+                    _socketDict.Add(keyName.ToString(), _toServerSocket);
+                    _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+                }
+                catch (SocketException)
+                {
+                    tbxStatus.ResetText();
+                    addCommand("# IP This Device  : " + myIP);
+                    addCommand("# IP Destination  : " + ipDst);
+                    addCommand("# Connection attempts: " + attempts.ToString());
+                    connection.Text = "Disconnected";
+                }
             }
         }
-        
+
+        private void grpBaseStation_Click(object sender, EventArgs e)
+        {
+            SetupServer(tbxPortBS.Text);
+        }
 
         private void btnOpenServer_Click(object sender, EventArgs e)
         {
-            SetupServer(tbxPortBS.Text);
+            //SetupServer(tbxPortBSa.Text);
         }
 
         void sendFromTextBox()
@@ -478,24 +487,25 @@ namespace BaseStation
                 sendFromTextBox();
         }
 
-        private void btnConnectRefBox_Click(object sender, EventArgs e)
+        ///
+        private void grpRefereeBox_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRefBox.Text, tbxPortRefBox.Text, "RefereeBox");
+            reqConnect(tbxIPRB.Text, tbxPortRB.Text, "RefereeBox", lblConnectionRB);
         }
 
-        private void btnConnnectRobot1_Click(object sender, EventArgs e)
+        private void grpRobot1_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRobot1.Text, tbxPortRobot1.Text, "Robot1");
+            reqConnect(tbxIPR1.Text, tbxPortR1.Text, "Robot1", lblConnectionR1);
         }
 
-        private void btnConnnectRobot2_Click(object sender, EventArgs e)
+        private void grpRobot2_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRobot2.Text, tbxPortRobot2.Text, "Robot2");
+            reqConnect(tbxIPR2.Text, tbxPortR2.Text, "Robot2", lblConnectionR2);
         }
 
-        private void btnConnnectRobot3_Click(object sender, EventArgs e)
+        private void grpRobot3_Click(object sender, EventArgs e)
         {
-            reqConnect(tbxPortRobot3.Text, tbxPortRobot3.Text, "Robot3");
+            reqConnect(tbxIPR3.Text, tbxPortR3.Text, "Robot3", lblConnectionR3);
         }
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
@@ -515,8 +525,8 @@ namespace BaseStation
         {
             if (!string.IsNullOrWhiteSpace(tbxGotoX.Text))
             {
-                new Thread(obj => GotoLoc(tbxX.Text, tbxGotoX.Text, 1)).Start();
-                new Thread(obj => GotoLoc(tbxY.Text, tbxGotoY.Text, 1)).Start();
+                new Thread(obj => GotoLoc(tbxEncXR1.Text, tbxGotoX.Text, 1)).Start();
+                new Thread(obj => GotoLoc(tbxEncYR1.Text, tbxGotoY.Text, 1)).Start();
             }
         }
         
@@ -524,12 +534,25 @@ namespace BaseStation
         {
             for (int i = int.Parse(start); i < int.Parse(end); i += anker)
             {
-                string dtGoto = "X:" + i + ",Y:" + tbxY.Text;
+                string dtGoto = "X:" + i + ",Y:" + tbxEncYR1.Text;
                 //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
-                moveLoc(i, int.Parse(tbxY.Text), PointRobot1);
+                moveLoc(i, int.Parse(tbxEncYR1.Text), PointRobot1);
             }
         }
-        
+
+        private void Connection_keyEnter(object sender, KeyEventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { lblBaseStation, lblConnectionRB, tbxIPRB, tbxPortRB }, { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+            int n=0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if ((e.KeyCode == Keys.Enter) && (!String.IsNullOrWhiteSpace(arr[n,2].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)))
+                reqConnect(arr[n, 2].Text, arr[n, 3].Text, arr[n, 0].Text, arr[n, 1]);
+        }        
+
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_toServerSocket.RemoteEndPoint.ToString());
