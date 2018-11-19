@@ -459,11 +459,6 @@ namespace BaseStation
             SetupServer(tbxPortBS.Text);
         }
 
-        private void btnOpenServer_Click(object sender, EventArgs e)
-        {
-            //SetupServer(tbxPortBSa.Text);
-        }
-
         void sendFromTextBox()
         {
             var dataMessage = tbxMessage.Text.Trim().Split('|');
@@ -486,26 +481,18 @@ namespace BaseStation
             if (e.KeyCode == Keys.Enter)
                 sendFromTextBox();
         }
-
-        ///
-        private void grpRefereeBox_Click(object sender, EventArgs e)
+        
+        private void Connection_byDistinct(object sender, EventArgs e)
         {
-            reqConnect(tbxIPRB.Text, tbxPortRB.Text, "RefereeBox", lblConnectionRB);
-        }
-
-        private void grpRobot1_Click(object sender, EventArgs e)
-        {
-            reqConnect(tbxIPR1.Text, tbxPortR1.Text, "Robot1", lblConnectionR1);
-        }
-
-        private void grpRobot2_Click(object sender, EventArgs e)
-        {
-            reqConnect(tbxIPR2.Text, tbxPortR2.Text, "Robot2", lblConnectionR2);
-        }
-
-        private void grpRobot3_Click(object sender, EventArgs e)
-        {
-            reqConnect(tbxIPR3.Text, tbxPortR3.Text, "Robot3", lblConnectionR3);
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblConnectionRB, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if ((!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2]);
         }
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
@@ -541,17 +528,10 @@ namespace BaseStation
         }
 
         private void Connection_keyEnter(object sender, KeyEventArgs e)
-        {
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { lblBaseStation, lblConnectionRB, tbxIPRB, tbxPortRB }, { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
-            int n=0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
-                        n = i;
-            if ((e.KeyCode == Keys.Enter) && (!String.IsNullOrWhiteSpace(arr[n,2].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)))
-                reqConnect(arr[n, 2].Text, arr[n, 3].Text, arr[n, 0].Text, arr[n, 1]);
-        }        
+        {            
+            if (e.KeyCode == Keys.Enter)
+                Connection_byDistinct(sender, e);
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {

@@ -304,7 +304,7 @@
             this.grpRobot1.Size = new System.Drawing.Size(270, 100);
             this.grpRobot1.TabIndex = 47;
             this.grpRobot1.UseVisualStyleBackColor = true;
-            this.grpRobot1.Click += new System.EventHandler(this.grpRobot1_Click);
+            this.grpRobot1.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
             // lblRobot1
             // 
@@ -581,7 +581,7 @@
             this.grpBaseStation.Size = new System.Drawing.Size(270, 100);
             this.grpBaseStation.TabIndex = 64;
             this.grpBaseStation.UseVisualStyleBackColor = true;
-            this.grpBaseStation.Click += new System.EventHandler(this.grpBaseStation_Click);
+            this.grpBaseStation.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
             // tbxPortRB
             // 
@@ -675,7 +675,7 @@
             this.grpRefereeBox.Size = new System.Drawing.Size(270, 100);
             this.grpRefereeBox.TabIndex = 70;
             this.grpRefereeBox.UseVisualStyleBackColor = true;
-            this.grpRefereeBox.Click += new System.EventHandler(this.grpRefereeBox_Click);
+            this.grpRefereeBox.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
             // tbxEncYR2
             // 
@@ -875,7 +875,7 @@
             this.grpRobot2.Size = new System.Drawing.Size(270, 100);
             this.grpRobot2.TabIndex = 76;
             this.grpRobot2.UseVisualStyleBackColor = true;
-            this.grpRobot2.Click += new System.EventHandler(this.grpRobot2_Click);
+            this.grpRobot2.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
             // tbxScrYR1
             // 
@@ -1234,7 +1234,7 @@
             this.grpRobot3.Size = new System.Drawing.Size(270, 100);
             this.grpRobot3.TabIndex = 96;
             this.grpRobot3.UseVisualStyleBackColor = true;
-            this.grpRobot3.Click += new System.EventHandler(this.grpRobot3_Click);
+            this.grpRobot3.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
             // lblTimer
             // 
