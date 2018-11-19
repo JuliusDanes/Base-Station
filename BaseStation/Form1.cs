@@ -17,7 +17,7 @@ using MaterialSkin.Controls;
 
 namespace BaseStation
 {  
-    public partial class Form1 /*: MaterialForm*/ : Form
+    public partial class Form1 : Form
     {
         public Form1()
         {
@@ -159,54 +159,85 @@ namespace BaseStation
 
         void SetupServer(dynamic port)
         {
-            addCommand("# Setting up server...");
-            addCommand("# IP "+ this.Text +"  : " + tbxIPBS.Text);
-            lblConnectionBS.Text = "Open";
-            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
-            _serverSocket.Listen(1);
-            _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+            if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+            {
+                try
+                {
+                    addCommand("# Setting up server...");
+                    addCommand("# IP " + this.Text + "  : " + tbxIPBS.Text);
+                    lblConnectionBS.Text = "Open";
+                    _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
+                    _serverSocket.Listen(1);
+                    _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                }
+                catch(Exception e)
+                {
+                    addCommand("# FAILED to open server connection +\n\n" + e);
+                }
+            }
         }
 
         void AcceptCallback(IAsyncResult AR)
         {
-            Socket socket = _serverSocket.EndAccept(AR);
-            _socketDict.Add(socket.RemoteEndPoint.ToString(), socket);
-            //if (socket.Connected)
-            //            
-            socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
-            _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
-            addCommand("# Success Connected to: " + socketToIP(socket));
-            //MessageBox.Show(_toServerSocketDict.Keys.Where(item => item.StartsWith("192.168.1.107")).ElementAt(0))  
+            try
+            { 
+                Socket socket = _serverSocket.EndAccept(AR);
+                if (socket.Connected)
+                {
+                    _socketDict.Add(socket.RemoteEndPoint.ToString(), socket);
+                    socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
+                    _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                    addCommand("# Success Connected to: " + socketToIP(socket));
+                    //MessageBox.Show(_toServerSocketDict.Keys.Where(item => item.StartsWith("192.168.1.107")).ElementAt(0))  
+                }
+            }
+            catch (Exception e)
+            {
+                addCommand("# FAILED to connected +\n\n" + e);
+            }
         }
 
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
-            Socket socket = (Socket)AR.AsyncState;
-            int received = socket.EndReceive(AR);
-            byte[] dataBuf = new byte[received];
-            Array.Copy(_buffer, dataBuf, received);
-            string text = Encoding.ASCII.GetString(dataBuf).Trim();            
-            var _data = text.Split('|');
-            addCommand("> " + socketToIP(socket) + " : " + _data[0]);
+            try
+            { 
+                Socket socket = (Socket)AR.AsyncState;
+                int received = socket.EndReceive(AR);
+                byte[] dataBuf = new byte[received];
+                Array.Copy(_buffer, dataBuf, received);
+                string text = Encoding.ASCII.GetString(dataBuf).Trim();            
+                var _data = text.Split('|');
+                addCommand("> " + socketToIP(socket) + " : " + _data[0]);
 
-            string respone = ResponeCallback(_data[0], socket);
-            if (!string.IsNullOrEmpty(respone))
-            {
-                if (_data.Count() == 1)
-                    SendCallBack(socket, respone);
-                else
-                    sendByHostList(_data[1], respone);
+                string respone = ResponeCallback(_data[0], socket);
+                if (!string.IsNullOrEmpty(respone))
+                {
+                    if (_data.Count() == 1)
+                        SendCallBack(socket, respone);
+                    else
+                        sendByHostList(_data[1], respone);
+                }
+                socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
             }
-            socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
+            catch (Exception e)
+            {
+                addCommand("# FAILED to receive message +\n\n" + e);
+            }
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage)
         {
-            //MessageBox.Show("wkkwkw 3 " + txtMessage + " --- " + typeMsg);
-            addCommand("@ " + socketToIP(_dstSocket) + " : " + txtMessage);
-            byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
-            _dstSocket.Send(buffer);
-            _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
+            try
+            { 
+                addCommand("@ " + socketToIP(_dstSocket) + " : " + txtMessage);
+                byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
+                _dstSocket.Send(buffer);
+                _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
+            }
+            catch (Exception e)
+            {
+                addCommand("# FAILED to send message + \n\n" + e);
+            }
         }
 
         void sendByHostList(dynamic inputHostList, string txtMsg)
@@ -228,6 +259,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
+                addCommand("# FAILED to send message + \n\n" + e);
                 MessageBox.Show("host Not Found :<");
             }
         }
@@ -427,30 +459,27 @@ namespace BaseStation
         
         void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
         {
-            if ((!string.IsNullOrWhiteSpace(ipDst)) && (!string.IsNullOrWhiteSpace(port)))
+            try
             {
-                try
-                {
-                    attempts++;
-                    _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
-                    _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                    tbxStatus.ResetText();
-                    if (_toServerSocket.Connected)
-                        addCommand("# Success Connecting to: " + ipDst);
-                    connection.Text = "Connected";
-                    SendCallBack(_toServerSocket, this.Text);
-                    _socketDict.Add(keyName.ToString(), _toServerSocket);
-                    _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
-                }
-                catch (SocketException)
-                {
-                    tbxStatus.ResetText();
-                    addCommand("# IP This Device  : " + myIP);
-                    addCommand("# IP Destination  : " + ipDst);
-                    addCommand("# Connection attempts: " + attempts.ToString());
-                    connection.Text = "Disconnected";
-                }
+                attempts++;
+                _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
+                _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
+                tbxStatus.ResetText();
+                if (_toServerSocket.Connected)
+                    addCommand("# Success Connecting to: " + ipDst);
+                connection.Text = "Connected";
+                SendCallBack(_toServerSocket, this.Text);
+                _socketDict.Add(keyName.ToString(), _toServerSocket);
+                _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+            }
+            catch (SocketException)
+            {
+                tbxStatus.ResetText();
+                addCommand("# IP This Device  : " + myIP);
+                addCommand("# IP Destination  : " + ipDst);
+                addCommand("# Connection attempts: " + attempts.ToString());
+                connection.Text = "Disconnected";
             }
         }
 
@@ -531,6 +560,12 @@ namespace BaseStation
         {            
             if (e.KeyCode == Keys.Enter)
                 Connection_byDistinct(sender, e);
+        }
+
+        private void tbxIPBS_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SetupServer(tbxPortBS.Text);
         }
 
         private void button1_Click(object sender, EventArgs e)

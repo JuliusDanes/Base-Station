@@ -509,7 +509,7 @@
             this.tbxPortBS.Size = new System.Drawing.Size(45, 25);
             this.tbxPortBS.TabIndex = 69;
             this.tbxPortBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxPortBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
+            this.tbxPortBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxIPBS_KeyDown);
             // 
             // tbxIPBS
             // 
@@ -531,7 +531,7 @@
             this.tbxIPBS.Size = new System.Drawing.Size(100, 25);
             this.tbxIPBS.TabIndex = 68;
             this.tbxIPBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxIPBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
+            this.tbxIPBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxIPBS_KeyDown);
             // 
             // lblPipeBS
             // 
@@ -581,7 +581,7 @@
             this.grpBaseStation.Size = new System.Drawing.Size(270, 100);
             this.grpBaseStation.TabIndex = 64;
             this.grpBaseStation.UseVisualStyleBackColor = true;
-            this.grpBaseStation.Click += new System.EventHandler(this.Connection_byDistinct);
+            this.grpBaseStation.Click += new System.EventHandler(this.grpBaseStation_Click);
             // 
             // tbxPortRB
             // 
