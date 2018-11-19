@@ -266,9 +266,6 @@ namespace BaseStation
         
         string ResponeCallback(dynamic text, Socket socket)
         {
-            //MessageBox.Show("wkwkwk 1");
-            //foreach(var a in _socketDict.Keys)
-            //MessageBox.Show(a.ToString());
             string respone = string.Empty;
             string objName = null;
             int[] _posXY = new int[2];
@@ -279,17 +276,19 @@ namespace BaseStation
                 var posXY = text.Split(',');
                 if (posXY.Length == 2) // If data receive only one X & Y
                 {
-                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]) / 20;
-                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]) / 20;
+                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]);
+                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]);
                 }
                 else // If data receive multi X & Y (error problem)
                 {
-                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]) / 20;
-                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]) / 20;
+                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
+                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
                 }
                 
-                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());
+                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());     // On encoder tbx
                 hc.SetText(this, tbxEncYR1, _posXY[1].ToString());
+                hc.SetText(this, tbxScrXR1, (_posXY[0]/=20).ToString());          // On screen tbx
+                hc.SetText(this, tbxScrYR1, (_posXY[1]/=20).ToString());
 
                 foreach (var _temp in _socketDict)
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
