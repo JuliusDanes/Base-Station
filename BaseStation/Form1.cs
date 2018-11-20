@@ -56,7 +56,7 @@ namespace BaseStation
 
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 1000;
-            //timer.Start();
+            timer.Start();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -556,14 +556,6 @@ namespace BaseStation
             tbxStatus.SelectionStart = tbxStatus.Text.Length;
             tbxStatus.ScrollToCaret();
         }
-        
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
-            //MessageBox.Show(a.ToString());
-            timer.Start();
-            //YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-        }
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
@@ -620,9 +612,13 @@ namespace BaseStation
                 this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnTO_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(_toServerSocket.RemoteEndPoint.ToString());
+            //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
+            //MessageBox.Show(a.ToString());
+            lblTimer.Text = "00:00";
+            timer.Start();
+            //YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
         }
     }
 }

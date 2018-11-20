@@ -34,6 +34,7 @@
             this.lblX = new System.Windows.Forms.Label();
             this.lblY = new System.Windows.Forms.Label();
             this.tbxY = new System.Windows.Forms.TextBox();
+            this.btnTO = new System.Windows.Forms.Button();
             this.PointRobot3 = new System.Windows.Forms.PictureBox();
             this.PointRobot2 = new System.Windows.Forms.PictureBox();
             this.PointRobot1 = new System.Windows.Forms.PictureBox();
@@ -42,7 +43,6 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.tbxStatus = new System.Windows.Forms.RichTextBox();
             this.tbxMessage = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.tbxGotoX = new System.Windows.Forms.TextBox();
             this.tbxGotoY = new System.Windows.Forms.TextBox();
             this.grpRobot1 = new MaterialSkin.Controls.MaterialRaisedButton();
@@ -134,6 +134,7 @@
             this.groupBox1.Controls.Add(this.lblX);
             this.groupBox1.Controls.Add(this.lblY);
             this.groupBox1.Controls.Add(this.tbxY);
+            this.groupBox1.Controls.Add(this.btnTO);
             this.groupBox1.Location = new System.Drawing.Point(942, 606);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 75);
@@ -174,6 +175,16 @@
             this.tbxY.Size = new System.Drawing.Size(40, 20);
             this.tbxY.TabIndex = 5;
             this.tbxY.Text = "0";
+            // 
+            // btnTO
+            // 
+            this.btnTO.Location = new System.Drawing.Point(11, 46);
+            this.btnTO.Name = "btnTO";
+            this.btnTO.Size = new System.Drawing.Size(75, 23);
+            this.btnTO.TabIndex = 44;
+            this.btnTO.Text = "Try Out";
+            this.btnTO.UseVisualStyleBackColor = true;
+            this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
             // 
             // PointRobot3
             // 
@@ -263,16 +274,6 @@
             this.tbxMessage.TabIndex = 32;
             this.tbxMessage.Text = "";
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(887, 626);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 44;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // tbxGotoX
             // 
@@ -457,7 +458,7 @@
             this.tbxEncXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR1.TabIndex = 61;
-            this.tbxEncXR1.Text = "300";
+            this.tbxEncXR1.Text = "0";
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tbxEncYR1
@@ -479,7 +480,7 @@
             this.tbxEncYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR1.TabIndex = 63;
-            this.tbxEncYR1.Text = "300";
+            this.tbxEncYR1.Text = "0";
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // lblEncCommaR1
@@ -1339,7 +1340,6 @@
             this.Controls.Add(this.grpRobot1);
             this.Controls.Add(this.tbxGotoY);
             this.Controls.Add(this.tbxGotoX);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tbxStatus);
@@ -1393,7 +1393,7 @@
         protected System.Windows.Forms.Button btnSend;
         protected System.Windows.Forms.RichTextBox tbxStatus;
         protected System.Windows.Forms.RichTextBox tbxMessage;
-        protected System.Windows.Forms.Button button1;
+        protected System.Windows.Forms.Button btnTO;
         protected System.Windows.Forms.TextBox tbxGotoX;
         protected System.Windows.Forms.TextBox tbxGotoY;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot1;
