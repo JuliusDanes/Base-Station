@@ -610,7 +610,15 @@ namespace BaseStation
         {
             if (e.KeyCode == Keys.Enter)
                 SetupServer(tbxPortBS.Text);
-        }        
+        }
+
+        private void TeamSwitch_OnValueChange(object sender, EventArgs e)
+        {
+            if(TeamSwitch.Value == true)
+                this.BackgroundImage = Image.FromFile(@"images\Background Cyan.jpg");       // Team CYAN
+            else
+                this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {

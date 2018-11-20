@@ -109,6 +109,7 @@
             this.YCard1R3 = new System.Windows.Forms.PictureBox();
             this.grpRobot3 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblTimer = new System.Windows.Forms.Label();
+            this.TeamSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -1250,6 +1251,21 @@
             this.lblTimer.TabIndex = 43;
             this.lblTimer.Text = "00:00";
             // 
+            // TeamSwitch
+            // 
+            this.TeamSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.TeamSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TeamSwitch.BackgroundImage")));
+            this.TeamSwitch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TeamSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TeamSwitch.Location = new System.Drawing.Point(1, 20);
+            this.TeamSwitch.Name = "TeamSwitch";
+            this.TeamSwitch.OffColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(0)))), ((int)(((byte)(123)))));
+            this.TeamSwitch.OnColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(168)))), ((int)(((byte)(236)))));
+            this.TeamSwitch.Size = new System.Drawing.Size(35, 20);
+            this.TeamSwitch.TabIndex = 113;
+            this.TeamSwitch.Value = true;
+            this.TeamSwitch.OnValueChange += new System.EventHandler(this.TeamSwitch_OnValueChange);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1257,6 +1273,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.TeamSwitch);
             this.Controls.Add(this.tbxScrYR3);
             this.Controls.Add(this.lblScrCommaR3);
             this.Controls.Add(this.tbxScrXR3);
@@ -1442,6 +1459,7 @@
         protected System.Windows.Forms.PictureBox RCardR3;
         protected System.Windows.Forms.PictureBox YCard1R3;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot3;
+        private Bunifu.Framework.UI.BunifuiOSSwitch TeamSwitch;
     }
 }
 
