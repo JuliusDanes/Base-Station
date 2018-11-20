@@ -110,6 +110,8 @@
             this.grpRobot3 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblTimer = new System.Windows.Forms.Label();
             this.TeamSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
+            this.tbxMessagea = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.btnSenda = new Bunifu.Framework.UI.BunifuFlatButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -244,7 +246,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(315, 615);
+            this.btnSend.Location = new System.Drawing.Point(313, 615);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 33;
@@ -255,10 +257,11 @@
             // tbxStatus
             // 
             this.tbxStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.tbxStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbxStatus.ForeColor = System.Drawing.SystemColors.Info;
-            this.tbxStatus.Location = new System.Drawing.Point(396, 530);
+            this.tbxStatus.Location = new System.Drawing.Point(394, 530);
             this.tbxStatus.Name = "tbxStatus";
+            this.tbxStatus.RightMargin = 10;
+            this.tbxStatus.ShowSelectionMargin = true;
             this.tbxStatus.Size = new System.Drawing.Size(490, 159);
             this.tbxStatus.TabIndex = 39;
             this.tbxStatus.Text = "";
@@ -268,7 +271,7 @@
             // 
             this.tbxMessage.BackColor = System.Drawing.SystemColors.MenuBar;
             this.tbxMessage.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxMessage.Location = new System.Drawing.Point(1, 606);
+            this.tbxMessage.Location = new System.Drawing.Point(1, 598);
             this.tbxMessage.Name = "tbxMessage";
             this.tbxMessage.Size = new System.Drawing.Size(308, 83);
             this.tbxMessage.TabIndex = 32;
@@ -1267,6 +1270,57 @@
             this.TeamSwitch.Value = true;
             this.TeamSwitch.OnValueChange += new System.EventHandler(this.TeamSwitch_OnValueChange);
             // 
+            // tbxMessagea
+            // 
+            this.tbxMessagea.Depth = 0;
+            this.tbxMessagea.Hint = "@SendMessage";
+            this.tbxMessagea.Location = new System.Drawing.Point(980, 139);
+            this.tbxMessagea.MaxLength = 32767;
+            this.tbxMessagea.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tbxMessagea.Name = "tbxMessagea";
+            this.tbxMessagea.PasswordChar = '\0';
+            this.tbxMessagea.SelectedText = "";
+            this.tbxMessagea.SelectionLength = 0;
+            this.tbxMessagea.SelectionStart = 0;
+            this.tbxMessagea.Size = new System.Drawing.Size(243, 23);
+            this.tbxMessagea.TabIndex = 114;
+            this.tbxMessagea.TabStop = false;
+            this.tbxMessagea.UseSystemPasswordChar = false;
+            // 
+            // btnSenda
+            // 
+            this.btnSenda.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSenda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSenda.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSenda.BorderRadius = 0;
+            this.btnSenda.ButtonText = "Send";
+            this.btnSenda.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSenda.DisabledColor = System.Drawing.Color.Gray;
+            this.btnSenda.Iconcolor = System.Drawing.Color.Transparent;
+            this.btnSenda.Iconimage = ((System.Drawing.Image)(resources.GetObject("btnSenda.Iconimage")));
+            this.btnSenda.Iconimage_right = null;
+            this.btnSenda.Iconimage_right_Selected = null;
+            this.btnSenda.Iconimage_Selected = null;
+            this.btnSenda.IconMarginLeft = 0;
+            this.btnSenda.IconMarginRight = 0;
+            this.btnSenda.IconRightVisible = true;
+            this.btnSenda.IconRightZoom = 0D;
+            this.btnSenda.IconVisible = true;
+            this.btnSenda.IconZoom = 90D;
+            this.btnSenda.IsTab = false;
+            this.btnSenda.Location = new System.Drawing.Point(1159, 162);
+            this.btnSenda.Name = "btnSenda";
+            this.btnSenda.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSenda.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
+            this.btnSenda.OnHoverTextColor = System.Drawing.Color.White;
+            this.btnSenda.selected = false;
+            this.btnSenda.Size = new System.Drawing.Size(90, 30);
+            this.btnSenda.TabIndex = 115;
+            this.btnSenda.Text = "Send";
+            this.btnSenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSenda.Textcolor = System.Drawing.Color.White;
+            this.btnSenda.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1274,6 +1328,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnSenda);
+            this.Controls.Add(this.tbxMessagea);
             this.Controls.Add(this.TeamSwitch);
             this.Controls.Add(this.tbxScrYR3);
             this.Controls.Add(this.lblScrCommaR3);
@@ -1391,7 +1447,6 @@
         protected System.Windows.Forms.PictureBox PointBall;
         protected System.Windows.Forms.PictureBox Lap;
         protected System.Windows.Forms.Button btnSend;
-        protected System.Windows.Forms.RichTextBox tbxStatus;
         protected System.Windows.Forms.RichTextBox tbxMessage;
         protected System.Windows.Forms.Button btnTO;
         protected System.Windows.Forms.TextBox tbxGotoX;
@@ -1460,6 +1515,9 @@
         protected System.Windows.Forms.PictureBox YCard1R3;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot3;
         private Bunifu.Framework.UI.BunifuiOSSwitch TeamSwitch;
+        protected System.Windows.Forms.RichTextBox tbxStatus;
+        private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessagea;
+        private Bunifu.Framework.UI.BunifuFlatButton btnSenda;
     }
 }
 
