@@ -54,6 +54,7 @@ namespace BaseStation
             tbxIPR1.Text /*= "169.254.162.201"*/ = GetIPAddress();
             tbxPortR1.Text = "8686";
 
+            resetLocation();
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 1000;
             timer.Start();
@@ -78,13 +79,27 @@ namespace BaseStation
 
         void resetLocation()
         {
-
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
+            foreach (var i in arr)
+                i.Text = "0";
         }
 
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            
+            if (formation == "Stand By")
+            {
+                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
+                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], 1, 1)).Start();
+                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], 1, 1)).Start();
+                //new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], 1, 1)).Start();
+
+                //for (int i = 0; i < arr.GetLength(0); i++)
+                //{
+                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
+                //    Thread.Sleep(5000);
+                //}
+            }
         }
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
@@ -103,9 +118,10 @@ namespace BaseStation
         void moveLoc(int encodX, int encodY, dynamic robot)
         {
             Point point00Lap = new Point(26, 20);
-            Point point00Robot = new Point(robot.Size.Width/2, robot.Size.Height/2);
+            Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
-            hc.SetLocation(this, robot, newLoc);
+            //hc.SetLocation(this, robot, newLoc);
+            new Thread(obj => hc.SetLocation(this, robot, newLoc)).Start();
         }
 
         void changeCounter(object sender, KeyEventArgs e)
@@ -117,19 +133,19 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-
             if (e.KeyCode == Keys.Right)
-                arr[n,0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
+                arr[n,0].Text = (int.Parse(arr[n,0].Text) + 1).ToString();
             else if (e.KeyCode == Keys.Left)
-                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
+                arr[n,0].Text = (int.Parse(arr[n,0].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Up)
-                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
+                arr[n,1].Text = (int.Parse(arr[n,1].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Down)
-                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+                arr[n,1].Text = (int.Parse(arr[n,1].Text) + 1).ToString();
         }
 
         void tbxXYChanged(object sender, EventArgs e)
         {
+            //MessageBox.Show("wkwkw 1");
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, PointRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, PointRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, PointRobot3 } };
             int n = 0;
@@ -143,22 +159,22 @@ namespace BaseStation
                 if (obj.StartsWith("tbxEnc"))   // Encoder then using scale 1:20
                 {
                     val[0] = (int.Parse(arr[n,0].Text));
-                    val[1] = (int.Parse(arr[n,1].Text));     
-                    hc.SetText(this, arr[n,0], val[0].ToString());          // On encoder tbx
-                    hc.SetText(this, arr[n,1], val[1].ToString());
-                    hc.SetText(this, arr[n,2], (val[0] / 20).ToString());   // On screen tbx
-                    hc.SetText(this, arr[n,3], (val[1] / 20).ToString());
+                    val[1] = (int.Parse(arr[n,1].Text));
+                    hc.SetText(this, arr[n, 0], val[0].ToString());          // On encoder tbx
+                    hc.SetText(this, arr[n, 1], val[1].ToString());
+                    hc.SetText(this, arr[n, 2], (val[0] / 20).ToString());   // On screen tbx
+                    hc.SetText(this, arr[n, 3], (val[1] / 20).ToString());
                 }
                 else
                 {
                     val[0] = (int.Parse(arr[n,2].Text));
                     val[1] = (int.Parse(arr[n,3].Text));
-                    hc.SetText(this, arr[n,0], (val[0] * 20).ToString());   // On encoder tbx
-                    hc.SetText(this, arr[n,1], (val[1] * 20).ToString());
-                    hc.SetText(this, arr[n,2], val[0].ToString());          // On screen tbx
-                    hc.SetText(this, arr[n,3], val[1].ToString());
+                    hc.SetText(this, arr[n, 0], (val[0] * 20).ToString());   // On encoder tbx
+                    hc.SetText(this, arr[n, 1], (val[1] * 20).ToString());
+                    hc.SetText(this, arr[n, 2], val[0].ToString());          // On screen tbx
+                    hc.SetText(this, arr[n, 3], val[1].ToString());
                 }
-                new Thread(objs => moveLoc(int.Parse(arr[n, 0].Text) / 20, int.Parse(arr[n, 1].Text) / 20, arr[n, 4])).Start();     // Encoder then using scale 1:20
+                new Thread(objs => moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 4])).Start();     // Encoder then using scale 1:20
             }
         }
 
@@ -167,11 +183,12 @@ namespace BaseStation
             changeCounter(sender, e);
 
             if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
-                new Thread(obj => GotoLoc(int.Parse(tbxEncXR1.Text), int.Parse(tbxGotoX.Text), 1, int.Parse(tbxEncYR1.Text), int.Parse(tbxGotoY.Text), 1)).Start();
+                new Thread(obj => GotoLoc(tbxEncXR1, tbxEncYR1, int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 1, 1)).Start();
         }
 
-        void GotoLoc(int startX, int endX, int shiftX, int startY, int endY, int shiftY)
+        void GotoLoc(dynamic encXRobot, dynamic encYRobot, int endX, int endY, int shiftX, int shiftY)
         {
+            int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text);
             if (startX > endX)
                 shiftX *= -1;
             if (startY > endY)
@@ -190,11 +207,8 @@ namespace BaseStation
 
                 //string dtGoto = "X:" + startX + ",Y:" + startY;
                 //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
-                new Thread(obj => moveLoc(startX / 20, startY / 20, PointRobot1)).Start();
-                hc.SetText(this, tbxEncXR1, startX.ToString());         // On encoder tbx
-                hc.SetText(this, tbxEncYR1, startY.ToString());
-                hc.SetText(this, tbxScrXR1, (startX / 20).ToString());  // On screen tbx
-                hc.SetText(this, tbxScrYR1, (startY / 20).ToString());
+                hc.SetText(this, encXRobot, startX.ToString());         // On encoder tbx
+                hc.SetText(this, encYRobot, startY.ToString());
                 Thread.Sleep(1);    // limit per time
             }
         }
@@ -657,7 +671,17 @@ namespace BaseStation
                 this.BackgroundImage = Image.FromFile(@"images\Background Cyan.jpg");       // Team CYAN
             else
                 this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
-        }        
+        }
+
+        private void metroTile1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbxFormation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setFormation();
+        }
 
         private void btnTO_Click(object sender, EventArgs e)
         {

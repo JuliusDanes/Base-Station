@@ -111,10 +111,10 @@
             this.tbxMessagea = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.btnSenda = new Bunifu.Framework.UI.BunifuFlatButton();
             this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
-            this.metroTile1 = new MetroFramework.Controls.MetroTile();
             this.cbxFormation = new MetroFramework.Controls.MetroComboBox();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
+            this.lblScoreCyan = new System.Windows.Forms.Label();
             this.gbxGoto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -237,6 +237,7 @@
             this.PointBall.Size = new System.Drawing.Size(18, 18);
             this.PointBall.TabIndex = 25;
             this.PointBall.TabStop = false;
+            this.PointBall.Visible = false;
             // 
             // Lap
             // 
@@ -251,7 +252,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(313, 615);
+            this.btnSend.Location = new System.Drawing.Point(315, 620);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 33;
@@ -262,10 +263,10 @@
             // tbxStatus
             // 
             this.tbxStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.tbxStatus.EnableAutoDragDrop = true;
             this.tbxStatus.ForeColor = System.Drawing.SystemColors.Info;
             this.tbxStatus.Location = new System.Drawing.Point(394, 530);
             this.tbxStatus.Name = "tbxStatus";
-            this.tbxStatus.RightMargin = 10;
             this.tbxStatus.ShowSelectionMargin = true;
             this.tbxStatus.Size = new System.Drawing.Size(490, 159);
             this.tbxStatus.TabIndex = 39;
@@ -276,9 +277,9 @@
             // 
             this.tbxMessage.BackColor = System.Drawing.SystemColors.MenuBar;
             this.tbxMessage.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxMessage.Location = new System.Drawing.Point(1, 598);
+            this.tbxMessage.Location = new System.Drawing.Point(1, 622);
             this.tbxMessage.Name = "tbxMessage";
-            this.tbxMessage.Size = new System.Drawing.Size(308, 83);
+            this.tbxMessage.Size = new System.Drawing.Size(308, 59);
             this.tbxMessage.TabIndex = 32;
             this.tbxMessage.Text = "";
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
@@ -448,7 +449,6 @@
             this.tbxEncXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR1.TabIndex = 61;
-            this.tbxEncXR1.Text = "0";
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
@@ -472,7 +472,6 @@
             this.tbxEncYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR1.TabIndex = 63;
-            this.tbxEncYR1.Text = "0";
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
@@ -899,7 +898,6 @@
             this.tbxScrYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR1.TabIndex = 92;
-            this.tbxScrYR1.Text = "0";
             this.tbxScrYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
@@ -934,7 +932,6 @@
             this.tbxScrXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR1.TabIndex = 90;
-            this.tbxScrXR1.Text = "0";
             this.tbxScrXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
@@ -1267,6 +1264,7 @@
             this.lblTimer.Size = new System.Drawing.Size(230, 69);
             this.lblTimer.TabIndex = 43;
             this.lblTimer.Text = "00:00";
+            this.lblTimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TeamSwitch
             // 
@@ -1344,14 +1342,6 @@
             this.metroToggle1.Text = "Off";
             this.metroToggle1.UseVisualStyleBackColor = true;
             // 
-            // metroTile1
-            // 
-            this.metroTile1.Location = new System.Drawing.Point(313, 86);
-            this.metroTile1.Name = "metroTile1";
-            this.metroTile1.Size = new System.Drawing.Size(75, 23);
-            this.metroTile1.TabIndex = 118;
-            this.metroTile1.Text = "metroTile1";
-            // 
             // cbxFormation
             // 
             this.cbxFormation.FormattingEnabled = true;
@@ -1359,10 +1349,11 @@
             this.cbxFormation.Items.AddRange(new object[] {
             "Stand By",
             "Kick Off"});
-            this.cbxFormation.Location = new System.Drawing.Point(1003, 183);
+            this.cbxFormation.Location = new System.Drawing.Point(1034, 341);
             this.cbxFormation.Name = "cbxFormation";
             this.cbxFormation.Size = new System.Drawing.Size(121, 29);
             this.cbxFormation.TabIndex = 119;
+            this.cbxFormation.SelectedIndexChanged += new System.EventHandler(this.cbxFormation_SelectedIndexChanged);
             // 
             // metroButton1
             // 
@@ -1380,6 +1371,18 @@
             this.metroTextBox1.TabIndex = 121;
             this.metroTextBox1.Text = "metroTextBox1";
             // 
+            // lblScoreCyan
+            // 
+            this.lblScoreCyan.BackColor = System.Drawing.Color.Transparent;
+            this.lblScoreCyan.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScoreCyan.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblScoreCyan.Location = new System.Drawing.Point(1022, 199);
+            this.lblScoreCyan.Name = "lblScoreCyan";
+            this.lblScoreCyan.Size = new System.Drawing.Size(70, 64);
+            this.lblScoreCyan.TabIndex = 122;
+            this.lblScoreCyan.Text = "0";
+            this.lblScoreCyan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1387,10 +1390,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblScoreCyan);
             this.Controls.Add(this.metroTextBox1);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.cbxFormation);
-            this.Controls.Add(this.metroTile1);
             this.Controls.Add(this.metroToggle1);
             this.Controls.Add(this.btnSenda);
             this.Controls.Add(this.tbxMessagea);
@@ -1461,14 +1464,15 @@
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tbxStatus);
-            this.Controls.Add(this.tbxMessage);
             this.Controls.Add(this.gbxGoto);
             this.Controls.Add(this.PointRobot3);
             this.Controls.Add(this.PointRobot2);
             this.Controls.Add(this.PointRobot1);
             this.Controls.Add(this.PointBall);
             this.Controls.Add(this.Lap);
+            this.Controls.Add(this.tbxMessage);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1579,10 +1583,10 @@
         private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessagea;
         private Bunifu.Framework.UI.BunifuFlatButton btnSenda;
         private MetroFramework.Controls.MetroToggle metroToggle1;
-        private MetroFramework.Controls.MetroTile metroTile1;
         private MetroFramework.Controls.MetroComboBox cbxFormation;
         private MetroFramework.Controls.MetroButton metroButton1;
         private MetroFramework.Controls.MetroTextBox metroTextBox1;
+        protected System.Windows.Forms.Label lblScoreCyan;
     }
 }
 
