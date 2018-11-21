@@ -76,31 +76,7 @@ namespace BaseStation
                 time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
             hc.SetText(this, lblTimer, time);
         }
-
-        void resetLocation()
-        {
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
-            foreach (var i in arr)
-                i.Text = "0";
-        }
-
-        void setFormation()
-        {
-            string formation = cbxFormation.SelectedItem.ToString();
-            if (formation == "Stand By")
-            {
-                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
-                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], 1, 1)).Start();
-                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], 1, 1)).Start();
-                //new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], 1, 1)).Start();
-
-                //for (int i = 0; i < arr.GetLength(0); i++)
-                //{
-                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
-                //    Thread.Sleep(5000);
-                //}
-            }
-        }
+        
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
@@ -120,7 +96,6 @@ namespace BaseStation
             Point point00Lap = new Point(26, 20);
             Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
-            //hc.SetLocation(this, robot, newLoc);
             new Thread(obj => hc.SetLocation(this, robot, newLoc)).Start();
         }
 
@@ -145,7 +120,6 @@ namespace BaseStation
 
         void tbxXYChanged(object sender, EventArgs e)
         {
-            //MessageBox.Show("wkwkw 1");
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, PointRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, PointRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, PointRobot3 } };
             int n = 0;
@@ -210,6 +184,28 @@ namespace BaseStation
                 hc.SetText(this, encXRobot, startX.ToString());         // On encoder tbx
                 hc.SetText(this, encYRobot, startY.ToString());
                 Thread.Sleep(1);    // limit per time
+            }
+        }
+
+        void resetLocation()
+        {
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
+            foreach (var i in arr)
+                i.Text = "0";
+        }
+
+        void setFormation()
+        {
+            string formation = cbxFormation.SelectedItem.ToString();
+            if (formation == "Stand By")
+            {
+                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
+                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], 1, 1)).Start();
+                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], 1, 1)).Start();
+                //new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], 1, 1)).Start();
+
+                //for (int i = 0; i < arr.GetLength(0); i++)
+                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
             }
         }
 
@@ -593,7 +589,6 @@ namespace BaseStation
                 connection.Text = "Connected";
                 SendCallBack(_toServerSocket, this.Text);
                 _socketDict.Add(keyName.ToString(), _toServerSocket);
-                //MessageBox.Show(keyName.ToString());
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
@@ -673,11 +668,6 @@ namespace BaseStation
                 this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
         }
 
-        private void metroTile1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void cbxFormation_SelectedIndexChanged(object sender, EventArgs e)
         {
             setFormation();
@@ -687,9 +677,9 @@ namespace BaseStation
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
-            //lblTimer.Text = "00:00";
-            //timer.Start();
-            setFormation();
+            lblTimer.Text = "00:00";
+            timer.Start();
+            //setFormation();
         }
     }
 }

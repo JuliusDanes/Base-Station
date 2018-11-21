@@ -38,7 +38,8 @@ namespace BaseStation
             if (ctrl.InvokeRequired)
             {
                 SetLocationCallback d = new SetLocationCallback(SetLocation);
-                new Thread(obj => form.Invoke(d, new object[] { form, ctrl, point })).Start();
+                //new Thread(obj => form.Invoke(d, new object[] { form, ctrl, point })).Start();
+                form.Invoke(d, new object[] { form, ctrl, point });
             }
             else
                 ctrl.Location = point;

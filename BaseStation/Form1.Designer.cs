@@ -110,11 +110,10 @@
             this.TeamSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
             this.tbxMessagea = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.btnSenda = new Bunifu.Framework.UI.BunifuFlatButton();
-            this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
             this.cbxFormation = new MetroFramework.Controls.MetroComboBox();
-            this.metroButton1 = new MetroFramework.Controls.MetroButton();
-            this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
             this.lblScoreCyan = new System.Windows.Forms.Label();
+            this.lblScoreMagenta = new System.Windows.Forms.Label();
+            this.lblSplitScore = new System.Windows.Forms.Label();
             this.gbxGoto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -1332,16 +1331,6 @@
             this.btnSenda.Textcolor = System.Drawing.Color.White;
             this.btnSenda.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             // 
-            // metroToggle1
-            // 
-            this.metroToggle1.AutoSize = true;
-            this.metroToggle1.Location = new System.Drawing.Point(313, 134);
-            this.metroToggle1.Name = "metroToggle1";
-            this.metroToggle1.Size = new System.Drawing.Size(80, 17);
-            this.metroToggle1.TabIndex = 117;
-            this.metroToggle1.Text = "Off";
-            this.metroToggle1.UseVisualStyleBackColor = true;
-            // 
             // cbxFormation
             // 
             this.cbxFormation.FormattingEnabled = true;
@@ -1349,39 +1338,47 @@
             this.cbxFormation.Items.AddRange(new object[] {
             "Stand By",
             "Kick Off"});
-            this.cbxFormation.Location = new System.Drawing.Point(1034, 341);
+            this.cbxFormation.Location = new System.Drawing.Point(1017, 268);
             this.cbxFormation.Name = "cbxFormation";
             this.cbxFormation.Size = new System.Drawing.Size(121, 29);
             this.cbxFormation.TabIndex = 119;
             this.cbxFormation.SelectedIndexChanged += new System.EventHandler(this.cbxFormation_SelectedIndexChanged);
-            // 
-            // metroButton1
-            // 
-            this.metroButton1.Location = new System.Drawing.Point(566, 181);
-            this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(75, 23);
-            this.metroButton1.TabIndex = 120;
-            this.metroButton1.Text = "metroButton1";
-            // 
-            // metroTextBox1
-            // 
-            this.metroTextBox1.Location = new System.Drawing.Point(715, 181);
-            this.metroTextBox1.Name = "metroTextBox1";
-            this.metroTextBox1.Size = new System.Drawing.Size(75, 23);
-            this.metroTextBox1.TabIndex = 121;
-            this.metroTextBox1.Text = "metroTextBox1";
             // 
             // lblScoreCyan
             // 
             this.lblScoreCyan.BackColor = System.Drawing.Color.Transparent;
             this.lblScoreCyan.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScoreCyan.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblScoreCyan.Location = new System.Drawing.Point(1022, 199);
+            this.lblScoreCyan.Location = new System.Drawing.Point(1044, 181);
             this.lblScoreCyan.Name = "lblScoreCyan";
             this.lblScoreCyan.Size = new System.Drawing.Size(70, 64);
             this.lblScoreCyan.TabIndex = 122;
             this.lblScoreCyan.Text = "0";
             this.lblScoreCyan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblScoreMagenta
+            // 
+            this.lblScoreMagenta.BackColor = System.Drawing.Color.Transparent;
+            this.lblScoreMagenta.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScoreMagenta.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblScoreMagenta.Location = new System.Drawing.Point(1152, 181);
+            this.lblScoreMagenta.Name = "lblScoreMagenta";
+            this.lblScoreMagenta.Size = new System.Drawing.Size(70, 64);
+            this.lblScoreMagenta.TabIndex = 123;
+            this.lblScoreMagenta.Text = "0";
+            this.lblScoreMagenta.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSplitScore
+            // 
+            this.lblSplitScore.BackColor = System.Drawing.Color.Transparent;
+            this.lblSplitScore.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSplitScore.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblSplitScore.Location = new System.Drawing.Point(1096, 181);
+            this.lblSplitScore.Name = "lblSplitScore";
+            this.lblSplitScore.Size = new System.Drawing.Size(70, 64);
+            this.lblSplitScore.TabIndex = 124;
+            this.lblSplitScore.Text = "~";
+            this.lblSplitScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
@@ -1390,11 +1387,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblSplitScore);
+            this.Controls.Add(this.lblScoreMagenta);
             this.Controls.Add(this.lblScoreCyan);
-            this.Controls.Add(this.metroTextBox1);
-            this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.cbxFormation);
-            this.Controls.Add(this.metroToggle1);
             this.Controls.Add(this.btnSenda);
             this.Controls.Add(this.tbxMessagea);
             this.Controls.Add(this.TeamSwitch);
@@ -1582,11 +1578,10 @@
         protected System.Windows.Forms.RichTextBox tbxStatus;
         private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessagea;
         private Bunifu.Framework.UI.BunifuFlatButton btnSenda;
-        private MetroFramework.Controls.MetroToggle metroToggle1;
         private MetroFramework.Controls.MetroComboBox cbxFormation;
-        private MetroFramework.Controls.MetroButton metroButton1;
-        private MetroFramework.Controls.MetroTextBox metroTextBox1;
         protected System.Windows.Forms.Label lblScoreCyan;
+        protected System.Windows.Forms.Label lblScoreMagenta;
+        protected System.Windows.Forms.Label lblSplitScore;
     }
 }
 
