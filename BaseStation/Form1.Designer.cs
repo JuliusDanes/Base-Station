@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tbxX = new System.Windows.Forms.TextBox();
+            this.gbxGoto = new System.Windows.Forms.GroupBox();
+            this.tbxGotoX = new System.Windows.Forms.TextBox();
             this.lblX = new System.Windows.Forms.Label();
             this.lblY = new System.Windows.Forms.Label();
-            this.tbxY = new System.Windows.Forms.TextBox();
+            this.tbxGotoY = new System.Windows.Forms.TextBox();
             this.btnTO = new System.Windows.Forms.Button();
             this.PointRobot3 = new System.Windows.Forms.PictureBox();
             this.PointRobot2 = new System.Windows.Forms.PictureBox();
@@ -43,8 +43,6 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.tbxStatus = new System.Windows.Forms.RichTextBox();
             this.tbxMessage = new System.Windows.Forms.RichTextBox();
-            this.tbxGotoX = new System.Windows.Forms.TextBox();
-            this.tbxGotoY = new System.Windows.Forms.TextBox();
             this.grpRobot1 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblRobot1 = new System.Windows.Forms.Label();
             this.lblConnectionR1 = new System.Windows.Forms.Label();
@@ -112,7 +110,12 @@
             this.TeamSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
             this.tbxMessagea = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.btnSenda = new Bunifu.Framework.UI.BunifuFlatButton();
-            this.groupBox1.SuspendLayout();
+            this.metroToggle1 = new MetroFramework.Controls.MetroToggle();
+            this.metroTile1 = new MetroFramework.Controls.MetroTile();
+            this.cbxFormation = new MetroFramework.Controls.MetroComboBox();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
+            this.gbxGoto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -129,28 +132,29 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // gbxGoto
             // 
-            this.groupBox1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.groupBox1.Controls.Add(this.tbxX);
-            this.groupBox1.Controls.Add(this.lblX);
-            this.groupBox1.Controls.Add(this.lblY);
-            this.groupBox1.Controls.Add(this.tbxY);
-            this.groupBox1.Controls.Add(this.btnTO);
-            this.groupBox1.Location = new System.Drawing.Point(942, 606);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(182, 75);
-            this.groupBox1.TabIndex = 29;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Encoder";
+            this.gbxGoto.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.gbxGoto.Controls.Add(this.tbxGotoX);
+            this.gbxGoto.Controls.Add(this.lblX);
+            this.gbxGoto.Controls.Add(this.lblY);
+            this.gbxGoto.Controls.Add(this.tbxGotoY);
+            this.gbxGoto.Controls.Add(this.btnTO);
+            this.gbxGoto.Location = new System.Drawing.Point(942, 606);
+            this.gbxGoto.Name = "gbxGoto";
+            this.gbxGoto.Size = new System.Drawing.Size(182, 75);
+            this.gbxGoto.TabIndex = 29;
+            this.gbxGoto.TabStop = false;
+            this.gbxGoto.Text = "Goto";
             // 
-            // tbxX
+            // tbxGotoX
             // 
-            this.tbxX.Location = new System.Drawing.Point(26, 17);
-            this.tbxX.Name = "tbxX";
-            this.tbxX.Size = new System.Drawing.Size(40, 20);
-            this.tbxX.TabIndex = 4;
-            this.tbxX.Text = "0";
+            this.tbxGotoX.Location = new System.Drawing.Point(26, 17);
+            this.tbxGotoX.Name = "tbxGotoX";
+            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoX.TabIndex = 4;
+            this.tbxGotoX.Text = "0";
+            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
             // lblX
             // 
@@ -170,13 +174,14 @@
             this.lblY.TabIndex = 3;
             this.lblY.Text = "Y";
             // 
-            // tbxY
+            // tbxGotoY
             // 
-            this.tbxY.Location = new System.Drawing.Point(92, 17);
-            this.tbxY.Name = "tbxY";
-            this.tbxY.Size = new System.Drawing.Size(40, 20);
-            this.tbxY.TabIndex = 5;
-            this.tbxY.Text = "0";
+            this.tbxGotoY.Location = new System.Drawing.Point(92, 17);
+            this.tbxGotoY.Name = "tbxGotoY";
+            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoY.TabIndex = 5;
+            this.tbxGotoY.Text = "0";
+            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
             // btnTO
             // 
@@ -193,7 +198,7 @@
             this.PointRobot3.BackColor = System.Drawing.Color.Transparent;
             this.PointRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot3.BackgroundImage")));
             this.PointRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot3.Location = new System.Drawing.Point(692, 288);
+            this.PointRobot3.Location = new System.Drawing.Point(835, 311);
             this.PointRobot3.Name = "PointRobot3";
             this.PointRobot3.Size = new System.Drawing.Size(25, 25);
             this.PointRobot3.TabIndex = 28;
@@ -204,7 +209,7 @@
             this.PointRobot2.BackColor = System.Drawing.Color.Transparent;
             this.PointRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot2.BackgroundImage")));
             this.PointRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot2.Location = new System.Drawing.Point(616, 240);
+            this.PointRobot2.Location = new System.Drawing.Point(725, 220);
             this.PointRobot2.Name = "PointRobot2";
             this.PointRobot2.Size = new System.Drawing.Size(25, 25);
             this.PointRobot2.TabIndex = 27;
@@ -215,7 +220,7 @@
             this.PointRobot1.BackColor = System.Drawing.Color.Transparent;
             this.PointRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot1.BackgroundImage")));
             this.PointRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot1.Location = new System.Drawing.Point(584, 313);
+            this.PointRobot1.Location = new System.Drawing.Point(625, 358);
             this.PointRobot1.Name = "PointRobot1";
             this.PointRobot1.Size = new System.Drawing.Size(25, 25);
             this.PointRobot1.TabIndex = 26;
@@ -227,7 +232,7 @@
             this.PointBall.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointBall.BackgroundImage")));
             this.PointBall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.PointBall.Enabled = false;
-            this.PointBall.Location = new System.Drawing.Point(661, 373);
+            this.PointBall.Location = new System.Drawing.Point(612, 311);
             this.PointBall.Name = "PointBall";
             this.PointBall.Size = new System.Drawing.Size(18, 18);
             this.PointBall.TabIndex = 25;
@@ -277,24 +282,6 @@
             this.tbxMessage.TabIndex = 32;
             this.tbxMessage.Text = "";
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
-            // 
-            // tbxGotoX
-            // 
-            this.tbxGotoX.Location = new System.Drawing.Point(1183, 618);
-            this.tbxGotoX.Name = "tbxGotoX";
-            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoX.TabIndex = 45;
-            this.tbxGotoX.Text = "0";
-            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
-            // 
-            // tbxGotoY
-            // 
-            this.tbxGotoY.Location = new System.Drawing.Point(1183, 644);
-            this.tbxGotoY.Name = "tbxGotoY";
-            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoY.TabIndex = 46;
-            this.tbxGotoY.Text = "0";
-            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
             // grpRobot1
             // 
@@ -463,6 +450,8 @@
             this.tbxEncXR1.TabIndex = 61;
             this.tbxEncXR1.Text = "0";
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // tbxEncYR1
             // 
@@ -485,6 +474,8 @@
             this.tbxEncYR1.TabIndex = 63;
             this.tbxEncYR1.Text = "0";
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblEncCommaR1
             // 
@@ -705,6 +696,8 @@
             this.tbxEncYR2.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR2.TabIndex = 89;
             this.tbxEncYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxEncYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblEncCommaR2
             // 
@@ -737,6 +730,8 @@
             this.tbxEncXR2.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR2.TabIndex = 87;
             this.tbxEncXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxEncXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // YCard2R2
             // 
@@ -904,7 +899,10 @@
             this.tbxScrYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR1.TabIndex = 92;
+            this.tbxScrYR1.Text = "0";
             this.tbxScrYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblScrCommaR1
             // 
@@ -936,7 +934,10 @@
             this.tbxScrXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR1.TabIndex = 90;
+            this.tbxScrXR1.Text = "0";
             this.tbxScrXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // tbxScrYR2
             // 
@@ -958,6 +959,8 @@
             this.tbxScrYR2.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR2.TabIndex = 95;
             this.tbxScrYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxScrYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblScrCommaR2
             // 
@@ -990,6 +993,8 @@
             this.tbxScrXR2.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR2.TabIndex = 93;
             this.tbxScrXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxScrXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // tbxScrYR3
             // 
@@ -1011,6 +1016,8 @@
             this.tbxScrYR3.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR3.TabIndex = 112;
             this.tbxScrYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxScrYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblScrCommaR3
             // 
@@ -1043,6 +1050,8 @@
             this.tbxScrXR3.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR3.TabIndex = 110;
             this.tbxScrXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxScrXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxScrXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // tbxEncYR3
             // 
@@ -1064,6 +1073,8 @@
             this.tbxEncYR3.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR3.TabIndex = 109;
             this.tbxEncYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxEncYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // lblEncCommaR3
             // 
@@ -1096,6 +1107,8 @@
             this.tbxEncXR3.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR3.TabIndex = 107;
             this.tbxEncXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbxEncXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxEncXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.changeCounter);
             // 
             // YCard2R3
             // 
@@ -1274,7 +1287,7 @@
             // 
             this.tbxMessagea.Depth = 0;
             this.tbxMessagea.Hint = "@SendMessage";
-            this.tbxMessagea.Location = new System.Drawing.Point(980, 139);
+            this.tbxMessagea.Location = new System.Drawing.Point(967, 139);
             this.tbxMessagea.MaxLength = 32767;
             this.tbxMessagea.MouseState = MaterialSkin.MouseState.HOVER;
             this.tbxMessagea.Name = "tbxMessagea";
@@ -1308,18 +1321,64 @@
             this.btnSenda.IconVisible = true;
             this.btnSenda.IconZoom = 90D;
             this.btnSenda.IsTab = false;
-            this.btnSenda.Location = new System.Drawing.Point(1159, 162);
+            this.btnSenda.Location = new System.Drawing.Point(1183, 149);
             this.btnSenda.Name = "btnSenda";
             this.btnSenda.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
             this.btnSenda.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
             this.btnSenda.OnHoverTextColor = System.Drawing.Color.White;
             this.btnSenda.selected = false;
-            this.btnSenda.Size = new System.Drawing.Size(90, 30);
+            this.btnSenda.Size = new System.Drawing.Size(80, 25);
             this.btnSenda.TabIndex = 115;
             this.btnSenda.Text = "Send";
             this.btnSenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSenda.Textcolor = System.Drawing.Color.White;
             this.btnSenda.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            // 
+            // metroToggle1
+            // 
+            this.metroToggle1.AutoSize = true;
+            this.metroToggle1.Location = new System.Drawing.Point(313, 134);
+            this.metroToggle1.Name = "metroToggle1";
+            this.metroToggle1.Size = new System.Drawing.Size(80, 17);
+            this.metroToggle1.TabIndex = 117;
+            this.metroToggle1.Text = "Off";
+            this.metroToggle1.UseVisualStyleBackColor = true;
+            // 
+            // metroTile1
+            // 
+            this.metroTile1.Location = new System.Drawing.Point(313, 86);
+            this.metroTile1.Name = "metroTile1";
+            this.metroTile1.Size = new System.Drawing.Size(75, 23);
+            this.metroTile1.TabIndex = 118;
+            this.metroTile1.Text = "metroTile1";
+            // 
+            // cbxFormation
+            // 
+            this.cbxFormation.FormattingEnabled = true;
+            this.cbxFormation.ItemHeight = 23;
+            this.cbxFormation.Items.AddRange(new object[] {
+            "Stand By",
+            "Kick Off"});
+            this.cbxFormation.Location = new System.Drawing.Point(1003, 183);
+            this.cbxFormation.Name = "cbxFormation";
+            this.cbxFormation.Size = new System.Drawing.Size(121, 29);
+            this.cbxFormation.TabIndex = 119;
+            // 
+            // metroButton1
+            // 
+            this.metroButton1.Location = new System.Drawing.Point(566, 181);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(75, 23);
+            this.metroButton1.TabIndex = 120;
+            this.metroButton1.Text = "metroButton1";
+            // 
+            // metroTextBox1
+            // 
+            this.metroTextBox1.Location = new System.Drawing.Point(715, 181);
+            this.metroTextBox1.Name = "metroTextBox1";
+            this.metroTextBox1.Size = new System.Drawing.Size(75, 23);
+            this.metroTextBox1.TabIndex = 121;
+            this.metroTextBox1.Text = "metroTextBox1";
             // 
             // Form1
             // 
@@ -1328,6 +1387,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.metroTextBox1);
+            this.Controls.Add(this.metroButton1);
+            this.Controls.Add(this.cbxFormation);
+            this.Controls.Add(this.metroTile1);
+            this.Controls.Add(this.metroToggle1);
             this.Controls.Add(this.btnSenda);
             this.Controls.Add(this.tbxMessagea);
             this.Controls.Add(this.TeamSwitch);
@@ -1394,13 +1458,11 @@
             this.Controls.Add(this.RCardR1);
             this.Controls.Add(this.YCard1R1);
             this.Controls.Add(this.grpRobot1);
-            this.Controls.Add(this.tbxGotoY);
-            this.Controls.Add(this.tbxGotoX);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tbxStatus);
             this.Controls.Add(this.tbxMessage);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbxGoto);
             this.Controls.Add(this.PointRobot3);
             this.Controls.Add(this.PointRobot2);
             this.Controls.Add(this.PointRobot1);
@@ -1412,8 +1474,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbxGoto.ResumeLayout(false);
+            this.gbxGoto.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).EndInit();
@@ -1436,11 +1498,11 @@
         #endregion
 
         protected System.Windows.Forms.Label lblTimer;
-        protected System.Windows.Forms.GroupBox groupBox1;
-        protected System.Windows.Forms.TextBox tbxX;
+        protected System.Windows.Forms.GroupBox gbxGoto;
+        protected System.Windows.Forms.TextBox tbxGotoX;
         protected System.Windows.Forms.Label lblX;
         protected System.Windows.Forms.Label lblY;
-        protected System.Windows.Forms.TextBox tbxY;
+        protected System.Windows.Forms.TextBox tbxGotoY;
         protected System.Windows.Forms.PictureBox PointRobot3;
         protected System.Windows.Forms.PictureBox PointRobot2;
         protected System.Windows.Forms.PictureBox PointRobot1;
@@ -1449,8 +1511,6 @@
         protected System.Windows.Forms.Button btnSend;
         protected System.Windows.Forms.RichTextBox tbxMessage;
         protected System.Windows.Forms.Button btnTO;
-        protected System.Windows.Forms.TextBox tbxGotoX;
-        protected System.Windows.Forms.TextBox tbxGotoY;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot1;
         protected System.Windows.Forms.Label lblRobot1;
         protected System.Windows.Forms.Label lblConnectionR1;
@@ -1518,6 +1578,11 @@
         protected System.Windows.Forms.RichTextBox tbxStatus;
         private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessagea;
         private Bunifu.Framework.UI.BunifuFlatButton btnSenda;
+        private MetroFramework.Controls.MetroToggle metroToggle1;
+        private MetroFramework.Controls.MetroTile metroTile1;
+        private MetroFramework.Controls.MetroComboBox cbxFormation;
+        private MetroFramework.Controls.MetroButton metroButton1;
+        private MetroFramework.Controls.MetroTextBox metroTextBox1;
     }
 }
 

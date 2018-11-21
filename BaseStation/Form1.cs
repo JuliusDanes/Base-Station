@@ -76,6 +76,16 @@ namespace BaseStation
             hc.SetText(this, lblTimer, time);
         }
 
+        void resetLocation()
+        {
+
+        }
+
+        void setFormation()
+        {
+            string formation = cbxFormation.SelectedItem.ToString();
+            
+        }
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
@@ -100,21 +110,93 @@ namespace BaseStation
 
         void changeCounter(object sender, KeyEventArgs e)
         {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+
             if (e.KeyCode == Keys.Right)
-                tbxEncXR1.Text = (int.Parse(tbxEncXR1.Text) + 1).ToString();
+                arr[n,0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
             else if (e.KeyCode == Keys.Left)
-                tbxEncXR1.Text = (int.Parse(tbxEncXR1.Text) - 1).ToString();
+                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Up)
-                tbxEncYR1.Text = (int.Parse(tbxEncYR1.Text) - 1).ToString();
+                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Down)
-                tbxEncYR1.Text = (int.Parse(tbxEncYR1.Text) + 1).ToString();
+                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
         }
 
         void tbxXYChanged(object sender, EventArgs e)
         {
-            string dtEncoder = "X:" + tbxEncXR1.Text + ",Y:" + tbxEncYR1.Text;
-            Thread th_Send = new Thread(obj => SendCallBack(_socketDict["Robot1"], dtEncoder));
-            th_Send.Start();
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, PointRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, PointRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, PointRobot3 } };
+            int n = 0;
+            int[] val = new int[2];
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)))
+            {
+                if (obj.StartsWith("tbxEnc"))   // Encoder then using scale 1:20
+                {
+                    val[0] = (int.Parse(arr[n,0].Text));
+                    val[1] = (int.Parse(arr[n,1].Text));     
+                    hc.SetText(this, arr[n,0], val[0].ToString());          // On encoder tbx
+                    hc.SetText(this, arr[n,1], val[1].ToString());
+                    hc.SetText(this, arr[n,2], (val[0] / 20).ToString());   // On screen tbx
+                    hc.SetText(this, arr[n,3], (val[1] / 20).ToString());
+                }
+                else
+                {
+                    val[0] = (int.Parse(arr[n,2].Text));
+                    val[1] = (int.Parse(arr[n,3].Text));
+                    hc.SetText(this, arr[n,0], (val[0] * 20).ToString());   // On encoder tbx
+                    hc.SetText(this, arr[n,1], (val[1] * 20).ToString());
+                    hc.SetText(this, arr[n,2], val[0].ToString());          // On screen tbx
+                    hc.SetText(this, arr[n,3], val[1].ToString());
+                }
+                new Thread(objs => moveLoc(int.Parse(arr[n, 0].Text) / 20, int.Parse(arr[n, 1].Text) / 20, arr[n, 4])).Start();     // Encoder then using scale 1:20
+            }
+        }
+
+        private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
+        {
+            changeCounter(sender, e);
+
+            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
+                new Thread(obj => GotoLoc(int.Parse(tbxEncXR1.Text), int.Parse(tbxGotoX.Text), 1, int.Parse(tbxEncYR1.Text), int.Parse(tbxGotoY.Text), 1)).Start();
+        }
+
+        void GotoLoc(int startX, int endX, int shiftX, int startY, int endY, int shiftY)
+        {
+            if (startX > endX)
+                shiftX *= -1;
+            if (startY > endY)
+                shiftY *= -1;
+            bool[] chk = { true, true };
+            while (chk[0] |= chk[1])
+            {
+                if (startX != endX)
+                    startX += shiftX;
+                else
+                    chk[0] = false;
+                if (startY != endY)
+                    startY += shiftY;
+                else
+                    chk[1] = false;
+
+                //string dtGoto = "X:" + startX + ",Y:" + startY;
+                //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
+                new Thread(obj => moveLoc(startX / 20, startY / 20, PointRobot1)).Start();
+                hc.SetText(this, tbxEncXR1, startX.ToString());         // On encoder tbx
+                hc.SetText(this, tbxEncYR1, startY.ToString());
+                hc.SetText(this, tbxScrXR1, (startX / 20).ToString());  // On screen tbx
+                hc.SetText(this, tbxScrYR1, (startY / 20).ToString());
+                Thread.Sleep(1);    // limit per time
+            }
         }
 
 
@@ -557,41 +639,6 @@ namespace BaseStation
             tbxStatus.ScrollToCaret();
         }
 
-        private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
-                new Thread(obj => GotoLoc(int.Parse(tbxEncXR1.Text), int.Parse(tbxGotoX.Text), 1, int.Parse(tbxEncYR1.Text), int.Parse(tbxGotoY.Text), 1)).Start();
-        }
-        
-        void GotoLoc(int startX, int endX, int shiftX, int startY, int endY, int shiftY)
-        {
-            if (startX > endX)
-                shiftX *= -1;
-            if (startY > endY)
-                shiftY *= -1;
-            bool[] chk = { true, true };
-            while (chk[0] |= chk[1])
-            {
-                if (startX != endX)
-                    startX += shiftX;
-                else
-                    chk[0] = false;
-                if (startY != endY)
-                    startY += shiftY;
-                else
-                    chk[1] = false;
-
-                string dtGoto = "X:" + startX + ",Y:" + startY;
-                new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
-                new Thread(obj => moveLoc(startX / 20, startY / 20, PointRobot1)).Start();
-                hc.SetText(this, tbxEncXR1, startX.ToString());         // On encoder tbx
-                hc.SetText(this, tbxEncYR1, startY.ToString());
-                hc.SetText(this, tbxScrXR1, (startX / 20).ToString());  // On screen tbx
-                hc.SetText(this, tbxScrYR1, (startY / 20).ToString());
-                Thread.Sleep(1);    // limit per time
-            }
-        }
-
         private void Connection_keyEnter(object sender, KeyEventArgs e)
         {            
             if (e.KeyCode == Keys.Enter)
@@ -610,15 +657,15 @@ namespace BaseStation
                 this.BackgroundImage = Image.FromFile(@"images\Background Cyan.jpg");       // Team CYAN
             else
                 this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
-        }
+        }        
 
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
-            lblTimer.Text = "00:00";
-            timer.Start();
-            //YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+            //lblTimer.Text = "00:00";
+            //timer.Start();
+            setFormation();
         }
     }
 }
