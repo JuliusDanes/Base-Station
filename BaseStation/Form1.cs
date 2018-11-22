@@ -96,7 +96,7 @@ namespace BaseStation
             Point point00Lap = new Point(26, 20);
             Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
-            new Thread(obj => hc.SetLocation(this, robot, newLoc)).Start();
+            hc.SetLocation(this, robot, newLoc);
         }
 
         void changeCounter(object sender, KeyEventArgs e)
@@ -148,7 +148,7 @@ namespace BaseStation
                     hc.SetText(this, arr[n, 2], val[0].ToString());          // On screen tbx
                     hc.SetText(this, arr[n, 3], val[1].ToString());
                 }
-                new Thread(objs => moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 4])).Start();     // Encoder then using scale 1:20
+                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 4]);     // Encoder then using scale 1:20
             }
         }
 
@@ -197,7 +197,7 @@ namespace BaseStation
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = {10, 10};   // Distance(cm) per shift
+            int[] shift = {1, 1};   // Distance(cm) per shift
             if (formation == "Stand By")
             {
                 dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
