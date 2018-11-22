@@ -179,8 +179,8 @@ namespace BaseStation
                 else
                     chk[1] = false;
 
-                //string dtGoto = "X:" + startX + ",Y:" + startY;
-                //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
+                string dtGoto = "X:" + startX + ",Y:" + startY;
+                SendCallBack(_socketDict["Robot1"], dtGoto);
                 hc.SetText(this, encXRobot, startX.ToString());         // On encoder tbx
                 hc.SetText(this, encYRobot, startY.ToString());
                 Thread.Sleep(1);    // time per limit
@@ -370,19 +370,19 @@ namespace BaseStation
         string ResponeCallback(dynamic text, Socket socket)
         {
             string respone = string.Empty;
-            string objName = null;
-            int[] _posXY = new int[2];
             if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
             {
                 // If message is data X & Y from encoder
                 /// Scale is 1 : 20 
+                string objName = null;
+                int[] _posXY = new int[2];
                 var posXY = text.Split(',');
                 if (posXY.Length == 2) // If data receive only one X & Y
                 {
                     _posXY[0] = int.Parse(posXY[0].Split(':')[1]);
                     _posXY[1] = int.Parse(posXY[1].Split(':')[1]);
                 }
-                else // If data receive multi X & Y (error problem)
+                else // If data receive multi X & Y (error problems)
                 {
                     _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
                     _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
@@ -431,6 +431,7 @@ namespace BaseStation
                         respone = "STOP";
                         goto broadcast;
                     case "s": //START
+                        //lblTimer.Text = "00:00";
                         //timer.Start();
                         respone = "START";
                         goto broadcast;
@@ -599,7 +600,7 @@ namespace BaseStation
                     addCommand("# Success Connecting to: " + ipDst);
                 connection.Text = "Connected";
                 SendCallBack(_toServerSocket, this.Text);
-                _socketDict.Add(keyName.ToString(), _toServerSocket);
+                _socketDict.Add(keyName, _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
