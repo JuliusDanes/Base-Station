@@ -183,7 +183,7 @@ namespace BaseStation
                 //new Thread(obj => SendCallBack(_socketDict["Robot1"], dtGoto)).Start();
                 hc.SetText(this, encXRobot, startX.ToString());         // On encoder tbx
                 hc.SetText(this, encYRobot, startY.ToString());
-                Thread.Sleep(1);    // limit per time
+                Thread.Sleep(1);    // time per limit
             }
         }
 
@@ -197,12 +197,23 @@ namespace BaseStation
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
+            int[] shift = {10, 10};   // Distance(cm) per shift
             if (formation == "Stand By")
             {
                 dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
-                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], 1, 1)).Start();
-                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], 1, 1)).Start();
-                new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], 1, 1)).Start();
+                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
+                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
+                new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
+
+                //for (int i = 0; i < arr.GetLength(0); i++)
+                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
+            }
+            else if (formation == "Kick Off")
+            {
+                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 4300, 3000 }, { tbxEncXR2, tbxEncYR2, 3000, 4100 }, { tbxEncXR3, tbxEncYR3, 100, 3000 } };
+                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
+                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
+                new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
 
                 //for (int i = 0; i < arr.GetLength(0); i++)
                 //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
