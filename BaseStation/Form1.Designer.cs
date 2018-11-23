@@ -116,6 +116,19 @@
             this.lblTime = new System.Windows.Forms.Label();
             this.time = new System.Windows.Forms.Timer(this.components);
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.lblDiv = new MaterialSkin.Controls.MaterialDivider();
+            this.lblPenaltyTxt = new System.Windows.Forms.Label();
+            this.lblYCardTxt = new System.Windows.Forms.Label();
+            this.lblRCardTxt = new System.Windows.Forms.Label();
+            this.lblCornerTxt = new System.Windows.Forms.Label();
+            this.lblGoalKickTxt = new System.Windows.Forms.Label();
+            this.lblFoulsTxt = new System.Windows.Forms.Label();
+            this.lblFouls = new System.Windows.Forms.Label();
+            this.lblGoalKick = new System.Windows.Forms.Label();
+            this.lblCorner = new System.Windows.Forms.Label();
+            this.lblRCard = new System.Windows.Forms.Label();
+            this.lblYCard = new System.Windows.Forms.Label();
+            this.lblPenalty = new System.Windows.Forms.Label();
             this.gbxGoto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -1321,7 +1334,7 @@
             this.cbxFormation.Items.AddRange(new object[] {
             "Stand By",
             "Kick Off"});
-            this.cbxFormation.Location = new System.Drawing.Point(1017, 268);
+            this.cbxFormation.Location = new System.Drawing.Point(1045, 267);
             this.cbxFormation.Name = "cbxFormation";
             this.cbxFormation.Size = new System.Drawing.Size(121, 29);
             this.cbxFormation.TabIndex = 119;
@@ -1388,6 +1401,163 @@
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // lblDiv
+            // 
+            this.lblDiv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDiv.Depth = 0;
+            this.lblDiv.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiv.ForeColor = System.Drawing.Color.Black;
+            this.lblDiv.Location = new System.Drawing.Point(1136, 311);
+            this.lblDiv.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDiv.Name = "lblDiv";
+            this.lblDiv.Size = new System.Drawing.Size(30, 176);
+            this.lblDiv.TabIndex = 126;
+            this.lblDiv.Text = "0";
+            // 
+            // lblPenaltyTxt
+            // 
+            this.lblPenaltyTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblPenaltyTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPenaltyTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblPenaltyTxt.Location = new System.Drawing.Point(1071, 311);
+            this.lblPenaltyTxt.Name = "lblPenaltyTxt";
+            this.lblPenaltyTxt.Size = new System.Drawing.Size(57, 30);
+            this.lblPenaltyTxt.TabIndex = 127;
+            this.lblPenaltyTxt.Text = "Penalty";
+            this.lblPenaltyTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblYCardTxt
+            // 
+            this.lblYCardTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblYCardTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblYCardTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblYCardTxt.Location = new System.Drawing.Point(1044, 339);
+            this.lblYCardTxt.Name = "lblYCardTxt";
+            this.lblYCardTxt.Size = new System.Drawing.Size(84, 30);
+            this.lblYCardTxt.TabIndex = 128;
+            this.lblYCardTxt.Text = "Yellow Card";
+            this.lblYCardTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblRCardTxt
+            // 
+            this.lblRCardTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblRCardTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRCardTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblRCardTxt.Location = new System.Drawing.Point(1060, 367);
+            this.lblRCardTxt.Name = "lblRCardTxt";
+            this.lblRCardTxt.Size = new System.Drawing.Size(68, 30);
+            this.lblRCardTxt.TabIndex = 129;
+            this.lblRCardTxt.Text = "Red Card";
+            this.lblRCardTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCornerTxt
+            // 
+            this.lblCornerTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblCornerTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCornerTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblCornerTxt.Location = new System.Drawing.Point(1074, 427);
+            this.lblCornerTxt.Name = "lblCornerTxt";
+            this.lblCornerTxt.Size = new System.Drawing.Size(54, 30);
+            this.lblCornerTxt.TabIndex = 130;
+            this.lblCornerTxt.Text = "Corner";
+            this.lblCornerTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblGoalKickTxt
+            // 
+            this.lblGoalKickTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblGoalKickTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGoalKickTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblGoalKickTxt.Location = new System.Drawing.Point(1063, 457);
+            this.lblGoalKickTxt.Name = "lblGoalKickTxt";
+            this.lblGoalKickTxt.Size = new System.Drawing.Size(65, 30);
+            this.lblGoalKickTxt.TabIndex = 131;
+            this.lblGoalKickTxt.Text = "Goal Kick";
+            this.lblGoalKickTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblFoulsTxt
+            // 
+            this.lblFoulsTxt.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblFoulsTxt.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFoulsTxt.ForeColor = System.Drawing.Color.MintCream;
+            this.lblFoulsTxt.Location = new System.Drawing.Point(1083, 397);
+            this.lblFoulsTxt.Name = "lblFoulsTxt";
+            this.lblFoulsTxt.Size = new System.Drawing.Size(45, 30);
+            this.lblFoulsTxt.TabIndex = 132;
+            this.lblFoulsTxt.Text = "Fouls";
+            this.lblFoulsTxt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblFouls
+            // 
+            this.lblFouls.BackColor = System.Drawing.Color.Transparent;
+            this.lblFouls.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFouls.ForeColor = System.Drawing.Color.Black;
+            this.lblFouls.Location = new System.Drawing.Point(1136, 397);
+            this.lblFouls.Name = "lblFouls";
+            this.lblFouls.Size = new System.Drawing.Size(30, 30);
+            this.lblFouls.TabIndex = 138;
+            this.lblFouls.Text = "0";
+            this.lblFouls.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblGoalKick
+            // 
+            this.lblGoalKick.BackColor = System.Drawing.Color.Transparent;
+            this.lblGoalKick.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGoalKick.ForeColor = System.Drawing.Color.Black;
+            this.lblGoalKick.Location = new System.Drawing.Point(1136, 457);
+            this.lblGoalKick.Name = "lblGoalKick";
+            this.lblGoalKick.Size = new System.Drawing.Size(30, 30);
+            this.lblGoalKick.TabIndex = 137;
+            this.lblGoalKick.Text = "0";
+            this.lblGoalKick.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCorner
+            // 
+            this.lblCorner.BackColor = System.Drawing.Color.Transparent;
+            this.lblCorner.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCorner.ForeColor = System.Drawing.Color.Black;
+            this.lblCorner.Location = new System.Drawing.Point(1136, 427);
+            this.lblCorner.Name = "lblCorner";
+            this.lblCorner.Size = new System.Drawing.Size(30, 30);
+            this.lblCorner.TabIndex = 136;
+            this.lblCorner.Text = "0";
+            this.lblCorner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRCard
+            // 
+            this.lblRCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblRCard.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRCard.ForeColor = System.Drawing.Color.Black;
+            this.lblRCard.Location = new System.Drawing.Point(1136, 369);
+            this.lblRCard.Name = "lblRCard";
+            this.lblRCard.Size = new System.Drawing.Size(30, 30);
+            this.lblRCard.TabIndex = 135;
+            this.lblRCard.Text = "0";
+            this.lblRCard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblYCard
+            // 
+            this.lblYCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblYCard.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblYCard.ForeColor = System.Drawing.Color.Black;
+            this.lblYCard.Location = new System.Drawing.Point(1136, 339);
+            this.lblYCard.Name = "lblYCard";
+            this.lblYCard.Size = new System.Drawing.Size(30, 30);
+            this.lblYCard.TabIndex = 134;
+            this.lblYCard.Text = "0";
+            this.lblYCard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPenalty
+            // 
+            this.lblPenalty.BackColor = System.Drawing.Color.Transparent;
+            this.lblPenalty.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPenalty.ForeColor = System.Drawing.Color.Black;
+            this.lblPenalty.Location = new System.Drawing.Point(1136, 311);
+            this.lblPenalty.Name = "lblPenalty";
+            this.lblPenalty.Size = new System.Drawing.Size(30, 30);
+            this.lblPenalty.TabIndex = 133;
+            this.lblPenalty.Text = "0";
+            this.lblPenalty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1395,6 +1565,19 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblFouls);
+            this.Controls.Add(this.lblGoalKick);
+            this.Controls.Add(this.lblCorner);
+            this.Controls.Add(this.lblRCard);
+            this.Controls.Add(this.lblYCard);
+            this.Controls.Add(this.lblPenalty);
+            this.Controls.Add(this.lblFoulsTxt);
+            this.Controls.Add(this.lblGoalKickTxt);
+            this.Controls.Add(this.lblCornerTxt);
+            this.Controls.Add(this.lblRCardTxt);
+            this.Controls.Add(this.lblYCardTxt);
+            this.Controls.Add(this.lblPenaltyTxt);
+            this.Controls.Add(this.lblDiv);
             this.Controls.Add(this.lblTime);
             this.Controls.Add(this.lblSplitScore);
             this.Controls.Add(this.lblGoalMagenta);
@@ -1590,6 +1773,19 @@
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Timer time;
         private System.Windows.Forms.Timer timer;
+        private MaterialSkin.Controls.MaterialDivider lblDiv;
+        private System.Windows.Forms.Label lblPenaltyTxt;
+        private System.Windows.Forms.Label lblYCardTxt;
+        private System.Windows.Forms.Label lblRCardTxt;
+        private System.Windows.Forms.Label lblCornerTxt;
+        private System.Windows.Forms.Label lblGoalKickTxt;
+        private System.Windows.Forms.Label lblFoulsTxt;
+        private System.Windows.Forms.Label lblFouls;
+        private System.Windows.Forms.Label lblGoalKick;
+        private System.Windows.Forms.Label lblCorner;
+        private System.Windows.Forms.Label lblRCard;
+        private System.Windows.Forms.Label lblYCard;
+        private System.Windows.Forms.Label lblPenalty;
     }
 }
 

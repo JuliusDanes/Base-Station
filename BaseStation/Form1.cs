@@ -28,7 +28,8 @@ namespace BaseStation
             setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
             setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
             setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
-            
+            setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
+
             // Create a material theme manager and add the form to manage (this)
             //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
             //materialSkinManager.AddFormToManage(this);
@@ -430,17 +431,18 @@ namespace BaseStation
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)
             {
-                // If socket is Referee Box socket
-                switch (text)
+                // If socket is Referee Box socket                
+                switch (text)       // Condition in General
                 {
                 /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
-                        timer.Stop();
                         respone = "STOP";
+                        //timer.Stop();
                         goto broadcast;
                     case "s": //START
-                        //lblTimer.Text = "00:00";
+                        hc.SetText(this, lblTimer, "00:00");
                         //timer.Start();
+                        //timer.Enabled = true;
                         respone = "START";
                         goto broadcast;
                     case "W": //WELCOME (welcome message)
@@ -454,51 +456,7 @@ namespace BaseStation
                         break;
                     case "u": //TESTMODE_OFF (TestMode Off)
                         respone = "TESTMODE_OFF";
-                        break;
-
-                /// 2. PENALTY COMMANDS ///
-                    case "y": //YELLOW_CARD_MAGENTA	
-                        respone = "YELLOW_CARD_MAGENTA";
-                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        goto broadcast;
-                    case "Y": //YELLOW_CARD_CYAN
-                        respone = "YELLOW_CARD_CYAN";
-                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        goto broadcast;
-                    case "r": //RED_CARD_MAGENTA
-                        respone = "RED_CARD_MAGENTA";
-                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        goto broadcast;
-                    case "R": //RED_CARD_CYAN
-                        respone = "RED_CARD_CYAN";
-                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        goto broadcast;
-                    case "b": //DOUBLE_YELLOW_MAGENTA
-                        respone = "DOUBLE_YELLOW_MAGENTA";
-                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        goto broadcast;
-                    case "B": //DOUBLE_YELLOW_CYAN
-                        respone = "DOUBLE_YELLOW_CYAN";
-                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                        goto broadcast;
+                        break;                        
 
                 /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
@@ -526,58 +484,134 @@ namespace BaseStation
                         respone = "PARKING";
                         break;
 
-                /// 4. GOAL STATUS ///
-                    case "a": //GOAL_MAGENTA
-                        respone = "GOAL_MAGENTA";
-                        break;
-                    case "A": //GOAL_CYAN
-                        respone = "GOAL_CYAN";
-                        break;
-                    case "d": //SUBGOAL_MAGENTA
-                        respone = "SUBGOAL_MAGENTA";
-                        break;
-                    case "D": //SUBGOAL_CYAN
-                        respone = "SUBGOAL_CYAN";
-                        break;
-
-                /// 5. GAME FLOW COMMANDS ///
-                    case "k": //KICKOFF_MAGENTA
-                        respone = "KICKOFF_MAGENTA";
-                        break;
-                    case "K": //KICKOFF_CYAN
-                        respone = "KICKOFF_CYAN";
-                        break;
-                    case "f": //FREEKICK_MAGENTA
-                        respone = "FREEKICK_MAGENTA";
-                        break;
-                    case "F": //FREEKICK_CYAN
-                        respone = "FREEKICK_CYAN";
-                        break;
-                    case "g": //KICK_MAGENTA
-                        respone = "KICK_MAGENTA";
-                        break;
-                    case "G": //GOALKICK_CYAN
-                        respone = "GOALKICK_CYAN";
-                        break;
-                    case "t": //THROWN_MAGENTA
-                        respone = "THROWN_MAGENTA";
-                        break;
-                    case "T": //THROWN_CYAN
-                        respone = "THROWN_CYAN";
-                        break;
-                    case "c": //CORNER_MAGENTA
-                        respone = "CORNER_MAGENTA";
-                        break;
-                    case "C": //CORNER_CYAN
-                        respone = "CORNER_CYAN";
-                        break;
-
                 /// 6. OTHERS ///
                     case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
                         break;
                     default:
                         //addCommand("# Invalid Command :<");
+                        break;
+                }
+            }
+
+            if (TeamSwitch.Value == true)   // Condition in CYAN Team
+            {
+                switch (text)
+                {
+                    /// 2. PENALTY COMMANDS ///
+                    case "Y": //YELLOW_CARD_CYAN
+                        respone = "YELLOW_CARD_CYAN";
+                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        goto broadcast;
+                    case "R": //RED_CARD_CYAN
+                        respone = "RED_CARD_CYAN";
+                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
+                    case "B": //DOUBLE_YELLOW_CYAN
+                        respone = "DOUBLE_YELLOW_CYAN";
+                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
+
+                    /// 4. GOAL STATUS ///
+                    case "A": //GOAL_CYAN
+                        respone = "GOAL_CYAN";
+                        hc.SetText(this, lblGoalCyan, (int.Parse(lblGoalCyan.Text) + 1).ToString());
+                        break;
+                    case "D": //SUBGOAL_CYAN
+                        respone = "SUBGOAL_CYAN";
+                        break;
+
+                    /// 5. GAME FLOW COMMANDS ///
+                    case "K": //KICKOFF_CYAN
+                        respone = "KICKOFF_CYAN";
+                        hc.SetText(this, lblTimer, "00:00");
+                        break;
+                    case "F": //FREEKICK_CYAN
+                        respone = "FREEKICK_CYAN";
+                        break;
+                    case "G": //GOALKICK_CYAN
+                        respone = "GOALKICK_CYAN";
+                        hc.SetText(this, lblGoalKick, (int.Parse(lblGoalKick.Text) + 1).ToString());
+                        break;
+                    case "T": //THROWN_CYAN
+                        respone = "THROWN_CYAN";
+                        break;
+                    case "C": //CORNER_CYAN
+                        respone = "CORNER_CYAN";
+                        hc.SetText(this, lblCorner, (int.Parse(lblCorner.Text) + 1).ToString());
+                        break;
+                }
+            }
+            else if (TeamSwitch.Value == false)   // Condition in MAGENTA Team
+            {
+                switch (text)
+                {
+                    /// 2. PENALTY COMMANDS ///
+                    case "y": //YELLOW_CARD_MAGENTA	
+                        respone = "YELLOW_CARD_MAGENTA";
+                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        goto broadcast;
+                    case "r": //RED_CARD_MAGENTA
+                        respone = "RED_CARD_MAGENTA";
+                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
+                    case "b": //DOUBLE_YELLOW_MAGENTA
+                        respone = "DOUBLE_YELLOW_MAGENTA";
+                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                        RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                        goto broadcast;
+
+                    /// 4. GOAL STATUS ///
+                    case "a": //GOAL_MAGENTA
+                        respone = "GOAL_MAGENTA";
+                        hc.SetText(this, lblGoalMagenta, (int.Parse(lblGoalMagenta.Text) + 1).ToString());
+                        break;
+                    case "d": //SUBGOAL_MAGENTA
+                        respone = "SUBGOAL_MAGENTA";
+                        break;
+
+                    /// 5. GAME FLOW COMMANDS ///
+                    case "k": //KICKOFF_MAGENTA
+                        respone = "KICKOFF_MAGENTA";
+                        hc.SetText(this, lblTimer, "00:00");
+                        break;
+                    case "f": //FREEKICK_MAGENTA
+                        respone = "FREEKICK_MAGENTA";
+                        break;
+                    case "g": //GOALKICK_MAGENTA
+                        respone = "GOALKICK_MAGENTA";
+                        hc.SetText(this, lblGoalKick, (int.Parse(lblGoalKick.Text) + 1).ToString());
+                        break;
+                    case "t": //THROWN_MAGENTA
+                        respone = "THROWN_MAGENTA";
+                        break;
+                    case "c": //CORNER_MAGENTA
+                        respone = "CORNER_MAGENTA";
+                        hc.SetText(this, lblCorner, (int.Parse(lblCorner.Text) + 1).ToString());
                         break;
                 }
             }
@@ -698,8 +732,9 @@ namespace BaseStation
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
-            lblTimer.Text = "00:00";
-            timer.Start();
+            //lblTimer.Text = "00:00";
+            //timer.Start();
+            timer.Enabled = true;
             //setFormation();
         }
     }
