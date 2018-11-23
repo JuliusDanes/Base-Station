@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.gbxGoto = new System.Windows.Forms.GroupBox();
             this.tbxGotoX = new System.Windows.Forms.TextBox();
@@ -114,6 +115,9 @@
             this.lblScoreCyan = new System.Windows.Forms.Label();
             this.lblScoreMagenta = new System.Windows.Forms.Label();
             this.lblSplitScore = new System.Windows.Forms.Label();
+            this.lblTime = new System.Windows.Forms.Label();
+            this.time = new System.Windows.Forms.Timer(this.components);
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.gbxGoto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
@@ -1380,6 +1384,31 @@
             this.lblSplitScore.Text = "~";
             this.lblSplitScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblTime
+            // 
+            this.lblTime.AutoEllipsis = true;
+            this.lblTime.AutoSize = true;
+            this.lblTime.BackColor = System.Drawing.Color.Transparent;
+            this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.ForeColor = System.Drawing.Color.YellowGreen;
+            this.lblTime.Location = new System.Drawing.Point(785, 535);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(43, 20);
+            this.lblTime.TabIndex = 125;
+            this.lblTime.Text = "Time";
+            // 
+            // time
+            // 
+            this.time.Enabled = true;
+            this.time.Interval = 1000;
+            this.time.Tick += new System.EventHandler(this.time_Tick);
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1387,6 +1416,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblTime);
             this.Controls.Add(this.lblSplitScore);
             this.Controls.Add(this.lblScoreMagenta);
             this.Controls.Add(this.lblScoreCyan);
@@ -1582,6 +1612,9 @@
         protected System.Windows.Forms.Label lblScoreCyan;
         protected System.Windows.Forms.Label lblScoreMagenta;
         protected System.Windows.Forms.Label lblSplitScore;
+        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.Timer time;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

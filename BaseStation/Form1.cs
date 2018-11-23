@@ -42,8 +42,7 @@ namespace BaseStation
             //);
         }
 
-        HelperClass hc = new HelperClass();
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();        
+        HelperClass hc = new HelperClass();     
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -55,9 +54,13 @@ namespace BaseStation
             tbxPortR1.Text = "8686";
 
             resetLocation();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = 1000;
+            time.Start();
             timer.Start();
+        }
+
+        private void time_Tick(object sender, EventArgs e)
+        {
+            this.lblTime.Text = "[  "+ DateTime.Now.ToString("HH:mm:ss") +"  ]";
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -157,33 +160,38 @@ namespace BaseStation
             changeCounter(sender, e);
 
             if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
-                new Thread(obj => GotoLoc(tbxEncXR1, tbxEncYR1, int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 1, 1)).Start();
+                new Thread(obj => GotoLoc("Robot1", tbxEncXR1, tbxEncYR1, int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 1, 1)).Start();
         }
 
-        void GotoLoc(dynamic encXRobot, dynamic encYRobot, int endX, int endY, int shiftX, int shiftY)
+        void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, int endX, int endY, int shiftX, int shiftY)
         {
-            int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text);
-            if (startX > endX)
-                shiftX *= -1;
-            if (startY > endY)
-                shiftY *= -1;
-            bool[] chk = { true, true };
-            while (chk[0] |= chk[1])
+            try
             {
-                if (startX != endX)
-                    startX += shiftX;
-                else
-                    chk[0] = false;
-                if (startY != endY)
-                    startY += shiftY;
-                else
-                    chk[1] = false;
+                int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text);
+                if (startX > endX)
+                    shiftX *= -1;
+                if (startY > endY)
+                    shiftY *= -1;
+                addCommand("@ " + socketToIP(_socketDict[Robot]) + " : " + ("X:" + endX + ",Y:" + endY));
+                bool[] chk = { true, true };
+                while (chk[0] |= chk[1])
+                {
+                    if (startX != endX)
+                        startX += shiftX;   // Process
+                    else
+                        chk[0] = false;     // Done
+                    if (startY != endY)
+                        startY += shiftY;   // Process
+                    else
+                        chk[1] = false;     // Done
 
-                string dtGoto = "X:" + startX + ",Y:" + startY;
-                SendCallBack(_socketDict["Robot1"], dtGoto);
-                hc.SetText(this, encXRobot, startX.ToString());         // On encoder tbx
-                hc.SetText(this, encYRobot, startY.ToString());
-                Thread.Sleep(1);    // time per limit
+                    string dtGoto = "X:" + startX + ",Y:" + startY;
+                    SendCallBack(_socketDict[Robot], dtGoto);
+                    Thread.Sleep(100);    // time per limit
+                }
+            }
+            catch (Exception e)
+            {
             }
         }
 
@@ -197,27 +205,18 @@ namespace BaseStation
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = {1, 1};   // Distance(cm) per shift
+            int[] shift = {20, 20};   // Distance(cm) per shift
+            dynamic[,] arr = null;
             if (formation == "Stand By")
-            {
-                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
-                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
-                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
-                new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
-
-                //for (int i = 0; i < arr.GetLength(0); i++)
-                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
-            }
+                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
             else if (formation == "Kick Off")
-            {
-                dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, 4300, 3000 }, { tbxEncXR2, tbxEncYR2, 3000, 4100 }, { tbxEncXR3, tbxEncYR3, 100, 3000 } };
-                new Thread(obj => GotoLoc(arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
-                new Thread(obj => GotoLoc(arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
-                new Thread(obj => GotoLoc(arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
+                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, 4300, 3000 }, { tbxEncXR2, tbxEncYR2, 3000, 4100 }, { tbxEncXR3, tbxEncYR3, 100, 3000 } };                //for (int i = 0; i < arr.GetLength(0); i++)
 
-                //for (int i = 0; i < arr.GetLength(0); i++)
-                //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
-            }
+            new Thread(obj => GotoLoc("Robot1", arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
+            new Thread(obj => GotoLoc("Robot2", arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
+            new Thread(obj => GotoLoc("Robot3", arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
+            //for (int i = 0; i < arr.GetLength(0); i++)
+            //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
         }
 
 
@@ -342,6 +341,20 @@ namespace BaseStation
                 addCommand("# FAILED to send message \n\n" + e);
             }
         }
+        
+        void SendCallBack(Socket _dstSocket, string txtMessage, string Goto)
+        {
+            try
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
+                _dstSocket.Send(buffer);
+                _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
+            }
+            catch (Exception e)
+            {
+                addCommand("# FAILED to send message \n\n" + e);
+            }
+        }
 
         void sendByHostList(dynamic inputHostList, string txtMsg)
         {
@@ -387,21 +400,17 @@ namespace BaseStation
                     _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
                     _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
                 }
-                
-                hc.SetText(this, tbxEncXR1, _posXY[0].ToString());          // On encoder tbx
-                hc.SetText(this, tbxEncYR1, _posXY[1].ToString());
-                hc.SetText(this, tbxScrXR1, (_posXY[0] /= 20).ToString());  // On screen tbx
-                hc.SetText(this, tbxScrYR1, (_posXY[1] /= 20).ToString());
-
                 foreach (var _temp in _socketDict)
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
-                if (objName == "Robot1")
-                    moveLoc(_posXY[0], _posXY[1], PointRobot1);
-                else if (objName == "Robot2")
-                    moveLoc(_posXY[0], _posXY[1], PointRobot2);
-                else if (objName == "Robot3")
-                    moveLoc(_posXY[0], _posXY[1], PointRobot3);
+
+                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1}, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
+                int n = 0;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if (arr[i, 0].Text == objName)
+                        n = i;
+                hc.SetText(this, arr[n,1], _posXY[0].ToString());          // On encoder tbx
+                hc.SetText(this, arr[n,2], _posXY[1].ToString());
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -409,16 +418,14 @@ namespace BaseStation
                 Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
                 _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
                 _socketDict.Add(text, temp);                                    // Add with new key
-                Dictionary<Control, Control> ctrl = new Dictionary<Control, Control>();
-                if (text == "Robot1")
-                    ctrl.Add(tbxIPR1,tbxPortR1);
-                else if (text == "Robot2")
-                    ctrl.Add(tbxIPR2, tbxPortR2);
-                else if (text == "Robot3")
-                    ctrl.Add(tbxIPR3, tbxPortR3);
-                
-                hc.SetText(this, (ctrl.Keys.ElementAtOrDefault(0)), socketToIP(socket));
-                hc.SetText(this, ctrl[ctrl.Keys.ElementAtOrDefault(0)], this.port.ToString());
+                dynamic[,] arr = { { lblRobot1.Text, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2.Text, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3.Text, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+                int n = 0;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if (arr[i, 0] == text)
+                        n = i;
+                hc.SetText(this, arr[n, 1], "Connected");
+                hc.SetText(this, arr[n, 2], socketToIP(socket));
+                hc.SetText(this, arr[n, 3], this.port.ToString());
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             {
@@ -682,9 +689,10 @@ namespace BaseStation
 
         private void cbxFormation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setFormation();
+            if (cbxFormation.SelectedIndex != -1)
+                setFormation();
         }
-
+        
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
