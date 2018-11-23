@@ -41,9 +41,7 @@
             this.PointRobot1 = new System.Windows.Forms.PictureBox();
             this.PointBall = new System.Windows.Forms.PictureBox();
             this.Lap = new System.Windows.Forms.PictureBox();
-            this.btnSend = new System.Windows.Forms.Button();
             this.tbxStatus = new System.Windows.Forms.RichTextBox();
-            this.tbxMessage = new System.Windows.Forms.RichTextBox();
             this.grpRobot1 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblRobot1 = new System.Windows.Forms.Label();
             this.lblConnectionR1 = new System.Windows.Forms.Label();
@@ -109,11 +107,11 @@
             this.grpRobot3 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblTimer = new System.Windows.Forms.Label();
             this.TeamSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
-            this.tbxMessagea = new MaterialSkin.Controls.MaterialSingleLineTextField();
-            this.btnSenda = new Bunifu.Framework.UI.BunifuFlatButton();
+            this.tbxMessage = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.btnSend = new Bunifu.Framework.UI.BunifuFlatButton();
             this.cbxFormation = new MetroFramework.Controls.MetroComboBox();
-            this.lblScoreCyan = new System.Windows.Forms.Label();
-            this.lblScoreMagenta = new System.Windows.Forms.Label();
+            this.lblGoalCyan = new System.Windows.Forms.Label();
+            this.lblGoalMagenta = new System.Windows.Forms.Label();
             this.lblSplitScore = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
             this.time = new System.Windows.Forms.Timer(this.components);
@@ -253,16 +251,6 @@
             this.Lap.TabIndex = 18;
             this.Lap.TabStop = false;
             // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(315, 620);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.TabIndex = 33;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
             // tbxStatus
             // 
             this.tbxStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
@@ -275,17 +263,6 @@
             this.tbxStatus.TabIndex = 39;
             this.tbxStatus.Text = "";
             this.tbxStatus.TextChanged += new System.EventHandler(this.tbxStatus_TextChanged);
-            // 
-            // tbxMessage
-            // 
-            this.tbxMessage.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.tbxMessage.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbxMessage.Location = new System.Drawing.Point(1, 622);
-            this.tbxMessage.Name = "tbxMessage";
-            this.tbxMessage.Size = new System.Drawing.Size(308, 59);
-            this.tbxMessage.TabIndex = 32;
-            this.tbxMessage.Text = "";
-            this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
             // grpRobot1
             // 
@@ -1284,56 +1261,58 @@
             this.TeamSwitch.Value = true;
             this.TeamSwitch.OnValueChange += new System.EventHandler(this.TeamSwitch_OnValueChange);
             // 
-            // tbxMessagea
+            // tbxMessage
             // 
-            this.tbxMessagea.Depth = 0;
-            this.tbxMessagea.Hint = "@SendMessage";
-            this.tbxMessagea.Location = new System.Drawing.Point(967, 139);
-            this.tbxMessagea.MaxLength = 32767;
-            this.tbxMessagea.MouseState = MaterialSkin.MouseState.HOVER;
-            this.tbxMessagea.Name = "tbxMessagea";
-            this.tbxMessagea.PasswordChar = '\0';
-            this.tbxMessagea.SelectedText = "";
-            this.tbxMessagea.SelectionLength = 0;
-            this.tbxMessagea.SelectionStart = 0;
-            this.tbxMessagea.Size = new System.Drawing.Size(243, 23);
-            this.tbxMessagea.TabIndex = 114;
-            this.tbxMessagea.TabStop = false;
-            this.tbxMessagea.UseSystemPasswordChar = false;
+            this.tbxMessage.Depth = 0;
+            this.tbxMessage.Hint = "@SendMessage";
+            this.tbxMessage.Location = new System.Drawing.Point(967, 139);
+            this.tbxMessage.MaxLength = 32767;
+            this.tbxMessage.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tbxMessage.Name = "tbxMessage";
+            this.tbxMessage.PasswordChar = '\0';
+            this.tbxMessage.SelectedText = "";
+            this.tbxMessage.SelectionLength = 0;
+            this.tbxMessage.SelectionStart = 0;
+            this.tbxMessage.Size = new System.Drawing.Size(243, 23);
+            this.tbxMessage.TabIndex = 114;
+            this.tbxMessage.TabStop = false;
+            this.tbxMessage.UseSystemPasswordChar = false;
+            this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
-            // btnSenda
+            // btnSend
             // 
-            this.btnSenda.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
-            this.btnSenda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
-            this.btnSenda.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSenda.BorderRadius = 0;
-            this.btnSenda.ButtonText = "Send";
-            this.btnSenda.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSenda.DisabledColor = System.Drawing.Color.Gray;
-            this.btnSenda.Iconcolor = System.Drawing.Color.Transparent;
-            this.btnSenda.Iconimage = ((System.Drawing.Image)(resources.GetObject("btnSenda.Iconimage")));
-            this.btnSenda.Iconimage_right = null;
-            this.btnSenda.Iconimage_right_Selected = null;
-            this.btnSenda.Iconimage_Selected = null;
-            this.btnSenda.IconMarginLeft = 0;
-            this.btnSenda.IconMarginRight = 0;
-            this.btnSenda.IconRightVisible = true;
-            this.btnSenda.IconRightZoom = 0D;
-            this.btnSenda.IconVisible = true;
-            this.btnSenda.IconZoom = 90D;
-            this.btnSenda.IsTab = false;
-            this.btnSenda.Location = new System.Drawing.Point(1183, 149);
-            this.btnSenda.Name = "btnSenda";
-            this.btnSenda.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
-            this.btnSenda.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
-            this.btnSenda.OnHoverTextColor = System.Drawing.Color.White;
-            this.btnSenda.selected = false;
-            this.btnSenda.Size = new System.Drawing.Size(80, 25);
-            this.btnSenda.TabIndex = 115;
-            this.btnSenda.Text = "Send";
-            this.btnSenda.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSenda.Textcolor = System.Drawing.Color.White;
-            this.btnSenda.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSend.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSend.BorderRadius = 0;
+            this.btnSend.ButtonText = "Send";
+            this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSend.DisabledColor = System.Drawing.Color.Gray;
+            this.btnSend.Iconcolor = System.Drawing.Color.Transparent;
+            this.btnSend.Iconimage = ((System.Drawing.Image)(resources.GetObject("btnSend.Iconimage")));
+            this.btnSend.Iconimage_right = null;
+            this.btnSend.Iconimage_right_Selected = null;
+            this.btnSend.Iconimage_Selected = null;
+            this.btnSend.IconMarginLeft = 0;
+            this.btnSend.IconMarginRight = 0;
+            this.btnSend.IconRightVisible = true;
+            this.btnSend.IconRightZoom = 0D;
+            this.btnSend.IconVisible = true;
+            this.btnSend.IconZoom = 90D;
+            this.btnSend.IsTab = false;
+            this.btnSend.Location = new System.Drawing.Point(1183, 149);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
+            this.btnSend.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
+            this.btnSend.OnHoverTextColor = System.Drawing.Color.White;
+            this.btnSend.selected = false;
+            this.btnSend.Size = new System.Drawing.Size(80, 25);
+            this.btnSend.TabIndex = 115;
+            this.btnSend.Text = "Send";
+            this.btnSend.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSend.Textcolor = System.Drawing.Color.White;
+            this.btnSend.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // cbxFormation
             // 
@@ -1348,29 +1327,29 @@
             this.cbxFormation.TabIndex = 119;
             this.cbxFormation.SelectedIndexChanged += new System.EventHandler(this.cbxFormation_SelectedIndexChanged);
             // 
-            // lblScoreCyan
+            // lblGoalCyan
             // 
-            this.lblScoreCyan.BackColor = System.Drawing.Color.Transparent;
-            this.lblScoreCyan.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScoreCyan.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblScoreCyan.Location = new System.Drawing.Point(1044, 181);
-            this.lblScoreCyan.Name = "lblScoreCyan";
-            this.lblScoreCyan.Size = new System.Drawing.Size(70, 64);
-            this.lblScoreCyan.TabIndex = 122;
-            this.lblScoreCyan.Text = "0";
-            this.lblScoreCyan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblGoalCyan.BackColor = System.Drawing.Color.Transparent;
+            this.lblGoalCyan.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGoalCyan.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblGoalCyan.Location = new System.Drawing.Point(1044, 181);
+            this.lblGoalCyan.Name = "lblGoalCyan";
+            this.lblGoalCyan.Size = new System.Drawing.Size(70, 64);
+            this.lblGoalCyan.TabIndex = 122;
+            this.lblGoalCyan.Text = "0";
+            this.lblGoalCyan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblScoreMagenta
+            // lblGoalMagenta
             // 
-            this.lblScoreMagenta.BackColor = System.Drawing.Color.Transparent;
-            this.lblScoreMagenta.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScoreMagenta.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblScoreMagenta.Location = new System.Drawing.Point(1152, 181);
-            this.lblScoreMagenta.Name = "lblScoreMagenta";
-            this.lblScoreMagenta.Size = new System.Drawing.Size(70, 64);
-            this.lblScoreMagenta.TabIndex = 123;
-            this.lblScoreMagenta.Text = "0";
-            this.lblScoreMagenta.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblGoalMagenta.BackColor = System.Drawing.Color.Transparent;
+            this.lblGoalMagenta.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGoalMagenta.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblGoalMagenta.Location = new System.Drawing.Point(1152, 181);
+            this.lblGoalMagenta.Name = "lblGoalMagenta";
+            this.lblGoalMagenta.Size = new System.Drawing.Size(70, 64);
+            this.lblGoalMagenta.TabIndex = 123;
+            this.lblGoalMagenta.Text = "0";
+            this.lblGoalMagenta.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblSplitScore
             // 
@@ -1418,11 +1397,11 @@
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.lblTime);
             this.Controls.Add(this.lblSplitScore);
-            this.Controls.Add(this.lblScoreMagenta);
-            this.Controls.Add(this.lblScoreCyan);
+            this.Controls.Add(this.lblGoalMagenta);
+            this.Controls.Add(this.lblGoalCyan);
             this.Controls.Add(this.cbxFormation);
-            this.Controls.Add(this.btnSenda);
-            this.Controls.Add(this.tbxMessagea);
+            this.Controls.Add(this.btnSend);
+            this.Controls.Add(this.tbxMessage);
             this.Controls.Add(this.TeamSwitch);
             this.Controls.Add(this.tbxScrYR3);
             this.Controls.Add(this.lblScrCommaR3);
@@ -1488,7 +1467,6 @@
             this.Controls.Add(this.YCard1R1);
             this.Controls.Add(this.grpRobot1);
             this.Controls.Add(this.lblTimer);
-            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.tbxStatus);
             this.Controls.Add(this.gbxGoto);
             this.Controls.Add(this.PointRobot3);
@@ -1496,7 +1474,6 @@
             this.Controls.Add(this.PointRobot1);
             this.Controls.Add(this.PointBall);
             this.Controls.Add(this.Lap);
-            this.Controls.Add(this.tbxMessage);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -1538,8 +1515,6 @@
         protected System.Windows.Forms.PictureBox PointRobot1;
         protected System.Windows.Forms.PictureBox PointBall;
         protected System.Windows.Forms.PictureBox Lap;
-        protected System.Windows.Forms.Button btnSend;
-        protected System.Windows.Forms.RichTextBox tbxMessage;
         protected System.Windows.Forms.Button btnTO;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot1;
         protected System.Windows.Forms.Label lblRobot1;
@@ -1606,11 +1581,11 @@
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot3;
         private Bunifu.Framework.UI.BunifuiOSSwitch TeamSwitch;
         protected System.Windows.Forms.RichTextBox tbxStatus;
-        private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessagea;
-        private Bunifu.Framework.UI.BunifuFlatButton btnSenda;
+        private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessage;
+        private Bunifu.Framework.UI.BunifuFlatButton btnSend;
         private MetroFramework.Controls.MetroComboBox cbxFormation;
-        protected System.Windows.Forms.Label lblScoreCyan;
-        protected System.Windows.Forms.Label lblScoreMagenta;
+        protected System.Windows.Forms.Label lblGoalCyan;
+        protected System.Windows.Forms.Label lblGoalMagenta;
         protected System.Windows.Forms.Label lblSplitScore;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Timer time;

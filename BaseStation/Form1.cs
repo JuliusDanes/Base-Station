@@ -261,9 +261,9 @@ namespace BaseStation
 
         void SetupServer(dynamic port)
         {
-            if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+            try
             {
-                try
+                if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 {
                     addCommand("# Setting up server...");
                     addCommand("# IP " + this.Text + "  : " + tbxIPBS.Text);
@@ -272,10 +272,10 @@ namespace BaseStation
                     _serverSocket.Listen(1);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 }
-                catch(Exception e)
-                {
-                    addCommand("# FAILED to open server connection \n\n" + e);
-                }
+            }
+            catch(Exception e)
+            {
+                addCommand("# FAILED to open server connection \n\n" + e);
             }
         }
 
@@ -428,6 +428,7 @@ namespace BaseStation
                 hc.SetText(this, arr[n, 3], this.port.ToString());
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
+            //else if (true)
             {
                 // If socket is Referee Box socket
                 switch (text)
@@ -572,7 +573,7 @@ namespace BaseStation
                         break;
 
                 /// 6. OTHERS ///
-                    case "get time": //TIME NOW
+                    case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
                         break;
                     default:
@@ -692,7 +693,7 @@ namespace BaseStation
             if (cbxFormation.SelectedIndex != -1)
                 setFormation();
         }
-        
+
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
