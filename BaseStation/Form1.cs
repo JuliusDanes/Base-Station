@@ -25,9 +25,9 @@ namespace BaseStation
             setTransparent(Lap, new dynamic[] { PointBall, PointRobot1, PointRobot2, PointRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
 
             // Create a material theme manager and add the form to manage (this)
@@ -159,9 +159,19 @@ namespace BaseStation
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
             changeCounter(sender, e);
-
+            var chkRobot = chkRobotCollect.Split(',');
             if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
-                new Thread(obj => GotoLoc("Robot1", tbxEncXR1, tbxEncYR1, int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 1, 1)).Start();
+                if (!string.IsNullOrEmpty(chkRobotCollect))
+                    foreach (var dt in chkRobot)
+                    {
+                        dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
+                        int n = 0;
+                        int[] val = new int[2];
+                        for (int i = 0; i < arr.GetLength(0); i++)
+                             if (arr[i, 0].Text == dt)
+                                    n = i;
+                        new Thread(obj => GotoLoc(arr[n,0].Text, arr[n, 1], arr[n, 2], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 20, 20)).Start();
+                    }
         }
 
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, int endX, int endY, int shiftX, int shiftY)
@@ -187,7 +197,7 @@ namespace BaseStation
                         chk[1] = false;     // Done
 
                     string dtGoto = "X:" + startX + ",Y:" + startY;
-                    SendCallBack(_socketDict[Robot], dtGoto);
+                    SendCallBack(_socketDict[Robot], dtGoto, "Goto");
                     Thread.Sleep(100);    // time per limit
                 }
             }
@@ -227,8 +237,9 @@ namespace BaseStation
         static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
+        List<string> _chkRobotCollect = new List<string>();
         internal int port, attempts = 0;
-        internal string myIP;
+        internal string myIP, chkRobotCollect=string.Empty;
 
         string GetIPAddress()
         {
@@ -501,21 +512,21 @@ namespace BaseStation
                     /// 2. PENALTY COMMANDS ///
                     case "Y": //YELLOW_CARD_CYAN
                         respone = "YELLOW_CARD_CYAN";
-                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                         YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         goto broadcast;
                     case "R": //RED_CARD_CYAN
                         respone = "RED_CARD_CYAN";
-                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblRCard, lblFouls });
                         RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         goto broadcast;
                     case "B": //DOUBLE_YELLOW_CYAN
                         respone = "DOUBLE_YELLOW_CYAN";
-                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                         YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
@@ -527,7 +538,7 @@ namespace BaseStation
                     /// 4. GOAL STATUS ///
                     case "A": //GOAL_CYAN
                         respone = "GOAL_CYAN";
-                        hc.SetText(this, lblGoalCyan, (int.Parse(lblGoalCyan.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblGoalCyan });
                         break;
                     case "D": //SUBGOAL_CYAN
                         respone = "SUBGOAL_CYAN";
@@ -543,14 +554,14 @@ namespace BaseStation
                         break;
                     case "G": //GOALKICK_CYAN
                         respone = "GOALKICK_CYAN";
-                        hc.SetText(this, lblGoalKick, (int.Parse(lblGoalKick.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblGoalKick });
                         break;
                     case "T": //THROWN_CYAN
                         respone = "THROWN_CYAN";
                         break;
                     case "C": //CORNER_CYAN
                         respone = "CORNER_CYAN";
-                        hc.SetText(this, lblCorner, (int.Parse(lblCorner.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblCorner });
                         break;
                 }
             }
@@ -561,22 +572,21 @@ namespace BaseStation
                     /// 2. PENALTY COMMANDS ///
                     case "y": //YELLOW_CARD_MAGENTA	
                         respone = "YELLOW_CARD_MAGENTA";
-                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                         YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         goto broadcast;
                     case "r": //RED_CARD_MAGENTA
                         respone = "RED_CARD_MAGENTA";
-                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblRCard, lblFouls });
                         RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
                         goto broadcast;
                     case "b": //DOUBLE_YELLOW_MAGENTA
                         respone = "DOUBLE_YELLOW_MAGENTA";
-                        hc.SetText(this, lblYCard, (int.Parse(lblYCard.Text) + 1).ToString());
-                        hc.SetText(this, lblRCard, (int.Parse(lblRCard.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblYCard, lblRCard, lblFouls }); ;
                         YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
                         YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
@@ -588,7 +598,7 @@ namespace BaseStation
                     /// 4. GOAL STATUS ///
                     case "a": //GOAL_MAGENTA
                         respone = "GOAL_MAGENTA";
-                        hc.SetText(this, lblGoalMagenta, (int.Parse(lblGoalMagenta.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblGoalMagenta });
                         break;
                     case "d": //SUBGOAL_MAGENTA
                         respone = "SUBGOAL_MAGENTA";
@@ -604,14 +614,14 @@ namespace BaseStation
                         break;
                     case "g": //GOALKICK_MAGENTA
                         respone = "GOALKICK_MAGENTA";
-                        hc.SetText(this, lblGoalKick, (int.Parse(lblGoalKick.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblGoalKick });
                         break;
                     case "t": //THROWN_MAGENTA
                         respone = "THROWN_MAGENTA";
                         break;
                     case "c": //CORNER_MAGENTA
                         respone = "CORNER_MAGENTA";
-                        hc.SetText(this, lblCorner, (int.Parse(lblCorner.Text) + 1).ToString());
+                        setMatchInfo(new dynamic[] { lblCorner });
                         break;
                 }
             }
@@ -622,11 +632,17 @@ namespace BaseStation
             respone = string.Empty;
 
             multicast:
-            sendByHostList("Robot2,Robot3", respone);
+            sendByHostList(chkRobotCollect, respone);
             respone = string.Empty;
 
             end:
             return respone;
+        }
+
+        void setMatchInfo(dynamic[] objs)
+        {
+            foreach(dynamic obj in objs)
+                hc.SetText(this, obj, (int.Parse(obj.Text) + 1).ToString());
         }
         
         void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
@@ -657,6 +673,7 @@ namespace BaseStation
 
         private void grpBaseStation_Click(object sender, EventArgs e)
         {
+            if((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
             SetupServer(tbxPortBS.Text);
         }
 
@@ -692,7 +709,7 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            if ((!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
+            if ((arr[n,2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
                 reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2]);
         }
 
@@ -728,13 +745,59 @@ namespace BaseStation
                 setFormation();
         }
 
+        private void lblConnection_TextChanged(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr;
+            if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
+                arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
+            else
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0].Name == obj)
+                    n = i;
+            if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open"))
+                for (int i = 0; i < arr.GetLength(1); i++)
+                    arr[n, i].Enabled = true;
+            else
+                for (int i = 0; i < arr.GetLength(1); i++)
+                    arr[n, i].Enabled = false;
+        }
+
+        private void ChkRobot_OnChange(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { chkR1, lblRobot1 }, { chkR2, lblRobot2 }, { chkR3, lblRobot3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if (arr[n, 0].Checked == true)
+                _chkRobotCollect.Add(arr[n, 1].Text);
+            else
+                _chkRobotCollect.Remove(arr[n, 1].Text);
+            _chkRobotCollect.Sort();
+            if (_chkRobotCollect.Count == 0)
+                chkRobotCollect = string.Empty;
+            for (int i = 0; i < _chkRobotCollect.Count; i++)
+            {
+                if (i == 0)
+                    chkRobotCollect = _chkRobotCollect.ElementAtOrDefault(i);
+                else
+                    chkRobotCollect += "," + _chkRobotCollect.ElementAtOrDefault(i);
+            }
+        }
+
+
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
-            //lblTimer.Text = "00:00";
-            //timer.Start();
-            timer.Enabled = true;
+            lblTimer.Text = "00:00";
+            timer.Start();
+            //timer.Enabled = true;]
             //setFormation();
         }
     }

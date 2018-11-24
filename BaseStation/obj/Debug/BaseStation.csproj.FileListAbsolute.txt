@@ -28,7 +28,7 @@ E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\BaseStation.pdb
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\Bunifu_UI_v1.5.3.dll
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\MaterialSkin.dll
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\MetroFramework.dll
-E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csprojAssemblyReference.cache
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\MetroFramework.Fonts.dll
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.Form1.resources
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.Properties.Resources.resources
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.GenerateResource.cache
@@ -36,4 +36,3 @@ E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.C
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.CopyComplete
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.exe
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.pdb
-E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Debug\MetroFramework.Fonts.dll

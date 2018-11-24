@@ -1,0 +1,14 @@
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\BaseStation.exe.config
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\BaseStation.exe
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\BaseStation.pdb
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\Bunifu_UI_v1.5.3.dll
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\MaterialSkin.dll
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\MetroFramework.dll
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\bin\Release\MetroFramework.Fonts.dll
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.Form1.resources
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.Properties.Resources.resources
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.csproj.GenerateResource.cache
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.csproj.CoreCompileInputs.cache
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.csproj.CopyComplete
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.exe
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Release\BaseStation.pdb

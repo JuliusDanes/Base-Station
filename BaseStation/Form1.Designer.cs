@@ -30,12 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.gbxGoto = new System.Windows.Forms.GroupBox();
-            this.tbxGotoX = new System.Windows.Forms.TextBox();
-            this.lblX = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.tbxGotoY = new System.Windows.Forms.TextBox();
-            this.btnTO = new System.Windows.Forms.Button();
             this.PointRobot3 = new System.Windows.Forms.PictureBox();
             this.PointRobot2 = new System.Windows.Forms.PictureBox();
             this.PointRobot1 = new System.Windows.Forms.PictureBox();
@@ -129,7 +123,15 @@
             this.lblRCard = new System.Windows.Forms.Label();
             this.lblYCard = new System.Windows.Forms.Label();
             this.lblPenalty = new System.Windows.Forms.Label();
-            this.gbxGoto.SuspendLayout();
+            this.gbxGoto = new System.Windows.Forms.GroupBox();
+            this.tbxGotoX = new System.Windows.Forms.TextBox();
+            this.lblX = new System.Windows.Forms.Label();
+            this.lblY = new System.Windows.Forms.Label();
+            this.tbxGotoY = new System.Windows.Forms.TextBox();
+            this.btnTO = new System.Windows.Forms.Button();
+            this.chkR1 = new Bunifu.Framework.UI.BunifuCheckbox();
+            this.chkR2 = new Bunifu.Framework.UI.BunifuCheckbox();
+            this.chkR3 = new Bunifu.Framework.UI.BunifuCheckbox();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -144,68 +146,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).BeginInit();
+            this.gbxGoto.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // gbxGoto
-            // 
-            this.gbxGoto.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.gbxGoto.Controls.Add(this.tbxGotoX);
-            this.gbxGoto.Controls.Add(this.lblX);
-            this.gbxGoto.Controls.Add(this.lblY);
-            this.gbxGoto.Controls.Add(this.tbxGotoY);
-            this.gbxGoto.Controls.Add(this.btnTO);
-            this.gbxGoto.Location = new System.Drawing.Point(942, 606);
-            this.gbxGoto.Name = "gbxGoto";
-            this.gbxGoto.Size = new System.Drawing.Size(182, 75);
-            this.gbxGoto.TabIndex = 29;
-            this.gbxGoto.TabStop = false;
-            this.gbxGoto.Text = "Goto";
-            // 
-            // tbxGotoX
-            // 
-            this.tbxGotoX.Location = new System.Drawing.Point(26, 17);
-            this.tbxGotoX.Name = "tbxGotoX";
-            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoX.TabIndex = 4;
-            this.tbxGotoX.Text = "0";
-            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
-            // 
-            // lblX
-            // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 20);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 2;
-            this.lblX.Text = "X";
-            // 
-            // lblY
-            // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(72, 20);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 3;
-            this.lblY.Text = "Y";
-            // 
-            // tbxGotoY
-            // 
-            this.tbxGotoY.Location = new System.Drawing.Point(92, 17);
-            this.tbxGotoY.Name = "tbxGotoY";
-            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoY.TabIndex = 5;
-            this.tbxGotoY.Text = "0";
-            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
-            // 
-            // btnTO
-            // 
-            this.btnTO.Location = new System.Drawing.Point(11, 46);
-            this.btnTO.Name = "btnTO";
-            this.btnTO.Size = new System.Drawing.Size(75, 23);
-            this.btnTO.TabIndex = 44;
-            this.btnTO.Text = "Try Out";
-            this.btnTO.UseVisualStyleBackColor = true;
-            this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
             // 
             // PointRobot3
             // 
@@ -296,6 +238,7 @@
             // lblRobot1
             // 
             this.lblRobot1.BackColor = System.Drawing.Color.Transparent;
+            this.lblRobot1.Enabled = false;
             this.lblRobot1.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.lblRobot1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblRobot1.Location = new System.Drawing.Point(18, 321);
@@ -309,12 +252,13 @@
             this.lblConnectionR1.BackColor = System.Drawing.Color.Transparent;
             this.lblConnectionR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR1.Location = new System.Drawing.Point(178, 321);
+            this.lblConnectionR1.Location = new System.Drawing.Point(167, 320);
             this.lblConnectionR1.Name = "lblConnectionR1";
             this.lblConnectionR1.Size = new System.Drawing.Size(90, 20);
             this.lblConnectionR1.TabIndex = 49;
             this.lblConnectionR1.Text = "Disconnected";
             this.lblConnectionR1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR1.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblPipeR1
             // 
@@ -374,6 +318,7 @@
             // lblEncoderR1
             // 
             this.lblEncoderR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblEncoderR1.Enabled = false;
             this.lblEncoderR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblEncoderR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblEncoderR1.Location = new System.Drawing.Point(18, 364);
@@ -385,6 +330,7 @@
             // lblScreenR1
             // 
             this.lblScreenR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblScreenR1.Enabled = false;
             this.lblScreenR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblScreenR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR1.Location = new System.Drawing.Point(18, 381);
@@ -427,6 +373,7 @@
             // 
             this.tbxEncXR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncXR1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncXR1.Enabled = false;
             this.tbxEncXR1.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncXR1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncXR1.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -450,6 +397,7 @@
             // 
             this.tbxEncYR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncYR1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncYR1.Enabled = false;
             this.tbxEncYR1.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncYR1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncYR1.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -540,16 +488,18 @@
             this.lblConnectionBS.BackColor = System.Drawing.Color.Transparent;
             this.lblConnectionBS.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionBS.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionBS.Location = new System.Drawing.Point(178, 119);
+            this.lblConnectionBS.Location = new System.Drawing.Point(167, 118);
             this.lblConnectionBS.Name = "lblConnectionBS";
             this.lblConnectionBS.Size = new System.Drawing.Size(90, 20);
             this.lblConnectionBS.TabIndex = 66;
-            this.lblConnectionBS.Text = "Closed";
+            this.lblConnectionBS.Text = "Close";
             this.lblConnectionBS.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionBS.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblBaseStation
             // 
             this.lblBaseStation.BackColor = System.Drawing.Color.Transparent;
+            this.lblBaseStation.Enabled = false;
             this.lblBaseStation.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.lblBaseStation.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblBaseStation.Location = new System.Drawing.Point(18, 119);
@@ -634,16 +584,18 @@
             this.lblConnectionRB.BackColor = System.Drawing.Color.Transparent;
             this.lblConnectionRB.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionRB.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionRB.Location = new System.Drawing.Point(178, 220);
+            this.lblConnectionRB.Location = new System.Drawing.Point(167, 220);
             this.lblConnectionRB.Name = "lblConnectionRB";
             this.lblConnectionRB.Size = new System.Drawing.Size(90, 20);
             this.lblConnectionRB.TabIndex = 72;
             this.lblConnectionRB.Text = "Disconnected";
             this.lblConnectionRB.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionRB.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRefereeBox
             // 
             this.lblRefereeBox.BackColor = System.Drawing.Color.Transparent;
+            this.lblRefereeBox.Enabled = false;
             this.lblRefereeBox.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.lblRefereeBox.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblRefereeBox.Location = new System.Drawing.Point(18, 220);
@@ -672,6 +624,7 @@
             // 
             this.tbxEncYR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncYR2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncYR2.Enabled = false;
             this.tbxEncYR2.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncYR2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncYR2.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -706,6 +659,7 @@
             // 
             this.tbxEncXR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncXR2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncXR2.Enabled = false;
             this.tbxEncXR2.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncXR2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncXR2.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -738,6 +692,7 @@
             // lblScreenR2
             // 
             this.lblScreenR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblScreenR2.Enabled = false;
             this.lblScreenR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblScreenR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR2.Location = new System.Drawing.Point(18, 482);
@@ -749,6 +704,7 @@
             // lblEncoderR2
             // 
             this.lblEncoderR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblEncoderR2.Enabled = false;
             this.lblEncoderR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblEncoderR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblEncoderR2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -818,16 +774,18 @@
             this.lblConnectionR2.BackColor = System.Drawing.Color.Transparent;
             this.lblConnectionR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR2.Location = new System.Drawing.Point(178, 422);
+            this.lblConnectionR2.Location = new System.Drawing.Point(167, 422);
             this.lblConnectionR2.Name = "lblConnectionR2";
             this.lblConnectionR2.Size = new System.Drawing.Size(90, 20);
             this.lblConnectionR2.TabIndex = 78;
             this.lblConnectionR2.Text = "Disconnected";
             this.lblConnectionR2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR2.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRobot2
             // 
             this.lblRobot2.BackColor = System.Drawing.Color.Transparent;
+            this.lblRobot2.Enabled = false;
             this.lblRobot2.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.lblRobot2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblRobot2.Location = new System.Drawing.Point(18, 422);
@@ -876,6 +834,7 @@
             // 
             this.tbxScrYR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrYR1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrYR1.Enabled = false;
             this.tbxScrYR1.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrYR1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrYR1.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -910,6 +869,7 @@
             // 
             this.tbxScrXR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrXR1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrXR1.Enabled = false;
             this.tbxScrXR1.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrXR1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrXR1.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -933,6 +893,7 @@
             // 
             this.tbxScrYR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrYR2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrYR2.Enabled = false;
             this.tbxScrYR2.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrYR2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrYR2.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -967,6 +928,7 @@
             // 
             this.tbxScrXR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrXR2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrXR2.Enabled = false;
             this.tbxScrXR2.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrXR2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrXR2.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -990,6 +952,7 @@
             // 
             this.tbxScrYR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrYR3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrYR3.Enabled = false;
             this.tbxScrYR3.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrYR3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrYR3.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -1024,6 +987,7 @@
             // 
             this.tbxScrXR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxScrXR3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxScrXR3.Enabled = false;
             this.tbxScrXR3.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxScrXR3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxScrXR3.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -1047,6 +1011,7 @@
             // 
             this.tbxEncYR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncYR3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncYR3.Enabled = false;
             this.tbxEncYR3.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncYR3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncYR3.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -1081,6 +1046,7 @@
             // 
             this.tbxEncXR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
             this.tbxEncXR3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxEncXR3.Enabled = false;
             this.tbxEncXR3.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.tbxEncXR3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.tbxEncXR3.HintForeColor = System.Drawing.Color.WhiteSmoke;
@@ -1113,6 +1079,7 @@
             // lblScreenR3
             // 
             this.lblScreenR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblScreenR3.Enabled = false;
             this.lblScreenR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblScreenR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR3.Location = new System.Drawing.Point(18, 583);
@@ -1124,6 +1091,7 @@
             // lblEncoderR3
             // 
             this.lblEncoderR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblEncoderR3.Enabled = false;
             this.lblEncoderR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblEncoderR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblEncoderR3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -1193,16 +1161,18 @@
             this.lblConnectionR3.BackColor = System.Drawing.Color.Transparent;
             this.lblConnectionR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR3.Location = new System.Drawing.Point(178, 523);
+            this.lblConnectionR3.Location = new System.Drawing.Point(167, 523);
             this.lblConnectionR3.Name = "lblConnectionR3";
             this.lblConnectionR3.Size = new System.Drawing.Size(90, 20);
             this.lblConnectionR3.TabIndex = 98;
             this.lblConnectionR3.Text = "Disconnected";
             this.lblConnectionR3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR3.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRobot3
             // 
             this.lblRobot3.BackColor = System.Drawing.Color.Transparent;
+            this.lblRobot3.Enabled = false;
             this.lblRobot3.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.lblRobot3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblRobot3.Location = new System.Drawing.Point(18, 523);
@@ -1558,6 +1528,109 @@
             this.lblPenalty.Text = "0";
             this.lblPenalty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // gbxGoto
+            // 
+            this.gbxGoto.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.gbxGoto.Controls.Add(this.tbxGotoX);
+            this.gbxGoto.Controls.Add(this.lblX);
+            this.gbxGoto.Controls.Add(this.lblY);
+            this.gbxGoto.Controls.Add(this.tbxGotoY);
+            this.gbxGoto.Controls.Add(this.btnTO);
+            this.gbxGoto.Location = new System.Drawing.Point(1028, 605);
+            this.gbxGoto.Name = "gbxGoto";
+            this.gbxGoto.Size = new System.Drawing.Size(182, 75);
+            this.gbxGoto.TabIndex = 140;
+            this.gbxGoto.TabStop = false;
+            this.gbxGoto.Text = "Goto";
+            // 
+            // tbxGotoX
+            // 
+            this.tbxGotoX.Location = new System.Drawing.Point(26, 17);
+            this.tbxGotoX.Name = "tbxGotoX";
+            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoX.TabIndex = 4;
+            this.tbxGotoX.Text = "0";
+            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // lblX
+            // 
+            this.lblX.AutoSize = true;
+            this.lblX.Location = new System.Drawing.Point(6, 20);
+            this.lblX.Name = "lblX";
+            this.lblX.Size = new System.Drawing.Size(14, 13);
+            this.lblX.TabIndex = 2;
+            this.lblX.Text = "X";
+            // 
+            // lblY
+            // 
+            this.lblY.AutoSize = true;
+            this.lblY.Location = new System.Drawing.Point(72, 20);
+            this.lblY.Name = "lblY";
+            this.lblY.Size = new System.Drawing.Size(14, 13);
+            this.lblY.TabIndex = 3;
+            this.lblY.Text = "Y";
+            // 
+            // tbxGotoY
+            // 
+            this.tbxGotoY.Location = new System.Drawing.Point(92, 17);
+            this.tbxGotoY.Name = "tbxGotoY";
+            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
+            this.tbxGotoY.TabIndex = 5;
+            this.tbxGotoY.Text = "0";
+            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // btnTO
+            // 
+            this.btnTO.Location = new System.Drawing.Point(11, 46);
+            this.btnTO.Name = "btnTO";
+            this.btnTO.Size = new System.Drawing.Size(75, 23);
+            this.btnTO.TabIndex = 44;
+            this.btnTO.Text = "Try Out";
+            this.btnTO.UseVisualStyleBackColor = true;
+            this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
+            // 
+            // chkR1
+            // 
+            this.chkR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR1.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR1.Checked = false;
+            this.chkR1.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(168)))), ((int)(((byte)(236)))));
+            this.chkR1.Enabled = false;
+            this.chkR1.ForeColor = System.Drawing.Color.White;
+            this.chkR1.Location = new System.Drawing.Point(258, 314);
+            this.chkR1.Name = "chkR1";
+            this.chkR1.Size = new System.Drawing.Size(20, 20);
+            this.chkR1.TabIndex = 141;
+            this.chkR1.OnChange += new System.EventHandler(this.ChkRobot_OnChange);
+            // 
+            // chkR2
+            // 
+            this.chkR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR2.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR2.Checked = false;
+            this.chkR2.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(0)))), ((int)(((byte)(123)))));
+            this.chkR2.Enabled = false;
+            this.chkR2.ForeColor = System.Drawing.Color.White;
+            this.chkR2.Location = new System.Drawing.Point(258, 415);
+            this.chkR2.Name = "chkR2";
+            this.chkR2.Size = new System.Drawing.Size(20, 20);
+            this.chkR2.TabIndex = 144;
+            this.chkR2.OnChange += new System.EventHandler(this.ChkRobot_OnChange);
+            // 
+            // chkR3
+            // 
+            this.chkR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR3.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
+            this.chkR3.Checked = false;
+            this.chkR3.CheckedOnColor = System.Drawing.Color.Black;
+            this.chkR3.Enabled = false;
+            this.chkR3.ForeColor = System.Drawing.Color.White;
+            this.chkR3.Location = new System.Drawing.Point(258, 516);
+            this.chkR3.Name = "chkR3";
+            this.chkR3.Size = new System.Drawing.Size(20, 20);
+            this.chkR3.TabIndex = 145;
+            this.chkR3.OnChange += new System.EventHandler(this.ChkRobot_OnChange);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1565,6 +1638,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.chkR3);
+            this.Controls.Add(this.chkR2);
+            this.Controls.Add(this.chkR1);
             this.Controls.Add(this.lblFouls);
             this.Controls.Add(this.lblGoalKick);
             this.Controls.Add(this.lblCorner);
@@ -1651,12 +1727,12 @@
             this.Controls.Add(this.grpRobot1);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.tbxStatus);
-            this.Controls.Add(this.gbxGoto);
             this.Controls.Add(this.PointRobot3);
             this.Controls.Add(this.PointRobot2);
             this.Controls.Add(this.PointRobot1);
             this.Controls.Add(this.PointBall);
             this.Controls.Add(this.Lap);
+            this.Controls.Add(this.gbxGoto);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -1664,8 +1740,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.gbxGoto.ResumeLayout(false);
-            this.gbxGoto.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).EndInit();
@@ -1680,6 +1754,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).EndInit();
+            this.gbxGoto.ResumeLayout(false);
+            this.gbxGoto.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1688,17 +1764,11 @@
         #endregion
 
         protected System.Windows.Forms.Label lblTimer;
-        protected System.Windows.Forms.GroupBox gbxGoto;
-        protected System.Windows.Forms.TextBox tbxGotoX;
-        protected System.Windows.Forms.Label lblX;
-        protected System.Windows.Forms.Label lblY;
-        protected System.Windows.Forms.TextBox tbxGotoY;
         protected System.Windows.Forms.PictureBox PointRobot3;
         protected System.Windows.Forms.PictureBox PointRobot2;
         protected System.Windows.Forms.PictureBox PointRobot1;
         protected System.Windows.Forms.PictureBox PointBall;
         protected System.Windows.Forms.PictureBox Lap;
-        protected System.Windows.Forms.Button btnTO;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot1;
         protected System.Windows.Forms.Label lblRobot1;
         protected System.Windows.Forms.Label lblConnectionR1;
@@ -1786,6 +1856,15 @@
         private System.Windows.Forms.Label lblRCard;
         private System.Windows.Forms.Label lblYCard;
         private System.Windows.Forms.Label lblPenalty;
+        protected System.Windows.Forms.GroupBox gbxGoto;
+        protected System.Windows.Forms.TextBox tbxGotoX;
+        protected System.Windows.Forms.Label lblX;
+        protected System.Windows.Forms.Label lblY;
+        protected System.Windows.Forms.TextBox tbxGotoY;
+        protected System.Windows.Forms.Button btnTO;
+        private Bunifu.Framework.UI.BunifuCheckbox chkR1;
+        private Bunifu.Framework.UI.BunifuCheckbox chkR2;
+        private Bunifu.Framework.UI.BunifuCheckbox chkR3;
     }
 }
 
