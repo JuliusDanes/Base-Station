@@ -132,6 +132,7 @@
             this.chkR1 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR2 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR3 = new Bunifu.Framework.UI.BunifuCheckbox();
+            this.lblHalf = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -1631,6 +1632,18 @@
             this.chkR3.TabIndex = 145;
             this.chkR3.OnChange += new System.EventHandler(this.ChkRobot_OnChange);
             // 
+            // lblHalf
+            // 
+            this.lblHalf.BackColor = System.Drawing.Color.Transparent;
+            this.lblHalf.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHalf.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.lblHalf.Location = new System.Drawing.Point(1195, 63);
+            this.lblHalf.Name = "lblHalf";
+            this.lblHalf.Size = new System.Drawing.Size(56, 36);
+            this.lblHalf.TabIndex = 146;
+            this.lblHalf.Text = "-";
+            this.lblHalf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1638,6 +1651,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblHalf);
             this.Controls.Add(this.chkR3);
             this.Controls.Add(this.chkR2);
             this.Controls.Add(this.chkR1);
@@ -1865,6 +1879,7 @@
         private Bunifu.Framework.UI.BunifuCheckbox chkR1;
         private Bunifu.Framework.UI.BunifuCheckbox chkR2;
         private Bunifu.Framework.UI.BunifuCheckbox chkR3;
+        protected System.Windows.Forms.Label lblHalf;
     }
 }
 

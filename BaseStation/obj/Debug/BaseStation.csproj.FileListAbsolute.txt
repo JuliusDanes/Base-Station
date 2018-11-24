@@ -36,3 +36,4 @@ E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.C
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.CopyComplete
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.exe
 E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.pdb
+E:\KRSBI\BaseStationProj\Base-Station\BaseStation\obj\Debug\BaseStation.csprojAssemblyReference.cache

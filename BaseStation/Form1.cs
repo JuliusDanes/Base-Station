@@ -472,9 +472,11 @@ namespace BaseStation
                 /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
                         respone = "FIRST_HALF";
+                        hc.SetText(this, lblHalf, "1");
                         goto broadcast;
                     case "2": //SECOND_HALF
                         respone = "SECOND_HALF";
+                        hc.SetText(this, lblHalf, "2");
                         goto broadcast;
                     case "3": //FIRST_HALF_OVERTIME
                         respone = "FIRST_HALF_OVERTIME";
