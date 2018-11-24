@@ -29,6 +29,7 @@ namespace BaseStation
             setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
             setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
+            //setTransparent(lblDiv2, new dynamic[] { lblGoto, lblGotoComma });
 
             // Create a material theme manager and add the form to manage (this)
             //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
@@ -224,11 +225,19 @@ namespace BaseStation
                 while (chk[0] |= chk[1])
                 {
                     if (startX != endX)
-                        startX += shiftX;   // Process
+                    {
+                        if (Math.Abs(endX - startX) < Math.Abs(shiftX))     // Shift not corresponding
+                            shiftX = (endX - startX);
+                        startX += shiftX;   // On process
+                    }
                     else
                         chk[0] = false;     // Done
                     if (startY != endY)
-                        startY += shiftY;   // Process
+                    {
+                        if (Math.Abs(endY - startY) < Math.Abs(shiftY))     // Shift not corresponding
+                            shiftY = (endY - startY);
+                        startY += shiftY;   // On process
+                    }
                     else
                         chk[1] = false;     // Done
 

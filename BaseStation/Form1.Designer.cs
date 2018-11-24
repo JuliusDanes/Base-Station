@@ -123,17 +123,17 @@
             this.lblRCard = new System.Windows.Forms.Label();
             this.lblYCard = new System.Windows.Forms.Label();
             this.lblPenalty = new System.Windows.Forms.Label();
-            this.gbxGoto = new System.Windows.Forms.GroupBox();
-            this.tbxGotoX = new System.Windows.Forms.TextBox();
-            this.lblX = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.tbxGotoY = new System.Windows.Forms.TextBox();
             this.btnTO = new System.Windows.Forms.Button();
             this.chkR1 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR2 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR3 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.lblHalf = new System.Windows.Forms.Label();
             this.lblScale = new System.Windows.Forms.Label();
+            this.tbxGotoX = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.tbxGotoY = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.lblGotoComma = new System.Windows.Forms.Label();
+            this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
+            this.lblGoto = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -148,7 +148,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).BeginInit();
-            this.gbxGoto.SuspendLayout();
             this.SuspendLayout();
             // 
             // PointRobot3
@@ -1530,60 +1529,9 @@
             this.lblPenalty.Text = "0";
             this.lblPenalty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // gbxGoto
-            // 
-            this.gbxGoto.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.gbxGoto.Controls.Add(this.tbxGotoX);
-            this.gbxGoto.Controls.Add(this.lblX);
-            this.gbxGoto.Controls.Add(this.lblY);
-            this.gbxGoto.Controls.Add(this.tbxGotoY);
-            this.gbxGoto.Controls.Add(this.btnTO);
-            this.gbxGoto.Location = new System.Drawing.Point(1028, 605);
-            this.gbxGoto.Name = "gbxGoto";
-            this.gbxGoto.Size = new System.Drawing.Size(182, 75);
-            this.gbxGoto.TabIndex = 140;
-            this.gbxGoto.TabStop = false;
-            this.gbxGoto.Text = "Goto";
-            // 
-            // tbxGotoX
-            // 
-            this.tbxGotoX.Location = new System.Drawing.Point(26, 17);
-            this.tbxGotoX.Name = "tbxGotoX";
-            this.tbxGotoX.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoX.TabIndex = 4;
-            this.tbxGotoX.Text = "0";
-            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
-            // 
-            // lblX
-            // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 20);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 2;
-            this.lblX.Text = "X";
-            // 
-            // lblY
-            // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(72, 20);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 3;
-            this.lblY.Text = "Y";
-            // 
-            // tbxGotoY
-            // 
-            this.tbxGotoY.Location = new System.Drawing.Point(92, 17);
-            this.tbxGotoY.Name = "tbxGotoY";
-            this.tbxGotoY.Size = new System.Drawing.Size(40, 20);
-            this.tbxGotoY.TabIndex = 5;
-            this.tbxGotoY.Text = "0";
-            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
-            // 
             // btnTO
             // 
-            this.btnTO.Location = new System.Drawing.Point(11, 46);
+            this.btnTO.Location = new System.Drawing.Point(1108, 535);
             this.btnTO.Name = "btnTO";
             this.btnTO.Size = new System.Drawing.Size(75, 23);
             this.btnTO.TabIndex = 44;
@@ -1658,6 +1606,82 @@
             this.lblScale.TabIndex = 147;
             this.lblScale.Text = "scale 1 : 20";
             // 
+            // tbxGotoX
+            // 
+            this.tbxGotoX.Depth = 0;
+            this.tbxGotoX.Hint = "X";
+            this.tbxGotoX.Location = new System.Drawing.Point(1062, 509);
+            this.tbxGotoX.MaxLength = 32767;
+            this.tbxGotoX.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tbxGotoX.Name = "tbxGotoX";
+            this.tbxGotoX.PasswordChar = '\0';
+            this.tbxGotoX.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.tbxGotoX.SelectedText = "";
+            this.tbxGotoX.SelectionLength = 0;
+            this.tbxGotoX.SelectionStart = 0;
+            this.tbxGotoX.Size = new System.Drawing.Size(45, 23);
+            this.tbxGotoX.TabIndex = 148;
+            this.tbxGotoX.TabStop = false;
+            this.tbxGotoX.Text = "0";
+            this.tbxGotoX.UseSystemPasswordChar = false;
+            this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // tbxGotoY
+            // 
+            this.tbxGotoY.Depth = 0;
+            this.tbxGotoY.Hint = "Y";
+            this.tbxGotoY.Location = new System.Drawing.Point(1121, 509);
+            this.tbxGotoY.MaxLength = 32767;
+            this.tbxGotoY.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tbxGotoY.Name = "tbxGotoY";
+            this.tbxGotoY.PasswordChar = '\0';
+            this.tbxGotoY.SelectedText = "";
+            this.tbxGotoY.SelectionLength = 0;
+            this.tbxGotoY.SelectionStart = 0;
+            this.tbxGotoY.Size = new System.Drawing.Size(45, 23);
+            this.tbxGotoY.TabIndex = 149;
+            this.tbxGotoY.TabStop = false;
+            this.tbxGotoY.Text = "0";
+            this.tbxGotoY.UseSystemPasswordChar = false;
+            this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // lblGotoComma
+            // 
+            this.lblGotoComma.BackColor = System.Drawing.Color.Transparent;
+            this.lblGotoComma.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.lblGotoComma.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblGotoComma.Location = new System.Drawing.Point(1108, 516);
+            this.lblGotoComma.Name = "lblGotoComma";
+            this.lblGotoComma.Size = new System.Drawing.Size(12, 20);
+            this.lblGotoComma.TabIndex = 148;
+            this.lblGotoComma.Text = ",";
+            // 
+            // lblDiv2
+            // 
+            this.lblDiv2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDiv2.Depth = 0;
+            this.lblDiv2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiv2.ForeColor = System.Drawing.Color.Black;
+            this.lblDiv2.Location = new System.Drawing.Point(1007, 509);
+            this.lblDiv2.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDiv2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDiv2.Name = "lblDiv2";
+            this.lblDiv2.Size = new System.Drawing.Size(10, 23);
+            this.lblDiv2.TabIndex = 151;
+            this.lblDiv2.Text = "0";
+            // 
+            // lblGoto
+            // 
+            this.lblGoto.BackColor = System.Drawing.Color.Transparent;
+            this.lblGoto.Font = new System.Drawing.Font("Bahnschrift", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGoto.ForeColor = System.Drawing.Color.Black;
+            this.lblGoto.Location = new System.Drawing.Point(1007, 509);
+            this.lblGoto.Name = "lblGoto";
+            this.lblGoto.Size = new System.Drawing.Size(49, 23);
+            this.lblGoto.TabIndex = 152;
+            this.lblGoto.Text = "Goto";
+            this.lblGoto.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1665,7 +1689,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnTO);
+            this.Controls.Add(this.lblGotoComma);
+            this.Controls.Add(this.tbxGotoY);
             this.Controls.Add(this.lblScale);
+            this.Controls.Add(this.tbxGotoX);
             this.Controls.Add(this.lblHalf);
             this.Controls.Add(this.chkR3);
             this.Controls.Add(this.chkR2);
@@ -1761,7 +1789,8 @@
             this.Controls.Add(this.PointRobot1);
             this.Controls.Add(this.PointBall);
             this.Controls.Add(this.Lap);
-            this.Controls.Add(this.gbxGoto);
+            this.Controls.Add(this.lblDiv2);
+            this.Controls.Add(this.lblGoto);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -1783,8 +1812,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).EndInit();
-            this.gbxGoto.ResumeLayout(false);
-            this.gbxGoto.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1885,17 +1912,17 @@
         private System.Windows.Forms.Label lblRCard;
         private System.Windows.Forms.Label lblYCard;
         private System.Windows.Forms.Label lblPenalty;
-        protected System.Windows.Forms.GroupBox gbxGoto;
-        protected System.Windows.Forms.TextBox tbxGotoX;
-        protected System.Windows.Forms.Label lblX;
-        protected System.Windows.Forms.Label lblY;
-        protected System.Windows.Forms.TextBox tbxGotoY;
         protected System.Windows.Forms.Button btnTO;
         private Bunifu.Framework.UI.BunifuCheckbox chkR1;
         private Bunifu.Framework.UI.BunifuCheckbox chkR2;
         private Bunifu.Framework.UI.BunifuCheckbox chkR3;
         protected System.Windows.Forms.Label lblHalf;
         private System.Windows.Forms.Label lblScale;
+        private MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoX;
+        private MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoY;
+        protected System.Windows.Forms.Label lblGotoComma;
+        private MaterialSkin.Controls.MaterialDivider lblDiv2;
+        private System.Windows.Forms.Label lblGoto;
     }
 }
 
