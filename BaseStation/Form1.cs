@@ -279,7 +279,7 @@ namespace BaseStation
                 {
                     addCommand("# Setting up server...");
                     addCommand("# IP " + this.Text + "  : " + tbxIPBS.Text);
-                    lblConnectionBS.Text = "Open";
+                    hc.SetText(this, lblConnectionBS, "Open");
                     _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
                     _serverSocket.Listen(1);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
@@ -668,28 +668,28 @@ namespace BaseStation
                 _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                tbxStatus.ResetText();
+                hc.SetText(this, tbxStatus, string.Empty);
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst);
-                connection.Text = "Connected";
+                hc.SetText(this, connection, "Connected");
                 SendCallBack(_toServerSocket, this.Text);
                 _socketDict.Add(keyName, _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
             }
             catch (SocketException)
             {
-                tbxStatus.ResetText();
+                hc.SetText(this, tbxStatus, string.Empty);
                 addCommand("# IP This Device  : " + myIP);
                 addCommand("# IP Destination  : " + ipDst);
                 addCommand("# Connection attempts: " + attempts.ToString());
-                connection.Text = "Disconnected";
+                hc.SetText(this, connection, "Disconnected");
             }
         }
 
         private void grpBaseStation_Click(object sender, EventArgs e)
         {
             if((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
-            SetupServer(tbxPortBS.Text);
+                new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
         }
 
         void sendFromTextBox()
@@ -726,7 +726,7 @@ namespace BaseStation
                     if (arr[i, j].Name == obj)
                         n = i;
             if ((arr[n,2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
-                reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2]);
+                new Thread(objs => reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
         }
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
