@@ -113,13 +113,13 @@ namespace BaseStation
                     if (arr[i, j].Name == obj)
                         n = i;
             if (e.KeyCode == Keys.Right)
-                arr[n,0].Text = (int.Parse(arr[n,0].Text) + 1).ToString();
+                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
             else if (e.KeyCode == Keys.Left)
-                arr[n,0].Text = (int.Parse(arr[n,0].Text) - 1).ToString();
+                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Up)
-                arr[n,1].Text = (int.Parse(arr[n,1].Text) - 1).ToString();
+                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Down)
-                arr[n,1].Text = (int.Parse(arr[n,1].Text) + 1).ToString();
+                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
         }
 
         void tbxXYChanged(object sender, EventArgs e)
@@ -154,6 +154,22 @@ namespace BaseStation
                 }
                 moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 4]);     // Encoder then using scale 1:20
             }
+        }
+
+        private void tbxEncScr_KeyDown(object sender, KeyEventArgs e)
+        {
+            changeCounter(sender, e);
+
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3 } };
+            int n = 0;
+            int[] val = new int[2];
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            string dtGoto = "X:" + arr[n,1].Text + ",Y:" + arr[n,2].Text;
+            SendCallBack(_socketDict[arr[n,0].Text], dtGoto);
         }
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
