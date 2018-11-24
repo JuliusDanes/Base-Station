@@ -133,6 +133,7 @@
             this.chkR2 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR3 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.lblHalf = new System.Windows.Forms.Label();
+            this.lblScale = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -1644,6 +1645,19 @@
             this.lblHalf.Text = "-";
             this.lblHalf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblScale
+            // 
+            this.lblScale.AutoEllipsis = true;
+            this.lblScale.AutoSize = true;
+            this.lblScale.BackColor = System.Drawing.Color.Transparent;
+            this.lblScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScale.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblScale.Location = new System.Drawing.Point(595, 494);
+            this.lblScale.Name = "lblScale";
+            this.lblScale.Size = new System.Drawing.Size(81, 17);
+            this.lblScale.TabIndex = 147;
+            this.lblScale.Text = "scale 1 : 20";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1651,6 +1665,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblScale);
             this.Controls.Add(this.lblHalf);
             this.Controls.Add(this.chkR3);
             this.Controls.Add(this.chkR2);
@@ -1880,6 +1895,7 @@
         private Bunifu.Framework.UI.BunifuCheckbox chkR2;
         private Bunifu.Framework.UI.BunifuCheckbox chkR3;
         protected System.Windows.Forms.Label lblHalf;
+        private System.Windows.Forms.Label lblScale;
     }
 }
 
