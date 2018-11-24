@@ -80,7 +80,27 @@ namespace BaseStation
                 time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
             hc.SetText(this, lblTimer, time);
         }
-        
+
+        delegate void addCommandCallback(string text);
+
+        private void addCommand(string text)
+        {
+            try
+            {
+                if (this.tbxStatus.InvokeRequired)
+                {
+                    addCommandCallback d = new addCommandCallback(addCommand);
+                    this.Invoke(d, new object[] { text });
+                }
+                else
+                    this.tbxStatus.Text += text + Environment.NewLine;
+            }
+            catch (Exception e)
+            {
+                addCommand("# Error set text tbxStatus \n\n" + e);
+            }
+        }
+
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
@@ -269,18 +289,6 @@ namespace BaseStation
             return myIP;
         }
 
-        delegate void addCommandCallback(string text);
-
-        private void addCommand(string text)
-        {
-            if (this.tbxStatus.InvokeRequired)
-            {
-                addCommandCallback d = new addCommandCallback(addCommand);
-                this.Invoke(d, new object[] { text });
-            }
-            else
-                this.tbxStatus.Text += text + Environment.NewLine;
-        }
         string socketToIP(Socket socket)
         {
             var _temp = socket.RemoteEndPoint.ToString().Split(':');

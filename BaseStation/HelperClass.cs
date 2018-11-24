@@ -21,28 +21,41 @@ namespace BaseStation
 
         internal void SetText(Form form, Control ctrl, string text)
         {
-            // InvokeRequired required compares the thread ID of the 
-            // calling thread to the thread ID of the creating thread. 
-            // If these threads are different, it returns true. 
-            if (ctrl.InvokeRequired)
+            try
             {
-                SetTextCallback d = new SetTextCallback(SetText);
-                form.Invoke(d, new object[] { form, ctrl, text });
+                // InvokeRequired required compares the thread ID of the 
+                // calling thread to the thread ID of the creating thread. 
+                // If these threads are different, it returns true. 
+                if (ctrl.InvokeRequired)
+                {
+                    SetTextCallback d = new SetTextCallback(SetText);
+                    form.Invoke(d, new object[] { form, ctrl, text });
+                }
+                else
+                    ctrl.Text = text;
             }
-            else
-                ctrl.Text = text;
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error set text " + ctrl + " \n\n" + e);
+            }
         }
 
         internal void SetLocation(Form form, Control ctrl, Point point)
         {
-            if (ctrl.InvokeRequired)
+            try
             {
-                SetLocationCallback d = new SetLocationCallback(SetLocation);
-                //new Thread(obj => form.Invoke(d, new object[] { form, ctrl, point })).Start();
-                form.Invoke(d, new object[] { form, ctrl, point });
+                if (ctrl.InvokeRequired)
+                {
+                    SetLocationCallback d = new SetLocationCallback(SetLocation);
+                    form.Invoke(d, new object[] { form, ctrl, point });
+                }
+                else
+                    ctrl.Location = point;
             }
-            else
-                ctrl.Location = point;
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error set location \n\n" + e);
+            }
         }
     }
 }
