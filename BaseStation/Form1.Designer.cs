@@ -1531,7 +1531,7 @@
             // 
             // btnTO
             // 
-            this.btnTO.Location = new System.Drawing.Point(1108, 535);
+            this.btnTO.Location = new System.Drawing.Point(1091, 543);
             this.btnTO.Name = "btnTO";
             this.btnTO.Size = new System.Drawing.Size(75, 23);
             this.btnTO.TabIndex = 44;
