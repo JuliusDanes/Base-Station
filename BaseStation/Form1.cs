@@ -864,7 +864,7 @@ namespace BaseStation
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0] == obj)
                     n = i;
-            arr[n, 1].Value = arr[n, 1].MaxValue = time;
+            arr[n, 1].MaxValue = time; hc.SetValue(this, arr[n, 1], time); 
             hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
             hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
             timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
@@ -879,14 +879,15 @@ namespace BaseStation
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0] == obj)
                     n = i;
-            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 20));
-            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 20).ToString());
+            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 1));
+            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 1).ToString());
             if (arr[n, 1].Value == 0)
             {
                 hc.SetVisible(this, arr[n, 1], false);
                 setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
                 timerDict[arr[n, 0]].Change(Timeout.Infinite, Timeout.Infinite);
                 timerDict.Remove(arr[n, 0]);
+                arr[n, 1].ProgressColor = Color.SeaGreen;
             }
             else if (arr[n, 1].Value == arr[n, 1].MaxValue / 2)
                 arr[n, 1].ProgressColor = Color.Goldenrod;
