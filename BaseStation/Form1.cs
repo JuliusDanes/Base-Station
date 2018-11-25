@@ -16,7 +16,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 
 namespace BaseStation
-{  
+{
     public partial class Form1 : Form
     {
         public Form1()
@@ -25,11 +25,11 @@ namespace BaseStation
             setTransparent(Lap, new dynamic[] { PointBall, PointRobot1, PointRobot2, PointRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
-            //setTransparent(lblDiv2, new dynamic[] { lblGoto, lblGotoComma });
+            setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 });
 
             // Create a material theme manager and add the form to manage (this)
             //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
@@ -44,10 +44,14 @@ namespace BaseStation
             //);
         }
 
-        HelperClass hc = new HelperClass();     
+        HelperClass hc = new HelperClass();
+
+        System.Threading.Timer time, timer;
+        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        { 
+        
             tbxIPBS.Text /*= GetIPAddress()*/ = "192.168.165.10";
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
@@ -56,16 +60,16 @@ namespace BaseStation
             tbxPortR1.Text = "8686";
 
             resetLocation();
-            time.Start();
-            timer.Start();
+            time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer));
+            time.Change(1000, 1000); timer.Change(1000, 1000);
         }
 
-        private void time_Tick(object sender, EventArgs e)
+        private void tickTime(object state)
         {
-            this.lblTime.Text = "[  "+ DateTime.Now.ToString("HH:mm:ss") +"  ]";
+            hc.SetText(this, lblTime, ("[  " + DateTime.Now.ToString("HH:mm:ss") + "  ]"));
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void tickTimer(object state)
         {
             string time = lblTimer.Text;
             var _time = time.Split(':');            // split minute and second
@@ -157,8 +161,8 @@ namespace BaseStation
             {
                 if (obj.StartsWith("tbxEnc"))   // Encoder then using scale 1:20
                 {
-                    val[0] = (int.Parse(arr[n,0].Text));
-                    val[1] = (int.Parse(arr[n,1].Text));
+                    val[0] = (int.Parse(arr[n, 0].Text));
+                    val[1] = (int.Parse(arr[n, 1].Text));
                     hc.SetText(this, arr[n, 0], val[0].ToString());          // On encoder tbx
                     hc.SetText(this, arr[n, 1], val[1].ToString());
                     hc.SetText(this, arr[n, 2], (val[0] / 20).ToString());   // On screen tbx
@@ -166,8 +170,8 @@ namespace BaseStation
                 }
                 else
                 {
-                    val[0] = (int.Parse(arr[n,2].Text));
-                    val[1] = (int.Parse(arr[n,3].Text));
+                    val[0] = (int.Parse(arr[n, 2].Text));
+                    val[1] = (int.Parse(arr[n, 3].Text));
                     hc.SetText(this, arr[n, 0], (val[0] * 20).ToString());   // On encoder tbx
                     hc.SetText(this, arr[n, 1], (val[1] * 20).ToString());
                     hc.SetText(this, arr[n, 2], val[0].ToString());          // On screen tbx
@@ -189,8 +193,8 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            string dtGoto = "X:" + arr[n,1].Text + ",Y:" + arr[n,2].Text;
-            SendCallBack(_socketDict[arr[n,0].Text], dtGoto);
+            string dtGoto = "X:" + arr[n, 1].Text + ",Y:" + arr[n, 2].Text;
+            SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
         }
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
@@ -205,9 +209,9 @@ namespace BaseStation
                         int n = 0;
                         int[] val = new int[2];
                         for (int i = 0; i < arr.GetLength(0); i++)
-                             if (arr[i, 0].Text == dt)
-                                    n = i;
-                        new Thread(obj => GotoLoc(arr[n,0].Text, arr[n, 1], arr[n, 2], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 20, 20)).Start();
+                            if (arr[i, 0].Text == dt)
+                                n = i;
+                        new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 20, 20)).Start();
                     }
         }
 
@@ -261,7 +265,7 @@ namespace BaseStation
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = {20, 20};   // Distance(cm) per shift
+            int[] shift = { 20, 20 };   // Distance(cm) per shift
             dynamic[,] arr = null;
             if (formation == "Stand By")
                 arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
@@ -283,8 +287,8 @@ namespace BaseStation
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
         List<string> _chkRobotCollect = new List<string>();
-        internal int port, attempts = 0;
-        internal string myIP, chkRobotCollect=string.Empty;
+        internal int port, attempts = 0, ctr = 0;
+        internal string myIP, chkRobotCollect = string.Empty;
 
         string GetIPAddress()
         {
@@ -318,7 +322,7 @@ namespace BaseStation
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 addCommand("# FAILED to open server connection \n\n" + e);
             }
@@ -327,7 +331,7 @@ namespace BaseStation
         void AcceptCallback(IAsyncResult AR)
         {
             try
-            { 
+            {
                 Socket socket = _serverSocket.EndAccept(AR);
                 if (socket.Connected)
                 {
@@ -347,12 +351,12 @@ namespace BaseStation
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
             try
-            { 
+            {
                 Socket socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
-                string text = Encoding.ASCII.GetString(dataBuf).Trim();            
+                string text = Encoding.ASCII.GetString(dataBuf).Trim();
                 var _data = text.Split('|');
                 addCommand("> " + socketToIP(socket) + " : " + _data[0]);
 
@@ -375,7 +379,7 @@ namespace BaseStation
         void SendCallBack(Socket _dstSocket, string txtMessage)
         {
             try
-            { 
+            {
                 addCommand("@ " + socketToIP(_dstSocket) + " : " + txtMessage);
                 byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
@@ -386,7 +390,7 @@ namespace BaseStation
                 addCommand("# FAILED to send message \n\n" + e);
             }
         }
-        
+
         void SendCallBack(Socket _dstSocket, string txtMessage, string Goto)
         {
             try
@@ -424,7 +428,7 @@ namespace BaseStation
                 MessageBox.Show("host Not Found :<");
             }
         }
-        
+
         string ResponeCallback(dynamic text, Socket socket)
         {
             string respone = string.Empty;
@@ -449,13 +453,13 @@ namespace BaseStation
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
 
-                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1}, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
+                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
                 int n = 0;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
                         n = i;
-                hc.SetText(this, arr[n,1], _posXY[0].ToString());          // On encoder tbx
-                hc.SetText(this, arr[n,2], _posXY[1].ToString());
+                hc.SetText(this, arr[n, 1], _posXY[0].ToString());          // On encoder tbx
+                hc.SetText(this, arr[n, 2], _posXY[1].ToString());
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -478,16 +482,14 @@ namespace BaseStation
                 // If socket is Referee Box socket                
                 switch (text)       // Condition in General
                 {
-                /// 1. DEFAULT COMMANDS ///
+                    /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
                         respone = "STOP";
-                        //timer.Stop();
+                        timer.Change(Timeout.Infinite, Timeout.Infinite);
                         goto broadcast;
                     case "s": //START
-                        hc.SetText(this, lblTimer, "00:00");
-                        //timer.Start();
-                        //timer.Enabled = true;
                         respone = "START";
+                        timer.Change(1000, 1000);
                         goto broadcast;
                     case "W": //WELCOME (welcome message)
                         respone = "WELCOME";
@@ -500,9 +502,9 @@ namespace BaseStation
                         break;
                     case "u": //TESTMODE_OFF (TestMode Off)
                         respone = "TESTMODE_OFF";
-                        break;                        
+                        break;
 
-                /// 3. GAME FLOW COMMANDS ///
+                    /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
                         respone = "FIRST_HALF";
                         hc.SetText(this, lblHalf, "1");
@@ -516,21 +518,21 @@ namespace BaseStation
                         goto broadcast; ;
                     case "4": //SECOND_HALF_OVERTIME
                         respone = "SECOND_HALF_OVERTIME";
-                        goto broadcast;;
+                        goto broadcast; ;
                     case "h": //HALF_TIME
                         respone = "HALF_TIME";
-                        goto broadcast;;
+                        goto broadcast; ;
                     case "e": //END_GAME (ends 2nd part, may go into overtime)
                         respone = "END_GAME";
-                        goto broadcast;;
+                        goto broadcast; ;
                     case "z": //GAMEOVER (Game Over)
                         respone = "GAMEOVER";
-                        goto broadcast;;
+                        goto broadcast; ;
                     case "L": //PARKING
                         respone = "PARKING";
                         break;
 
-                /// 6. OTHERS ///
+                    /// 6. OTHERS ///
                     case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
                         break;
@@ -547,26 +549,21 @@ namespace BaseStation
                         case "Y": //YELLOW_CARD_CYAN
                             respone = "YELLOW_CARD_CYAN";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
-                            YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard1R2, YCard1R3 });
                             goto broadcast;
                         case "R": //RED_CARD_CYAN
                             respone = "RED_CARD_CYAN";
                             setMatchInfo(new dynamic[] { lblRCard, lblFouls });
-                            RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                            setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
                             goto broadcast;
                         case "B": //DOUBLE_YELLOW_CYAN
                             respone = "DOUBLE_YELLOW_CYAN";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
-                            YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
+                            //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
+                            setTimer("Robot1", 120);
+                            setTimer("Robot2", 120);
+                            setTimer("Robot3", 120);
                             goto broadcast;
 
                         /// 4. GOAL STATUS ///
@@ -607,26 +604,21 @@ namespace BaseStation
                         case "y": //YELLOW_CARD_MAGENTA	
                             respone = "YELLOW_CARD_MAGENTA";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
-                            YCard1R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard1R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard1R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
+                            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard1R2, YCard1R3 });
                             goto broadcast;
                         case "r": //RED_CARD_MAGENTA
                             respone = "RED_CARD_MAGENTA";
                             setMatchInfo(new dynamic[] { lblRCard, lblFouls });
-                            RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                            setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
                             goto broadcast;
                         case "b": //DOUBLE_YELLOW_MAGENTA
                             respone = "DOUBLE_YELLOW_MAGENTA";
                             setMatchInfo(new dynamic[] { lblYCard, lblRCard, lblFouls }); ;
-                            YCard2R1.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard2R2.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            YCard2R3.BackgroundImage = Image.FromFile(@"images\YellowRedCardFill.png");
-                            RCardR1.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR2.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
-                            RCardR3.BackgroundImage = Image.FromFile(@"images\RedCardFill.png");
+                            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
+                            //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
+                            setTimer("Robot1", 120);
+                            setTimer("Robot2", 120);
+                            setTimer("Robot3", 120);
                             goto broadcast;
 
                         /// 4. GOAL STATUS ///
@@ -661,7 +653,7 @@ namespace BaseStation
                 }
             }
             else    // for all socket         
-            {                       
+            {
                 switch (text)
                 {
                     /// OTHERS ///
@@ -689,13 +681,13 @@ namespace BaseStation
 
         void setMatchInfo(dynamic[] objs)
         {
-            foreach(dynamic obj in objs)
+            foreach (dynamic obj in objs)
                 hc.SetText(this, obj, (int.Parse(obj.Text) + 1).ToString());
         }
-        
+
         void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
         {
-            addCommand("# Connecting to " + ipDst +" ("+keyName+")");
+            addCommand("# Connecting to " + ipDst + " (" + keyName + ")");
             try
             {
                 attempts++;
@@ -722,7 +714,7 @@ namespace BaseStation
 
         private void grpBaseStation_Click(object sender, EventArgs e)
         {
-            if((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+            if ((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
         }
 
@@ -749,7 +741,7 @@ namespace BaseStation
             if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxMessage.Text)))
                 sendFromTextBox();
         }
-        
+
         private void Connection_byDistinct(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
@@ -759,7 +751,7 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            if ((arr[n,2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
+            if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
                 new Thread(objs => reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
         }
 
@@ -770,7 +762,7 @@ namespace BaseStation
         }
 
         private void Connection_keyEnter(object sender, KeyEventArgs e)
-        {            
+        {
             if (e.KeyCode == Keys.Enter)
                 Connection_byDistinct(sender, e);
         }
@@ -783,7 +775,7 @@ namespace BaseStation
 
         private void TeamSwitch_OnValueChange(object sender, EventArgs e)
         {
-            if(TeamSwitch.Value == true)
+            if (TeamSwitch.Value == true)
                 this.BackgroundImage = Image.FromFile(@"images\Background Cyan.jpg");       // Team CYAN
             else
                 this.BackgroundImage = Image.FromFile(@"images\Background Magenta.jpg");    // Team MAGENTA
@@ -845,10 +837,67 @@ namespace BaseStation
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
-            lblTimer.Text = "00:00";
-            timer.Start();
+            //lblTimer.Text = "00:00";
+            //timer.Start();
             //timer.Enabled = true;]
             //setFormation();
+
+            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard2R1 });
+            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R2, YCard2R2 });
+            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R3, YCard2R3 });
+            setTimer("Robot1", 120);
+            setTimer("Robot2", 120);
+            setTimer("Robot3", 120);
+
+            //setTimer = Timeout.Infinite;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //setTimer = 1000;
+        }
+        
+        void setTimer(string obj, int time)
+        {
+            dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1 }, { "Robot2", ProgressR2, lblTimerR2 }, { "Robot3", ProgressR3, lblTimerR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0] == obj)
+                    n = i;
+            arr[n, 1].Value = arr[n, 1].MaxValue = time;
+            hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
+            hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
+            timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
+
+        }
+
+        void tickRobot(object state)
+        {
+            var obj = state;
+            dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1, YCard1R1, YCard2R1 }, { "Robot2", ProgressR2, lblTimerR2, YCard1R2, YCard2R2 }, { "Robot3", ProgressR3, lblTimerR3, YCard1R3, YCard2R3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0] == obj)
+                    n = i;
+            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 20));
+            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 20).ToString());
+            if (arr[n, 1].Value == 0)
+            {
+                hc.SetVisible(this, arr[n, 1], false);
+                setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
+                timerDict[arr[n, 0]].Change(Timeout.Infinite, Timeout.Infinite);
+                timerDict.Remove(arr[n, 0]);
+            }
+            else if (arr[n, 1].Value == arr[n, 1].MaxValue / 2)
+                arr[n, 1].ProgressColor = Color.Goldenrod;
+            else if (arr[n, 1].Value == 10)
+                arr[n, 1].ProgressColor = Color.Firebrick;
+        }
+
+        void setCard(string dir, dynamic[] obj)
+        {
+            foreach(var i in obj)
+                i.BackgroundImage = Image.FromFile(dir);
         }
     }
 }

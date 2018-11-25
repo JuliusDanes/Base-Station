@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.PointRobot3 = new System.Windows.Forms.PictureBox();
             this.PointRobot2 = new System.Windows.Forms.PictureBox();
@@ -108,8 +107,6 @@
             this.lblGoalMagenta = new System.Windows.Forms.Label();
             this.lblSplitScore = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
-            this.time = new System.Windows.Forms.Timer(this.components);
-            this.timer = new System.Windows.Forms.Timer(this.components);
             this.lblDiv = new MaterialSkin.Controls.MaterialDivider();
             this.lblPenaltyTxt = new System.Windows.Forms.Label();
             this.lblYCardTxt = new System.Windows.Forms.Label();
@@ -134,6 +131,14 @@
             this.lblGotoComma = new System.Windows.Forms.Label();
             this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
             this.lblGoto = new System.Windows.Forms.Label();
+            this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
+            this.ProgressR1 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            this.lblTimerR1 = new System.Windows.Forms.Label();
+            this.lblTimerR2 = new System.Windows.Forms.Label();
+            this.ProgressR2 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            this.lblTimerR3 = new System.Windows.Forms.Label();
+            this.ProgressR3 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -1360,18 +1365,6 @@
             this.lblTime.TabIndex = 125;
             this.lblTime.Text = "Time";
             // 
-            // time
-            // 
-            this.time.Enabled = true;
-            this.time.Interval = 1000;
-            this.time.Tick += new System.EventHandler(this.time_Tick);
-            // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
             // lblDiv
             // 
             this.lblDiv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1682,6 +1675,132 @@
             this.lblGoto.Text = "Goto";
             this.lblGoto.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // metroProgressSpinner1
+            // 
+            this.metroProgressSpinner1.Location = new System.Drawing.Point(331, 410);
+            this.metroProgressSpinner1.Maximum = 100;
+            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
+            this.metroProgressSpinner1.Size = new System.Drawing.Size(64, 62);
+            this.metroProgressSpinner1.TabIndex = 153;
+            // 
+            // ProgressR1
+            // 
+            this.ProgressR1.animated = false;
+            this.ProgressR1.animationIterval = 5;
+            this.ProgressR1.animationSpeed = 300;
+            this.ProgressR1.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressR1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressR1.BackgroundImage")));
+            this.ProgressR1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.ProgressR1.ForeColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR1.LabelVisible = false;
+            this.ProgressR1.LineProgressThickness = 20;
+            this.ProgressR1.LineThickness = 18;
+            this.ProgressR1.Location = new System.Drawing.Point(232, 338);
+            this.ProgressR1.Margin = new System.Windows.Forms.Padding(0);
+            this.ProgressR1.MaxValue = 100;
+            this.ProgressR1.Name = "ProgressR1";
+            this.ProgressR1.ProgressBackColor = System.Drawing.Color.Transparent;
+            this.ProgressR1.ProgressColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR1.Size = new System.Drawing.Size(40, 40);
+            this.ProgressR1.TabIndex = 156;
+            this.ProgressR1.Value = 25;
+            this.ProgressR1.Visible = false;
+            // 
+            // lblTimerR1
+            // 
+            this.lblTimerR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimerR1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimerR1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblTimerR1.Location = new System.Drawing.Point(233, 344);
+            this.lblTimerR1.Name = "lblTimerR1";
+            this.lblTimerR1.Size = new System.Drawing.Size(41, 28);
+            this.lblTimerR1.TabIndex = 159;
+            this.lblTimerR1.Text = "0";
+            this.lblTimerR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTimerR1.Visible = false;
+            // 
+            // lblTimerR2
+            // 
+            this.lblTimerR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimerR2.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimerR2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblTimerR2.Location = new System.Drawing.Point(233, 446);
+            this.lblTimerR2.Name = "lblTimerR2";
+            this.lblTimerR2.Size = new System.Drawing.Size(41, 28);
+            this.lblTimerR2.TabIndex = 161;
+            this.lblTimerR2.Text = "0";
+            this.lblTimerR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTimerR2.Visible = false;
+            // 
+            // ProgressR2
+            // 
+            this.ProgressR2.animated = false;
+            this.ProgressR2.animationIterval = 5;
+            this.ProgressR2.animationSpeed = 300;
+            this.ProgressR2.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressR2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressR2.BackgroundImage")));
+            this.ProgressR2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.ProgressR2.ForeColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR2.LabelVisible = false;
+            this.ProgressR2.LineProgressThickness = 20;
+            this.ProgressR2.LineThickness = 18;
+            this.ProgressR2.Location = new System.Drawing.Point(232, 440);
+            this.ProgressR2.Margin = new System.Windows.Forms.Padding(0);
+            this.ProgressR2.MaxValue = 100;
+            this.ProgressR2.Name = "ProgressR2";
+            this.ProgressR2.ProgressBackColor = System.Drawing.Color.Transparent;
+            this.ProgressR2.ProgressColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR2.Size = new System.Drawing.Size(40, 40);
+            this.ProgressR2.TabIndex = 160;
+            this.ProgressR2.Value = 25;
+            this.ProgressR2.Visible = false;
+            // 
+            // lblTimerR3
+            // 
+            this.lblTimerR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimerR3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimerR3.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblTimerR3.Location = new System.Drawing.Point(233, 547);
+            this.lblTimerR3.Name = "lblTimerR3";
+            this.lblTimerR3.Size = new System.Drawing.Size(41, 28);
+            this.lblTimerR3.TabIndex = 163;
+            this.lblTimerR3.Text = "0";
+            this.lblTimerR3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTimerR3.Visible = false;
+            // 
+            // ProgressR3
+            // 
+            this.ProgressR3.animated = false;
+            this.ProgressR3.animationIterval = 5;
+            this.ProgressR3.animationSpeed = 300;
+            this.ProgressR3.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressR3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressR3.BackgroundImage")));
+            this.ProgressR3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.ProgressR3.ForeColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR3.LabelVisible = false;
+            this.ProgressR3.LineProgressThickness = 20;
+            this.ProgressR3.LineThickness = 18;
+            this.ProgressR3.Location = new System.Drawing.Point(232, 541);
+            this.ProgressR3.Margin = new System.Windows.Forms.Padding(0);
+            this.ProgressR3.MaxValue = 100;
+            this.ProgressR3.Name = "ProgressR3";
+            this.ProgressR3.ProgressBackColor = System.Drawing.Color.Transparent;
+            this.ProgressR3.ProgressColor = System.Drawing.Color.SeaGreen;
+            this.ProgressR3.Size = new System.Drawing.Size(40, 40);
+            this.ProgressR3.TabIndex = 162;
+            this.ProgressR3.Value = 25;
+            this.ProgressR3.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1045, 617);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 164;
+            this.button1.Text = "Try Out";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1689,6 +1808,14 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.lblTimerR3);
+            this.Controls.Add(this.ProgressR3);
+            this.Controls.Add(this.lblTimerR2);
+            this.Controls.Add(this.ProgressR2);
+            this.Controls.Add(this.lblTimerR1);
+            this.Controls.Add(this.ProgressR1);
+            this.Controls.Add(this.metroProgressSpinner1);
             this.Controls.Add(this.btnTO);
             this.Controls.Add(this.lblGotoComma);
             this.Controls.Add(this.tbxGotoY);
@@ -1897,8 +2024,6 @@
         protected System.Windows.Forms.Label lblGoalMagenta;
         protected System.Windows.Forms.Label lblSplitScore;
         private System.Windows.Forms.Label lblTime;
-        private System.Windows.Forms.Timer time;
-        private System.Windows.Forms.Timer timer;
         private MaterialSkin.Controls.MaterialDivider lblDiv;
         private System.Windows.Forms.Label lblPenaltyTxt;
         private System.Windows.Forms.Label lblYCardTxt;
@@ -1923,6 +2048,14 @@
         protected System.Windows.Forms.Label lblGotoComma;
         private MaterialSkin.Controls.MaterialDivider lblDiv2;
         private System.Windows.Forms.Label lblGoto;
+        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner1;
+        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR1;
+        protected System.Windows.Forms.Label lblTimerR1;
+        protected System.Windows.Forms.Label lblTimerR2;
+        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
+        protected System.Windows.Forms.Label lblTimerR3;
+        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
+        protected System.Windows.Forms.Button button1;
     }
 }
 

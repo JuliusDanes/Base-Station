@@ -3191,12 +3191,42 @@
         dSY4I+sAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="time.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>93, 17</value>
-  </metadata>
+  <data name="ProgressR1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFLSURBVFhH7ZehcsJAEIYjkZV1VHd6BIlE4lrR3MlW8hbg
+        gDtmKnkEZGVlZWQlElnZR2hvMzsDA0u5hL0LYr+Z3zDh/zfJ3e4li0E+M3e5M8N7W9ziT9eFWppVz5nf
+        Pb33FsX4agpW1qwPCtzJ6k811wO8tB2gCLK4PSmnZ93JSwf/khYfvqWKOpLVm1aepn/FP2RBJ5T0aUIQ
+        VcQ5KWe+khQJLYYqIESw+9EmHrCmqPBg2ecRWsXhYaGfyOBwfedvjzdox4/fIK9EaC1BH0U7fvxin1Kh
+        dQU3ipa8EGOukaBVRdnV8HqowCaC9Yy2fISMuVBFaTvBYy5A4IW2fMDaocKaCm15aDrm/hNa83DJmDsl
+        tOYBjvlUyAUq0ZoHmKMBm6SsTtXOfEBTrxq7/xyAm0vyHZPbol8165ShdUl2+BQEQRAEQRCEdsmyP40U
+        p4cCIf+YAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ProgressR2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFLSURBVFhH7ZehcsJAEIYjkZV1VHd6BIlE4lrR3MlW8hbg
+        gDtmKnkEZGVlZWQlElnZR2hvMzsDA0u5hL0LYr+Z3zDh/zfJ3e4li0E+M3e5M8N7W9ziT9eFWppVz5nf
+        Pb33FsX4agpW1qwPCtzJ6k811wO8tB2gCLK4PSmnZ93JSwf/khYfvqWKOpLVm1aepn/FP2RBJ5T0aUIQ
+        VcQ5KWe+khQJLYYqIESw+9EmHrCmqPBg2ecRWsXhYaGfyOBwfedvjzdox4/fIK9EaC1BH0U7fvxin1Kh
+        dQU3ipa8EGOukaBVRdnV8HqowCaC9Yy2fISMuVBFaTvBYy5A4IW2fMDaocKaCm15aDrm/hNa83DJmDsl
+        tOYBjvlUyAUq0ZoHmKMBm6SsTtXOfEBTrxq7/xyAm0vyHZPbol8165ShdUl2+BQEQRAEQRCEdsmyP40U
+        p4cCIf+YAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="ProgressR3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFLSURBVFhH7ZehcsJAEIYjkZV1VHd6BIlE4lrR3MlW8hbg
+        gDtmKnkEZGVlZWQlElnZR2hvMzsDA0u5hL0LYr+Z3zDh/zfJ3e4li0E+M3e5M8N7W9ziT9eFWppVz5nf
+        Pb33FsX4agpW1qwPCtzJ6k811wO8tB2gCLK4PSmnZ93JSwf/khYfvqWKOpLVm1aepn/FP2RBJ5T0aUIQ
+        VcQ5KWe+khQJLYYqIESw+9EmHrCmqPBg2ecRWsXhYaGfyOBwfedvjzdox4/fIK9EaC1BH0U7fvxin1Kh
+        dQU3ipa8EGOukaBVRdnV8HqowCaC9Yy2fISMuVBFaTvBYy5A4IW2fMDaocKaCm15aDrm/hNa83DJmDsl
+        tOYBjvlUyAUq0ZoHmKMBm6SsTtXOfEBTrxq7/xyAm0vyHZPbol8165ShdUl2+BQEQRAEQRCEdsmyP40U
+        p4cCIf+YAAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>41</value>
   </metadata>

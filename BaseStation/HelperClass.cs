@@ -17,6 +17,9 @@ namespace BaseStation
     {
         delegate void SetTextCallback(Form f, Control ctrl, string text);
         delegate void SetLocationCallback(Form f, Control ctrl, Point point);
+        delegate void SetObjectCallback(Form f, Control ctrl, dynamic obj, dynamic val);
+        delegate void SetValueCallback(Form f, dynamic ctrl, dynamic val);
+        delegate void SetVisibleCallback(Form f, dynamic ctrl, dynamic val);
         /// Set text property of various controls
 
         internal void SetText(Form form, Control ctrl, string text)
@@ -36,7 +39,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                MessageBox.Show("# Error set text " + ctrl + " \n\n" + e);
+                MessageBox.Show("# Error setText " + ctrl + " \n\n" + e);
             }
         }
 
@@ -54,7 +57,61 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                MessageBox.Show("# Error set location \n\n" + e);
+                MessageBox.Show("# Error setLocation \n\n" + e);
+            }
+        }
+
+        internal void SetObject(Form form, dynamic ctrl, dynamic obj, dynamic val)
+        {
+            try
+            {
+                if (ctrl.InvokeRequired)
+                {
+                    SetObjectCallback d = new SetObjectCallback(SetObject);
+                    form.Invoke(d, new object[] { form, ctrl, obj, val });
+                }
+                else
+                    obj = val;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error setObject \n\n" + e);
+            }
+        }
+
+        internal void SetValue(Form form, dynamic ctrl, dynamic val)
+        {
+            try
+            {
+                if (ctrl.InvokeRequired)
+                {
+                    SetValueCallback d = new SetValueCallback(SetValue);
+                    form.Invoke(d, new object[] { form, ctrl, val });
+                }
+                else
+                    ctrl.Value = val;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error setValue \n\n" + e);
+            }
+        }
+
+        internal void SetVisible(Form form, dynamic ctrl, dynamic val)
+        {
+            try
+            {
+                if (ctrl.InvokeRequired)
+                {
+                    SetVisibleCallback d = new SetVisibleCallback(SetVisible);
+                    form.Invoke(d, new object[] { form, ctrl, val });
+                }
+                else
+                    ctrl.Visible = val;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error setValue \n\n" + e);
             }
         }
     }
