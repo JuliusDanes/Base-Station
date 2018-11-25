@@ -508,26 +508,30 @@ namespace BaseStation
                     case "1": //FIRST_HALF
                         respone = "FIRST_HALF";
                         hc.SetText(this, lblHalf, "1");
+                        hc.SetText(this, lblTimer, "00:00");
                         goto broadcast;
                     case "2": //SECOND_HALF
                         respone = "SECOND_HALF";
                         hc.SetText(this, lblHalf, "2");
+                        hc.SetText(this, lblTimer, "00:00");
                         goto broadcast;
                     case "3": //FIRST_HALF_OVERTIME
                         respone = "FIRST_HALF_OVERTIME";
-                        goto broadcast; ;
+                        goto broadcast;
                     case "4": //SECOND_HALF_OVERTIME
                         respone = "SECOND_HALF_OVERTIME";
-                        goto broadcast; ;
+                        goto broadcast;
                     case "h": //HALF_TIME
                         respone = "HALF_TIME";
-                        goto broadcast; ;
+                        goto broadcast;
                     case "e": //END_GAME (ends 2nd part, may go into overtime)
                         respone = "END_GAME";
-                        goto broadcast; ;
+                        timer.Change(Timeout.Infinite, Timeout.Infinite);
+                        goto broadcast;
                     case "z": //GAMEOVER (Game Over)
                         respone = "GAMEOVER";
-                        goto broadcast; ;
+                        timer.Change(Timeout.Infinite, Timeout.Infinite);
+                        goto broadcast;
                     case "L": //PARKING
                         respone = "PARKING";
                         break;
@@ -570,7 +574,7 @@ namespace BaseStation
                         case "A": //GOAL_CYAN
                             respone = "GOAL_CYAN";
                             setMatchInfo(new dynamic[] { lblGoalCyan });
-                            break;
+                            goto broadcast;
                         case "D": //SUBGOAL_CYAN
                             respone = "SUBGOAL_CYAN";
                             break;
@@ -578,10 +582,11 @@ namespace BaseStation
                         /// 5. GAME FLOW COMMANDS ///
                         case "K": //KICKOFF_CYAN
                             respone = "KICKOFF_CYAN";
-                            hc.SetText(this, lblTimer, "00:00");
-                            break;
+                            //cbxFormation.SelectedItem = "Kick Off";
+                            goto broadcast;
                         case "F": //FREEKICK_CYAN
                             respone = "FREEKICK_CYAN";
+                            setMatchInfo(new dynamic[] { lblFouls });
                             break;
                         case "G": //GOALKICK_CYAN
                             respone = "GOALKICK_CYAN";
@@ -613,7 +618,7 @@ namespace BaseStation
                             goto broadcast;
                         case "b": //DOUBLE_YELLOW_MAGENTA
                             respone = "DOUBLE_YELLOW_MAGENTA";
-                            setMatchInfo(new dynamic[] { lblYCard, lblRCard, lblFouls }); ;
+                            setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
                             //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
                             setTimer("Robot1", 120);
@@ -625,7 +630,7 @@ namespace BaseStation
                         case "a": //GOAL_MAGENTA
                             respone = "GOAL_MAGENTA";
                             setMatchInfo(new dynamic[] { lblGoalMagenta });
-                            break;
+                            goto broadcast;
                         case "d": //SUBGOAL_MAGENTA
                             respone = "SUBGOAL_MAGENTA";
                             break;
@@ -633,10 +638,11 @@ namespace BaseStation
                         /// 5. GAME FLOW COMMANDS ///
                         case "k": //KICKOFF_MAGENTA
                             respone = "KICKOFF_MAGENTA";
-                            hc.SetText(this, lblTimer, "00:00");
-                            break;
+                            //cbxFormation.SelectedItem = "Kick Off";
+                            goto broadcast;
                         case "f": //FREEKICK_MAGENTA
                             respone = "FREEKICK_MAGENTA";
+                            setMatchInfo(new dynamic[] { lblFouls });
                             break;
                         case "g": //GOALKICK_MAGENTA
                             respone = "GOALKICK_MAGENTA";
@@ -669,11 +675,11 @@ namespace BaseStation
 
             broadcast:
             sendByHostList("Robot1,Robot2,Robot3", respone);
-            respone = string.Empty;
+            return respone;
 
             multicast:
             sendByHostList(chkRobotCollect, respone);
-            respone = string.Empty;
+            return respone;
 
             end:
             return respone;
@@ -757,8 +763,15 @@ namespace BaseStation
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
         {
-            tbxStatus.SelectionStart = tbxStatus.Text.Length;
-            tbxStatus.ScrollToCaret();
+            try
+            {
+                tbxStatus.SelectionStart = tbxStatus.Text.Length;
+                tbxStatus.ScrollToCaret();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("# Error tbxStatus \n\n" + ex);
+            }
         }
 
         private void Connection_keyEnter(object sender, KeyEventArgs e)
@@ -855,6 +868,7 @@ namespace BaseStation
         private void button1_Click(object sender, EventArgs e)
         {
             //setTimer = 1000;
+            cbxFormation.SelectedItem = "Kick Off";
         }
         
         void setTimer(string obj, int time)
