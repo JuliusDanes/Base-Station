@@ -66,24 +66,31 @@ namespace BaseStation
 
         private void tickTime(object state)
         {
+            try { 
             hc.SetText(this, lblTime, ("[  " + DateTime.Now.ToString("HH:mm:ss") + "  ]"));
+            } catch (Exception e) { }
         }
 
         private void tickTimer(object state)
         {
-            string time = lblTimer.Text;
-            var _time = time.Split(':');            // split minute and second
-            int count = int.Parse(_time[1]);
+            try
+            {
+                string time = lblTimer.Text;
+                var _time = time.Split(':');            // split minute and second
+                int count = int.Parse(_time[1]);
 
-            if ((count < 59) && (count < 9))        // Seconds increment
-                time = _time[0] + ":0" + (count + 1).ToString();
-            else if ((count < 59) && (count >= 9))  // Seconds increment
-                time = _time[0] + ":" + (count + 1).ToString();
-            else if (int.Parse(_time[0]) < 9)       // Minutes increment
-                time = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
-            else                                    // Minutes increment
-                time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
-            hc.SetText(this, lblTimer, time);
+                if ((count < 59) && (count < 9))        // Seconds increment
+                    time = _time[0] + ":0" + (count + 1).ToString();
+                else if ((count < 59) && (count >= 9))  // Seconds increment
+                    time = _time[0] + ":" + (count + 1).ToString();
+                else if (int.Parse(_time[0]) < 9)       // Minutes increment
+                    time = "0" + (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                else                                    // Minutes increment
+                    time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
+                hc.SetText(this, lblTimer, time);
+            }
+            catch (Exception e)
+            { }
         }
 
         delegate void addCommandCallback(string text);
