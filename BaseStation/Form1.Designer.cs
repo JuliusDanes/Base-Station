@@ -131,14 +131,12 @@
             this.lblGotoComma = new System.Windows.Forms.Label();
             this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
             this.lblGoto = new System.Windows.Forms.Label();
-            this.metroProgressSpinner1 = new MetroFramework.Controls.MetroProgressSpinner();
             this.ProgressR1 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
             this.lblTimerR1 = new System.Windows.Forms.Label();
             this.lblTimerR2 = new System.Windows.Forms.Label();
             this.ProgressR2 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
             this.lblTimerR3 = new System.Windows.Forms.Label();
             this.ProgressR3 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
@@ -1675,14 +1673,6 @@
             this.lblGoto.Text = "Goto";
             this.lblGoto.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // metroProgressSpinner1
-            // 
-            this.metroProgressSpinner1.Location = new System.Drawing.Point(331, 410);
-            this.metroProgressSpinner1.Maximum = 100;
-            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
-            this.metroProgressSpinner1.Size = new System.Drawing.Size(64, 62);
-            this.metroProgressSpinner1.TabIndex = 153;
-            // 
             // ProgressR1
             // 
             this.ProgressR1.animated = false;
@@ -1791,16 +1781,6 @@
             this.ProgressR3.Value = 25;
             this.ProgressR3.Visible = false;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1045, 617);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 164;
-            this.button1.Text = "Try Out";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1808,14 +1788,12 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.lblTimerR3);
             this.Controls.Add(this.ProgressR3);
             this.Controls.Add(this.lblTimerR2);
             this.Controls.Add(this.ProgressR2);
             this.Controls.Add(this.lblTimerR1);
             this.Controls.Add(this.ProgressR1);
-            this.Controls.Add(this.metroProgressSpinner1);
             this.Controls.Add(this.btnTO);
             this.Controls.Add(this.lblGotoComma);
             this.Controls.Add(this.tbxGotoY);
@@ -2048,14 +2026,12 @@
         protected System.Windows.Forms.Label lblGotoComma;
         private MaterialSkin.Controls.MaterialDivider lblDiv2;
         private System.Windows.Forms.Label lblGoto;
-        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner1;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR1;
         protected System.Windows.Forms.Label lblTimerR1;
         protected System.Windows.Forms.Label lblTimerR2;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
         protected System.Windows.Forms.Label lblTimerR3;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
-        protected System.Windows.Forms.Button button1;
     }
 }
 

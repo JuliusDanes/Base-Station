@@ -861,14 +861,6 @@ namespace BaseStation
             setTimer("Robot1", 120);
             setTimer("Robot2", 120);
             setTimer("Robot3", 120);
-
-            //setTimer = Timeout.Infinite;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //setTimer = 1000;
-            cbxFormation.SelectedItem = "Kick Off";
         }
         
         void setTimer(string obj, int time)
@@ -882,7 +874,6 @@ namespace BaseStation
             hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
             hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
             timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
-
         }
 
         void tickRobot(object state)
