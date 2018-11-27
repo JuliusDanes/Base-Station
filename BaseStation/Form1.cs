@@ -25,9 +25,9 @@ namespace BaseStation
             setTransparent(picArena, new dynamic[] { picBall, picRobot1, picRobot2, picRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
             setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 });
 
@@ -51,12 +51,12 @@ namespace BaseStation
 
         private void Form1_Load(object sender, EventArgs e)
         {         
-            tbxIPBS.Text /*= GetIPAddress()*/ = "192.168.165.10";
+            tbxIPBS.Text = GetIPAddress() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
             tbxPortRB.Text = "28097";
             tbxIPR1.Text /*= "169.254.162.201"*/ = GetIPAddress();
-            tbxPortR1.Text = "8686";
+            tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
             resetLocation();
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer));
@@ -371,16 +371,15 @@ namespace BaseStation
 
         void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
         {
-            addCommand("# Connecting to " + ipDst + " (" + keyName + ")");
+            addCommand("# Connecting to " + ipDst + " (" + keyName + ") \t Port : " + port);
             try
             {
                 attempts++;
                 _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                hc.SetText(this, tbxStatus, string.Empty);
                 if (_toServerSocket.Connected)
-                    addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ")");
+                    addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ") \t Port : " + port);
                 hc.SetText(this, connection, "Connected");
                 SendCallBack(_toServerSocket, this.Text);
                 _socketDict.Add(keyName, _toServerSocket);
@@ -390,7 +389,7 @@ namespace BaseStation
             {
                 hc.SetText(this, tbxStatus, string.Empty);
                 addCommand("# IP This Device  : " + myIP + " (" + this.Text + ")");
-                addCommand("# IP Destination  : " + ipDst + " (" + keyName + ")");
+                addCommand("# IP Destination  : " + ipDst + " (" + keyName + ") \t Port : " + port);
                 addCommand("# Connection attempts: " + attempts.ToString());
                 hc.SetText(this, connection, "Disconnected");
             }
@@ -403,7 +402,7 @@ namespace BaseStation
                 if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 {
                     addCommand("# Setting up server...");
-                    addCommand("# IP this device : " + tbxIPBS.Text + " (" + this.Text + ")");
+                    addCommand("# Open for IP : " + tbxIPBS.Text + " (" + this.Text + ") \t Port : " + port);
                     hc.SetText(this, lblConnectionBS, "Open");
                     _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
                     _serverSocket.Listen(1);
@@ -451,7 +450,6 @@ namespace BaseStation
                 string respone = ResponeCallback(_data[0], socket);
                 if (!string.IsNullOrEmpty(respone))
                 {
-                    MessageBox.Show(respone);
                     if (_data.Count() == 1)
                         SendCallBack(socket, respone);
                     else
@@ -747,15 +745,23 @@ namespace BaseStation
                     }
                 }
             }
-            else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString() != (_socketDict["RefereeBox"].RemoteEndPoint.ToString())))      
+            else
             {
                 // If socket is Robot socket   
                 switch (text)
                 {
                     /// INFORMATION ///
                     case "B": //Get the ball
-                        respone = DateTime.Now.ToLongTimeString();
-                        break;
+                        respone = "Ball on " + socketToName(socket);
+                        var obj = socketToName(socket);
+                        dynamic[,] arr = { {lblRobot1, ballR1 }, { lblRobot2, ballR2 }, { lblRobot3, ballR3 } };
+                        int[] val = new int[2];
+                        for (int i = 0; i < arr.GetLength(0); i++)
+                            hc.SetVisible(this, arr[i, 1], false);
+                        for (int i = 0; i < arr.GetLength(0); i++)
+                            if (arr[i, 0].Text == obj)
+                                hc.SetVisible(this, arr[i, 1], true);
+                        goto broadcast;
 
                     /// OTHERS ///
                     case "get_time": //TIME NOW
@@ -885,6 +891,16 @@ namespace BaseStation
             }
         }
 
+        private void lblTimer_TextChanged(object sender, EventArgs e)
+        {
+            if (lblTimer.Text == "00:00")
+            {
+                ProgressTM.MaxValue = 900;
+                hc.SetValue(this, ProgressTM, 900);
+                hc.SetVisible(this, ProgressTM, true);
+            }
+        }
+
         private void TeamSwitch_OnValueChange(object sender, EventArgs e)
         {
             if (TeamSwitch.Value == true)
@@ -912,11 +928,17 @@ namespace BaseStation
                 if (arr[i, 0].Name == obj)
                     n = i;
             if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open"))
+            {
+                arr[n, 0].BackColor = Color.SeaGreen;
                 for (int i = 0; i < arr.GetLength(1); i++)
                     arr[n, i].Enabled = true;
+            }
             else
+            {
+                arr[n, 0].BackColor = Color.Firebrick;
                 for (int i = 0; i < arr.GetLength(1); i++)
                     arr[n, i].Enabled = false;
+            }
         }
 
         private void btnTO_Click(object sender, EventArgs e)

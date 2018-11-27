@@ -138,6 +138,9 @@
             this.lblTimerR3 = new System.Windows.Forms.Label();
             this.ProgressR3 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
             this.ProgressTM = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            this.ballR1 = new System.Windows.Forms.PictureBox();
+            this.ballR2 = new System.Windows.Forms.PictureBox();
+            this.ballR3 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -152,6 +155,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR3)).BeginInit();
             this.SuspendLayout();
             // 
             // picRobot3
@@ -254,15 +260,15 @@
             // 
             // lblConnectionR1
             // 
-            this.lblConnectionR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblConnectionR1.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR1.Location = new System.Drawing.Point(167, 320);
+            this.lblConnectionR1.Location = new System.Drawing.Point(173, 315);
             this.lblConnectionR1.Name = "lblConnectionR1";
-            this.lblConnectionR1.Size = new System.Drawing.Size(90, 20);
+            this.lblConnectionR1.Size = new System.Drawing.Size(85, 20);
             this.lblConnectionR1.TabIndex = 49;
             this.lblConnectionR1.Text = "Disconnected";
-            this.lblConnectionR1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR1.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblPipeR1
@@ -490,15 +496,15 @@
             // 
             // lblConnectionBS
             // 
-            this.lblConnectionBS.BackColor = System.Drawing.Color.Transparent;
+            this.lblConnectionBS.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionBS.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionBS.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionBS.Location = new System.Drawing.Point(167, 118);
+            this.lblConnectionBS.Location = new System.Drawing.Point(218, 113);
             this.lblConnectionBS.Name = "lblConnectionBS";
-            this.lblConnectionBS.Size = new System.Drawing.Size(90, 20);
+            this.lblConnectionBS.Size = new System.Drawing.Size(40, 20);
             this.lblConnectionBS.TabIndex = 66;
             this.lblConnectionBS.Text = "Close";
-            this.lblConnectionBS.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionBS.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionBS.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblBaseStation
@@ -586,15 +592,15 @@
             // 
             // lblConnectionRB
             // 
-            this.lblConnectionRB.BackColor = System.Drawing.Color.Transparent;
+            this.lblConnectionRB.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionRB.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionRB.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionRB.Location = new System.Drawing.Point(167, 220);
+            this.lblConnectionRB.Location = new System.Drawing.Point(173, 214);
             this.lblConnectionRB.Name = "lblConnectionRB";
-            this.lblConnectionRB.Size = new System.Drawing.Size(90, 20);
+            this.lblConnectionRB.Size = new System.Drawing.Size(85, 20);
             this.lblConnectionRB.TabIndex = 72;
             this.lblConnectionRB.Text = "Disconnected";
-            this.lblConnectionRB.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionRB.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionRB.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRefereeBox
@@ -776,15 +782,15 @@
             // 
             // lblConnectionR2
             // 
-            this.lblConnectionR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblConnectionR2.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR2.Location = new System.Drawing.Point(167, 422);
+            this.lblConnectionR2.Location = new System.Drawing.Point(173, 416);
             this.lblConnectionR2.Name = "lblConnectionR2";
-            this.lblConnectionR2.Size = new System.Drawing.Size(90, 20);
+            this.lblConnectionR2.Size = new System.Drawing.Size(85, 20);
             this.lblConnectionR2.TabIndex = 78;
             this.lblConnectionR2.Text = "Disconnected";
-            this.lblConnectionR2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR2.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRobot2
@@ -1163,15 +1169,15 @@
             // 
             // lblConnectionR3
             // 
-            this.lblConnectionR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblConnectionR3.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblConnectionR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblConnectionR3.Location = new System.Drawing.Point(167, 523);
+            this.lblConnectionR3.Location = new System.Drawing.Point(173, 517);
             this.lblConnectionR3.Name = "lblConnectionR3";
-            this.lblConnectionR3.Size = new System.Drawing.Size(90, 20);
+            this.lblConnectionR3.Size = new System.Drawing.Size(85, 20);
             this.lblConnectionR3.TabIndex = 98;
             this.lblConnectionR3.Text = "Disconnected";
-            this.lblConnectionR3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnectionR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR3.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             // 
             // lblRobot3
@@ -1233,6 +1239,7 @@
             this.lblTimer.TabIndex = 43;
             this.lblTimer.Text = "00:00";
             this.lblTimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTimer.TextChanged += new System.EventHandler(this.lblTimer_TextChanged);
             // 
             // TeamSwitch
             // 
@@ -1804,6 +1811,45 @@
             this.ProgressTM.TabIndex = 164;
             this.ProgressTM.Value = 900;
             // 
+            // ballR1
+            // 
+            this.ballR1.BackColor = System.Drawing.Color.Transparent;
+            this.ballR1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR1.BackgroundImage")));
+            this.ballR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ballR1.Enabled = false;
+            this.ballR1.Location = new System.Drawing.Point(83, 321);
+            this.ballR1.Name = "ballR1";
+            this.ballR1.Size = new System.Drawing.Size(15, 15);
+            this.ballR1.TabIndex = 165;
+            this.ballR1.TabStop = false;
+            this.ballR1.Visible = false;
+            // 
+            // ballR2
+            // 
+            this.ballR2.BackColor = System.Drawing.Color.Transparent;
+            this.ballR2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR2.BackgroundImage")));
+            this.ballR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ballR2.Enabled = false;
+            this.ballR2.Location = new System.Drawing.Point(83, 422);
+            this.ballR2.Name = "ballR2";
+            this.ballR2.Size = new System.Drawing.Size(15, 15);
+            this.ballR2.TabIndex = 166;
+            this.ballR2.TabStop = false;
+            this.ballR2.Visible = false;
+            // 
+            // ballR3
+            // 
+            this.ballR3.BackColor = System.Drawing.Color.Transparent;
+            this.ballR3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR3.BackgroundImage")));
+            this.ballR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ballR3.Enabled = false;
+            this.ballR3.Location = new System.Drawing.Point(83, 523);
+            this.ballR3.Name = "ballR3";
+            this.ballR3.Size = new System.Drawing.Size(15, 15);
+            this.ballR3.TabIndex = 167;
+            this.ballR3.TabStop = false;
+            this.ballR3.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1811,6 +1857,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.ballR3);
+            this.Controls.Add(this.ballR2);
+            this.Controls.Add(this.ballR1);
             this.Controls.Add(this.ProgressTM);
             this.Controls.Add(this.lblTimerR3);
             this.Controls.Add(this.ProgressR3);
@@ -1941,6 +1990,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ballR3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2057,6 +2109,9 @@
         protected System.Windows.Forms.Label lblTimerR3;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
+        protected System.Windows.Forms.PictureBox ballR1;
+        protected System.Windows.Forms.PictureBox ballR2;
+        protected System.Windows.Forms.PictureBox ballR3;
     }
 }
 
