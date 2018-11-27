@@ -141,6 +141,16 @@
             this.ballR1 = new System.Windows.Forms.PictureBox();
             this.ballR2 = new System.Windows.Forms.PictureBox();
             this.ballR3 = new System.Windows.Forms.PictureBox();
+            this.picTimer = new System.Windows.Forms.PictureBox();
+            this.tbxAngleR1 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.lblPipe2R1 = new System.Windows.Forms.Label();
+            this.lblDegR1 = new System.Windows.Forms.Label();
+            this.lblDegR2 = new System.Windows.Forms.Label();
+            this.lblPipe2R2 = new System.Windows.Forms.Label();
+            this.tbxAngleR2 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.lblDegR3 = new System.Windows.Forms.Label();
+            this.lblPipe2R3 = new System.Windows.Forms.Label();
+            this.tbxAngleR3 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -158,6 +168,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ballR1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ballR2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ballR3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTimer)).BeginInit();
             this.SuspendLayout();
             // 
             // picRobot3
@@ -1799,15 +1810,15 @@
             this.ProgressTM.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.ProgressTM.ForeColor = System.Drawing.Color.SeaGreen;
             this.ProgressTM.LabelVisible = false;
-            this.ProgressTM.LineProgressThickness = 20;
-            this.ProgressTM.LineThickness = 18;
-            this.ProgressTM.Location = new System.Drawing.Point(917, 55);
+            this.ProgressTM.LineProgressThickness = 18;
+            this.ProgressTM.LineThickness = 12;
+            this.ProgressTM.Location = new System.Drawing.Point(910, 57);
             this.ProgressTM.Margin = new System.Windows.Forms.Padding(0);
             this.ProgressTM.MaxValue = 900;
             this.ProgressTM.Name = "ProgressTM";
             this.ProgressTM.ProgressBackColor = System.Drawing.Color.Transparent;
             this.ProgressTM.ProgressColor = System.Drawing.Color.SeaGreen;
-            this.ProgressTM.Size = new System.Drawing.Size(40, 40);
+            this.ProgressTM.Size = new System.Drawing.Size(43, 43);
             this.ProgressTM.TabIndex = 164;
             this.ProgressTM.Value = 900;
             // 
@@ -1850,6 +1861,165 @@
             this.ballR3.TabStop = false;
             this.ballR3.Visible = false;
             // 
+            // picTimer
+            // 
+            this.picTimer.BackColor = System.Drawing.Color.Transparent;
+            this.picTimer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picTimer.BackgroundImage")));
+            this.picTimer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picTimer.Enabled = false;
+            this.picTimer.Location = new System.Drawing.Point(907, 26);
+            this.picTimer.Name = "picTimer";
+            this.picTimer.Size = new System.Drawing.Size(55, 80);
+            this.picTimer.TabIndex = 168;
+            this.picTimer.TabStop = false;
+            // 
+            // tbxAngleR1
+            // 
+            this.tbxAngleR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxAngleR1.Enabled = false;
+            this.tbxAngleR1.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.tbxAngleR1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR1.HintForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR1.HintText = "deg";
+            this.tbxAngleR1.isPassword = false;
+            this.tbxAngleR1.LineFocusedColor = System.Drawing.Color.Yellow;
+            this.tbxAngleR1.LineIdleColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR1.LineMouseHoverColor = System.Drawing.Color.Gold;
+            this.tbxAngleR1.LineThickness = 1;
+            this.tbxAngleR1.Location = new System.Drawing.Point(161, 372);
+            this.tbxAngleR1.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxAngleR1.Name = "tbxAngleR1";
+            this.tbxAngleR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tbxAngleR1.Size = new System.Drawing.Size(35, 25);
+            this.tbxAngleR1.TabIndex = 169;
+            this.tbxAngleR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxAngleR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxAngleR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            // 
+            // lblPipe2R1
+            // 
+            this.lblPipe2R1.BackColor = System.Drawing.Color.Transparent;
+            this.lblPipe2R1.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPipe2R1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblPipe2R1.Location = new System.Drawing.Point(156, 377);
+            this.lblPipe2R1.Name = "lblPipe2R1";
+            this.lblPipe2R1.Size = new System.Drawing.Size(10, 20);
+            this.lblPipe2R1.TabIndex = 170;
+            this.lblPipe2R1.Text = "|";
+            this.lblPipe2R1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDegR1
+            // 
+            this.lblDegR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblDegR1.Enabled = false;
+            this.lblDegR1.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
+            this.lblDegR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDegR1.Location = new System.Drawing.Point(188, 373);
+            this.lblDegR1.Name = "lblDegR1";
+            this.lblDegR1.Size = new System.Drawing.Size(10, 20);
+            this.lblDegR1.TabIndex = 171;
+            this.lblDegR1.Text = "o";
+            this.lblDegR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDegR2
+            // 
+            this.lblDegR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblDegR2.Enabled = false;
+            this.lblDegR2.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
+            this.lblDegR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDegR2.Location = new System.Drawing.Point(188, 475);
+            this.lblDegR2.Name = "lblDegR2";
+            this.lblDegR2.Size = new System.Drawing.Size(10, 20);
+            this.lblDegR2.TabIndex = 174;
+            this.lblDegR2.Text = "o";
+            this.lblDegR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPipe2R2
+            // 
+            this.lblPipe2R2.BackColor = System.Drawing.Color.Transparent;
+            this.lblPipe2R2.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPipe2R2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblPipe2R2.Location = new System.Drawing.Point(156, 479);
+            this.lblPipe2R2.Name = "lblPipe2R2";
+            this.lblPipe2R2.Size = new System.Drawing.Size(10, 20);
+            this.lblPipe2R2.TabIndex = 173;
+            this.lblPipe2R2.Text = "|";
+            this.lblPipe2R2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbxAngleR2
+            // 
+            this.tbxAngleR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR2.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxAngleR2.Enabled = false;
+            this.tbxAngleR2.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.tbxAngleR2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR2.HintForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR2.HintText = "deg";
+            this.tbxAngleR2.isPassword = false;
+            this.tbxAngleR2.LineFocusedColor = System.Drawing.Color.Yellow;
+            this.tbxAngleR2.LineIdleColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR2.LineMouseHoverColor = System.Drawing.Color.Gold;
+            this.tbxAngleR2.LineThickness = 1;
+            this.tbxAngleR2.Location = new System.Drawing.Point(161, 474);
+            this.tbxAngleR2.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxAngleR2.Name = "tbxAngleR2";
+            this.tbxAngleR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tbxAngleR2.Size = new System.Drawing.Size(35, 25);
+            this.tbxAngleR2.TabIndex = 172;
+            this.tbxAngleR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxAngleR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxAngleR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            // 
+            // lblDegR3
+            // 
+            this.lblDegR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblDegR3.Enabled = false;
+            this.lblDegR3.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
+            this.lblDegR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblDegR3.Location = new System.Drawing.Point(188, 579);
+            this.lblDegR3.Name = "lblDegR3";
+            this.lblDegR3.Size = new System.Drawing.Size(10, 20);
+            this.lblDegR3.TabIndex = 177;
+            this.lblDegR3.Text = "o";
+            this.lblDegR3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPipe2R3
+            // 
+            this.lblPipe2R3.BackColor = System.Drawing.Color.Transparent;
+            this.lblPipe2R3.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPipe2R3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblPipe2R3.Location = new System.Drawing.Point(156, 583);
+            this.lblPipe2R3.Name = "lblPipe2R3";
+            this.lblPipe2R3.Size = new System.Drawing.Size(10, 20);
+            this.lblPipe2R3.TabIndex = 176;
+            this.lblPipe2R3.Text = "|";
+            this.lblPipe2R3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbxAngleR3
+            // 
+            this.tbxAngleR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxAngleR3.Enabled = false;
+            this.tbxAngleR3.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.tbxAngleR3.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR3.HintForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxAngleR3.HintText = "deg";
+            this.tbxAngleR3.isPassword = false;
+            this.tbxAngleR3.LineFocusedColor = System.Drawing.Color.Yellow;
+            this.tbxAngleR3.LineIdleColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxAngleR3.LineMouseHoverColor = System.Drawing.Color.Gold;
+            this.tbxAngleR3.LineThickness = 1;
+            this.tbxAngleR3.Location = new System.Drawing.Point(161, 578);
+            this.tbxAngleR3.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxAngleR3.Name = "tbxAngleR3";
+            this.tbxAngleR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tbxAngleR3.Size = new System.Drawing.Size(35, 25);
+            this.tbxAngleR3.TabIndex = 175;
+            this.tbxAngleR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
+            this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1857,6 +2027,15 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblDegR3);
+            this.Controls.Add(this.lblPipe2R3);
+            this.Controls.Add(this.tbxAngleR3);
+            this.Controls.Add(this.lblDegR2);
+            this.Controls.Add(this.lblPipe2R2);
+            this.Controls.Add(this.tbxAngleR2);
+            this.Controls.Add(this.lblDegR1);
+            this.Controls.Add(this.lblPipe2R1);
+            this.Controls.Add(this.tbxAngleR1);
             this.Controls.Add(this.ballR3);
             this.Controls.Add(this.ballR2);
             this.Controls.Add(this.ballR1);
@@ -1969,6 +2148,7 @@
             this.Controls.Add(this.picArena);
             this.Controls.Add(this.lblDiv2);
             this.Controls.Add(this.lblGoto);
+            this.Controls.Add(this.picTimer);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -1993,6 +2173,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ballR1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ballR2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ballR3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picTimer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2112,6 +2293,16 @@
         protected System.Windows.Forms.PictureBox ballR1;
         protected System.Windows.Forms.PictureBox ballR2;
         protected System.Windows.Forms.PictureBox ballR3;
+        protected System.Windows.Forms.PictureBox picTimer;
+        protected Bunifu.Framework.UI.BunifuMaterialTextbox tbxAngleR1;
+        protected System.Windows.Forms.Label lblPipe2R1;
+        protected System.Windows.Forms.Label lblDegR1;
+        protected System.Windows.Forms.Label lblDegR2;
+        protected System.Windows.Forms.Label lblPipe2R2;
+        protected Bunifu.Framework.UI.BunifuMaterialTextbox tbxAngleR2;
+        protected System.Windows.Forms.Label lblDegR3;
+        protected System.Windows.Forms.Label lblPipe2R3;
+        protected Bunifu.Framework.UI.BunifuMaterialTextbox tbxAngleR3;
     }
 }
 

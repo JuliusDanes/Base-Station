@@ -25,11 +25,11 @@ namespace BaseStation
             setTransparent(picArena, new dynamic[] { picBall, picRobot1, picRobot2, picRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblPipe2R1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, lblDegR1, tbxAngleR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblPipe2R2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, lblDegR2, tbxAngleR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblPipe2R3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, lblDegR3, tbxAngleR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
-            setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 });
+            setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 }); setTransparent(picTimer, new dynamic[] { ProgressTM });
 
             // Create a material theme manager and add the form to manage (this)
             //MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
@@ -92,6 +92,7 @@ namespace BaseStation
                 hc.SetValue(this, ProgressTM, (ProgressTM.Value - 1));
                 if (ProgressTM.Value <= 0) {
                     hc.SetVisible(this, ProgressTM, false);
+                    hc.SetVisible(this, picTimer, false);
                     ProgressTM.ProgressColor = Color.SeaGreen; }
                 else if (ProgressTM.Value <= ProgressTM.MaxValue / 2)
                     ProgressTM.ProgressColor = Color.Goldenrod;
@@ -186,7 +187,7 @@ namespace BaseStation
         void changeCounter(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY }, { tbxAngleR1, tbxAngleR1 }, { tbxAngleR2, tbxAngleR2 }, { tbxAngleR3, tbxAngleR3 } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -205,7 +206,7 @@ namespace BaseStation
         void tbxXYChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, picRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, picRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, picRobot3 } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3 } };
             int n = 0;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
@@ -232,7 +233,7 @@ namespace BaseStation
                     hc.SetText(this, arr[n, 2], val[0].ToString());          // On screen tbx
                     hc.SetText(this, arr[n, 3], val[1].ToString());
                 }
-                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 4]);     // Encoder then using scale 1:20
+                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     // Encoder then using scale 1:20
             }
         }
 
@@ -241,7 +242,7 @@ namespace BaseStation
             changeCounter(sender, e);
 
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3 } };
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
             int n = 0;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
@@ -312,7 +313,7 @@ namespace BaseStation
 
         void resetLocation()
         {
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY } };
+            dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3 };
             foreach (var i in arr)
                 i.Text = "0";
         }
@@ -359,19 +360,24 @@ namespace BaseStation
 
         void checkConnection(object state)
         {
-            dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-            var obj = string.Empty;
-            if ((lblConnectionBS.Text.Equals("Open")) && (!_serverSocket.IsBound))    // Check for Server Connection
-                obj = lblBaseStation.Text;
-            for (int i = 0; i < _socketDict.Count; i++)                                 // Check for Client Connection
-                if (!_socketDict.ElementAtOrDefault(i).Value.Connected)
-                    obj = _socketDict.ElementAtOrDefault(i).Key;
-            for (int j = 0; j < arr.GetLength(0); j++)
-                if (arr[j, 0].Text == obj)
-                    if (obj == lblBaseStation.Text)
-                        hc.SetText(this, arr[j, 1], "Close");
-                    else
-                        hc.SetText(this, arr[j, 1], "Disconnected");
+            try
+            {
+                dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                var obj = string.Empty;
+                if ((lblConnectionBS.Text.Equals("Open")) && (!_serverSocket.IsBound))      // Check for Server Connection
+                    obj = lblBaseStation.Text;
+                for (int i = 0; i < _socketDict.Count; i++)                                 // Check for Client Connection
+                    if (!_socketDict.ElementAtOrDefault(i).Value.Connected)
+                        obj = _socketDict.ElementAtOrDefault(i).Key;
+                for (int j = 0; j < arr.GetLength(0); j++)
+                    if (arr[j, 0].Text == obj)
+                        if (obj == lblBaseStation.Text)
+                            hc.SetText(this, arr[j, 1], "Close");
+                        else
+                            hc.SetText(this, arr[j, 1], "Disconnected");
+            }
+            catch (Exception e)
+            { }
         }
 
         string socketToIP(Socket socket)
@@ -562,7 +568,7 @@ namespace BaseStation
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
 
-                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
+                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
                 int n = 0;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
@@ -920,6 +926,7 @@ namespace BaseStation
                 ProgressTM.MaxValue = 900;
                 hc.SetValue(this, ProgressTM, 900);
                 hc.SetVisible(this, ProgressTM, true);
+                hc.SetVisible(this, picTimer, true);
             }
         }
 
@@ -944,7 +951,7 @@ namespace BaseStation
             if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
                 arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
             else
-                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3 } };
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3 } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)
