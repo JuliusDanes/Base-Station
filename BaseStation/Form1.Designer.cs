@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.PointRobot3 = new System.Windows.Forms.PictureBox();
-            this.PointRobot2 = new System.Windows.Forms.PictureBox();
-            this.PointRobot1 = new System.Windows.Forms.PictureBox();
-            this.PointBall = new System.Windows.Forms.PictureBox();
-            this.Lap = new System.Windows.Forms.PictureBox();
+            this.picRobot3 = new System.Windows.Forms.PictureBox();
+            this.picRobot2 = new System.Windows.Forms.PictureBox();
+            this.picRobot1 = new System.Windows.Forms.PictureBox();
+            this.picBall = new System.Windows.Forms.PictureBox();
+            this.picArena = new System.Windows.Forms.PictureBox();
             this.tbxStatus = new System.Windows.Forms.RichTextBox();
             this.grpRobot1 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lblRobot1 = new System.Windows.Forms.Label();
@@ -137,11 +137,12 @@
             this.ProgressR2 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
             this.lblTimerR3 = new System.Windows.Forms.Label();
             this.ProgressR3 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointBall)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Lap)).BeginInit();
+            this.ProgressTM = new Bunifu.Framework.UI.BunifuCircleProgressbar();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBall)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picArena)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R1)).BeginInit();
@@ -153,62 +154,62 @@
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R3)).BeginInit();
             this.SuspendLayout();
             // 
-            // PointRobot3
+            // picRobot3
             // 
-            this.PointRobot3.BackColor = System.Drawing.Color.Transparent;
-            this.PointRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot3.BackgroundImage")));
-            this.PointRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot3.Location = new System.Drawing.Point(835, 311);
-            this.PointRobot3.Name = "PointRobot3";
-            this.PointRobot3.Size = new System.Drawing.Size(25, 25);
-            this.PointRobot3.TabIndex = 28;
-            this.PointRobot3.TabStop = false;
+            this.picRobot3.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot3.BackgroundImage")));
+            this.picRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picRobot3.Location = new System.Drawing.Point(835, 311);
+            this.picRobot3.Name = "picRobot3";
+            this.picRobot3.Size = new System.Drawing.Size(25, 25);
+            this.picRobot3.TabIndex = 28;
+            this.picRobot3.TabStop = false;
             // 
-            // PointRobot2
+            // picRobot2
             // 
-            this.PointRobot2.BackColor = System.Drawing.Color.Transparent;
-            this.PointRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot2.BackgroundImage")));
-            this.PointRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot2.Location = new System.Drawing.Point(725, 220);
-            this.PointRobot2.Name = "PointRobot2";
-            this.PointRobot2.Size = new System.Drawing.Size(25, 25);
-            this.PointRobot2.TabIndex = 27;
-            this.PointRobot2.TabStop = false;
+            this.picRobot2.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot2.BackgroundImage")));
+            this.picRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picRobot2.Location = new System.Drawing.Point(725, 220);
+            this.picRobot2.Name = "picRobot2";
+            this.picRobot2.Size = new System.Drawing.Size(25, 25);
+            this.picRobot2.TabIndex = 27;
+            this.picRobot2.TabStop = false;
             // 
-            // PointRobot1
+            // picRobot1
             // 
-            this.PointRobot1.BackColor = System.Drawing.Color.Transparent;
-            this.PointRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointRobot1.BackgroundImage")));
-            this.PointRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointRobot1.Location = new System.Drawing.Point(625, 358);
-            this.PointRobot1.Name = "PointRobot1";
-            this.PointRobot1.Size = new System.Drawing.Size(25, 25);
-            this.PointRobot1.TabIndex = 26;
-            this.PointRobot1.TabStop = false;
+            this.picRobot1.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot1.BackgroundImage")));
+            this.picRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picRobot1.Location = new System.Drawing.Point(625, 358);
+            this.picRobot1.Name = "picRobot1";
+            this.picRobot1.Size = new System.Drawing.Size(25, 25);
+            this.picRobot1.TabIndex = 26;
+            this.picRobot1.TabStop = false;
             // 
-            // PointBall
+            // picBall
             // 
-            this.PointBall.BackColor = System.Drawing.Color.Transparent;
-            this.PointBall.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PointBall.BackgroundImage")));
-            this.PointBall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PointBall.Enabled = false;
-            this.PointBall.Location = new System.Drawing.Point(612, 311);
-            this.PointBall.Name = "PointBall";
-            this.PointBall.Size = new System.Drawing.Size(18, 18);
-            this.PointBall.TabIndex = 25;
-            this.PointBall.TabStop = false;
-            this.PointBall.Visible = false;
+            this.picBall.BackColor = System.Drawing.Color.Transparent;
+            this.picBall.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picBall.BackgroundImage")));
+            this.picBall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picBall.Enabled = false;
+            this.picBall.Location = new System.Drawing.Point(612, 311);
+            this.picBall.Name = "picBall";
+            this.picBall.Size = new System.Drawing.Size(18, 18);
+            this.picBall.TabIndex = 25;
+            this.picBall.TabStop = false;
+            this.picBall.Visible = false;
             // 
-            // Lap
+            // picArena
             // 
-            this.Lap.BackColor = System.Drawing.SystemColors.Control;
-            this.Lap.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Lap.BackgroundImage")));
-            this.Lap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Lap.Location = new System.Drawing.Point(385, 149);
-            this.Lap.Name = "Lap";
-            this.Lap.Size = new System.Drawing.Size(510, 342);
-            this.Lap.TabIndex = 18;
-            this.Lap.TabStop = false;
+            this.picArena.BackColor = System.Drawing.SystemColors.Control;
+            this.picArena.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picArena.BackgroundImage")));
+            this.picArena.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picArena.Location = new System.Drawing.Point(385, 149);
+            this.picArena.Name = "picArena";
+            this.picArena.Size = new System.Drawing.Size(510, 342);
+            this.picArena.TabIndex = 18;
+            this.picArena.TabStop = false;
             // 
             // tbxStatus
             // 
@@ -452,7 +453,7 @@
             this.tbxPortBS.Size = new System.Drawing.Size(45, 25);
             this.tbxPortBS.TabIndex = 69;
             this.tbxPortBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxPortBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxIPBS_KeyDown);
+            this.tbxPortBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxOpenBS_KeyDown);
             // 
             // tbxIPBS
             // 
@@ -474,7 +475,7 @@
             this.tbxIPBS.Size = new System.Drawing.Size(100, 25);
             this.tbxIPBS.TabIndex = 68;
             this.tbxIPBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxIPBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxIPBS_KeyDown);
+            this.tbxIPBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxOpenBS_KeyDown);
             // 
             // lblPipeBS
             // 
@@ -1226,7 +1227,7 @@
             this.lblTimer.AutoSize = true;
             this.lblTimer.Font = new System.Drawing.Font("OCR A Extended", 50.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimer.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.lblTimer.Location = new System.Drawing.Point(955, 41);
+            this.lblTimer.Location = new System.Drawing.Point(963, 41);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(230, 69);
             this.lblTimer.TabIndex = 43;
@@ -1781,6 +1782,28 @@
             this.ProgressR3.Value = 25;
             this.ProgressR3.Visible = false;
             // 
+            // ProgressTM
+            // 
+            this.ProgressTM.animated = false;
+            this.ProgressTM.animationIterval = 5;
+            this.ProgressTM.animationSpeed = 300;
+            this.ProgressTM.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressTM.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressTM.BackgroundImage")));
+            this.ProgressTM.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.ProgressTM.ForeColor = System.Drawing.Color.SeaGreen;
+            this.ProgressTM.LabelVisible = false;
+            this.ProgressTM.LineProgressThickness = 20;
+            this.ProgressTM.LineThickness = 18;
+            this.ProgressTM.Location = new System.Drawing.Point(917, 55);
+            this.ProgressTM.Margin = new System.Windows.Forms.Padding(0);
+            this.ProgressTM.MaxValue = 900;
+            this.ProgressTM.Name = "ProgressTM";
+            this.ProgressTM.ProgressBackColor = System.Drawing.Color.Transparent;
+            this.ProgressTM.ProgressColor = System.Drawing.Color.SeaGreen;
+            this.ProgressTM.Size = new System.Drawing.Size(40, 40);
+            this.ProgressTM.TabIndex = 164;
+            this.ProgressTM.Value = 900;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1788,6 +1811,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.ProgressTM);
             this.Controls.Add(this.lblTimerR3);
             this.Controls.Add(this.ProgressR3);
             this.Controls.Add(this.lblTimerR2);
@@ -1889,11 +1913,11 @@
             this.Controls.Add(this.grpRobot1);
             this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.tbxStatus);
-            this.Controls.Add(this.PointRobot3);
-            this.Controls.Add(this.PointRobot2);
-            this.Controls.Add(this.PointRobot1);
-            this.Controls.Add(this.PointBall);
-            this.Controls.Add(this.Lap);
+            this.Controls.Add(this.picRobot3);
+            this.Controls.Add(this.picRobot2);
+            this.Controls.Add(this.picRobot1);
+            this.Controls.Add(this.picBall);
+            this.Controls.Add(this.picArena);
             this.Controls.Add(this.lblDiv2);
             this.Controls.Add(this.lblGoto);
             this.DoubleBuffered = true;
@@ -1903,11 +1927,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointRobot1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PointBall)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Lap)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBall)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picArena)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard1R1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RCardR1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YCard2R1)).EndInit();
@@ -1925,11 +1949,11 @@
         #endregion
 
         protected System.Windows.Forms.Label lblTimer;
-        protected System.Windows.Forms.PictureBox PointRobot3;
-        protected System.Windows.Forms.PictureBox PointRobot2;
-        protected System.Windows.Forms.PictureBox PointRobot1;
-        protected System.Windows.Forms.PictureBox PointBall;
-        protected System.Windows.Forms.PictureBox Lap;
+        protected System.Windows.Forms.PictureBox picRobot3;
+        protected System.Windows.Forms.PictureBox picRobot2;
+        protected System.Windows.Forms.PictureBox picRobot1;
+        protected System.Windows.Forms.PictureBox picBall;
+        protected System.Windows.Forms.PictureBox picArena;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot1;
         protected System.Windows.Forms.Label lblRobot1;
         protected System.Windows.Forms.Label lblConnectionR1;
@@ -2032,6 +2056,7 @@
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
         protected System.Windows.Forms.Label lblTimerR3;
         private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
+        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
     }
 }
 

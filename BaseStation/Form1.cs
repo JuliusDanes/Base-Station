@@ -22,7 +22,7 @@ namespace BaseStation
         public Form1()
         {
             InitializeComponent();
-            setTransparent(Lap, new dynamic[] { PointBall, PointRobot1, PointRobot2, PointRobot3 });
+            setTransparent(picArena, new dynamic[] { picBall, picRobot1, picRobot2, picRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
             setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, tbxIPR1, tbxPortR1, lblPipeR1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
@@ -50,8 +50,7 @@ namespace BaseStation
         Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
 
         private void Form1_Load(object sender, EventArgs e)
-        { 
-        
+        {         
             tbxIPBS.Text /*= GetIPAddress()*/ = "192.168.165.10";
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
@@ -78,7 +77,6 @@ namespace BaseStation
                 string time = lblTimer.Text;
                 var _time = time.Split(':');            // split minute and second
                 int count = int.Parse(_time[1]);
-
                 if ((count < 59) && (count < 9))        // Seconds increment
                     time = _time[0] + ":0" + (count + 1).ToString();
                 else if ((count < 59) && (count >= 9))  // Seconds increment
@@ -88,9 +86,57 @@ namespace BaseStation
                 else                                    // Minutes increment
                     time = (int.Parse(_time[0]) + 1).ToString() + ":" + "00";
                 hc.SetText(this, lblTimer, time);
+
+                hc.SetValue(this, ProgressTM, (ProgressTM.Value - 1));
+                if (ProgressTM.Value <= 0) {
+                    hc.SetVisible(this, ProgressTM, false);
+                    ProgressTM.ProgressColor = Color.SeaGreen; }
+                else if (ProgressTM.Value <= ProgressTM.MaxValue / 2)
+                    ProgressTM.ProgressColor = Color.Goldenrod;
+                else if (ProgressTM.Value <= 10)
+                    ProgressTM.ProgressColor = Color.Firebrick;
+                else if (ProgressTM.Value > ProgressTM.MaxValue / 2)
+                    ProgressTM.ProgressColor = Color.SeaGreen;
             }
             catch (Exception e)
             { }
+        }
+
+        void setTimer(string obj, int time)
+        {
+            dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1 }, { "Robot2", ProgressR2, lblTimerR2 }, { "Robot3", ProgressR3, lblTimerR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0] == obj)
+                    n = i;
+            arr[n, 1].MaxValue = time; hc.SetValue(this, arr[n, 1], time);
+            hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
+            hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
+            timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
+        }
+
+        void tickRobot(object state)
+        {
+            var obj = state;
+            dynamic[,] arr =  { { "Robot1", ProgressR1, lblTimerR1, YCard1R1, YCard2R1 }, { "Robot2", ProgressR2, lblTimerR2, YCard1R2, YCard2R2 }, { "Robot3", ProgressR3, lblTimerR3, YCard1R3, YCard2R3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0] == obj)
+                    n = i;
+            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 1));
+            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 1).ToString());
+            if (arr[n, 1].Value == 0)
+            {
+                hc.SetVisible(this, arr[n, 1], false);
+                timerDict[arr[n, 0]].Change(Timeout.Infinite, Timeout.Infinite);
+                timerDict.Remove(arr[n, 0]);
+                arr[n, 1].ProgressColor = Color.SeaGreen;
+                setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
+            }
+            else if (arr[n, 1].Value <= arr[n, 1].MaxValue / 2)
+                arr[n, 1].ProgressColor = Color.Goldenrod;
+            else if (arr[n, 1].Value <= 10)
+                arr[n, 1].ProgressColor = Color.Firebrick;
         }
 
         delegate void addCommandCallback(string text);
@@ -157,7 +203,7 @@ namespace BaseStation
         void tbxXYChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, PointRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, PointRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, PointRobot3 } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, picRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, picRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, picRobot3 } };
             int n = 0;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
@@ -311,8 +357,43 @@ namespace BaseStation
 
         string socketToIP(Socket socket)
         {
-            var _temp = socket.RemoteEndPoint.ToString().Split(':');
-            return _temp[0];
+            return (socket.RemoteEndPoint.ToString().Split(':'))[0];
+        }
+
+        string socketToName(Socket socket)
+        {
+            dynamic[] arr = { "RefereeBox", "Robot1", "Robot2", "Robot3" };
+            for (int i = 0; i < arr.Length; i++)
+                if ((_socketDict.ContainsKey(arr[i])) && (_socketDict[arr[i]].RemoteEndPoint == socket.RemoteEndPoint))
+                    return arr[i];
+            return socket.RemoteEndPoint.ToString();
+        }
+
+        void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
+        {
+            addCommand("# Connecting to " + ipDst + " (" + keyName + ")");
+            try
+            {
+                attempts++;
+                _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
+                _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
+                hc.SetText(this, tbxStatus, string.Empty);
+                if (_toServerSocket.Connected)
+                    addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ")");
+                hc.SetText(this, connection, "Connected");
+                SendCallBack(_toServerSocket, this.Text);
+                _socketDict.Add(keyName, _toServerSocket);
+                _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+            }
+            catch (SocketException)
+            {
+                hc.SetText(this, tbxStatus, string.Empty);
+                addCommand("# IP This Device  : " + myIP + " (" + this.Text + ")");
+                addCommand("# IP Destination  : " + ipDst + " (" + keyName + ")");
+                addCommand("# Connection attempts: " + attempts.ToString());
+                hc.SetText(this, connection, "Disconnected");
+            }
         }
 
         void SetupServer(dynamic port)
@@ -365,11 +446,12 @@ namespace BaseStation
                 Array.Copy(_buffer, dataBuf, received);
                 string text = Encoding.ASCII.GetString(dataBuf).Trim();
                 var _data = text.Split('|');
-                addCommand("> " + socketToIP(socket) + " : " + _data[0]);
+                addCommand("> " + socketToName(socket) + " : " + _data[0]);
 
                 string respone = ResponeCallback(_data[0], socket);
                 if (!string.IsNullOrEmpty(respone))
                 {
+                    MessageBox.Show(respone);
                     if (_data.Count() == 1)
                         SendCallBack(socket, respone);
                     else
@@ -387,7 +469,7 @@ namespace BaseStation
         {
             try
             {
-                addCommand("@ " + socketToIP(_dstSocket) + " : " + txtMessage);
+                addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
                 byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
                 _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
@@ -665,10 +747,16 @@ namespace BaseStation
                     }
                 }
             }
-            else    // for all socket         
+            else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString() != (_socketDict["RefereeBox"].RemoteEndPoint.ToString())))      
             {
+                // If socket is Robot socket   
                 switch (text)
                 {
+                    /// INFORMATION ///
+                    case "B": //Get the ball
+                        respone = DateTime.Now.ToLongTimeString();
+                        break;
+
                     /// OTHERS ///
                     case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
@@ -682,11 +770,11 @@ namespace BaseStation
 
             broadcast:
             sendByHostList("Robot1,Robot2,Robot3", respone);
-            return respone;
+            return string.Empty;
 
             multicast:
             sendByHostList(chkRobotCollect, respone);
-            return respone;
+            return string.Empty;
 
             end:
             return respone;
@@ -698,30 +786,34 @@ namespace BaseStation
                 hc.SetText(this, obj, (int.Parse(obj.Text) + 1).ToString());
         }
 
-        void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
+        void setCard(string dir, dynamic[] obj)
         {
-            addCommand("# Connecting to " + ipDst + " (" + keyName + ")");
-            try
+            foreach (var i in obj)
+                i.BackgroundImage = Image.FromFile(dir);
+        }
+
+        private void ChkRobot_OnChange(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { chkR1, lblRobot1 }, { chkR2, lblRobot2 }, { chkR3, lblRobot3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if (arr[n, 0].Checked == true)
+                _chkRobotCollect.Add(arr[n, 1].Text);
+            else
+                _chkRobotCollect.Remove(arr[n, 1].Text);
+            _chkRobotCollect.Sort();
+            if (_chkRobotCollect.Count == 0)
+                chkRobotCollect = string.Empty;
+            for (int i = 0; i < _chkRobotCollect.Count; i++)
             {
-                attempts++;
-                _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
-                _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                hc.SetText(this, tbxStatus, string.Empty);
-                if (_toServerSocket.Connected)
-                    addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ")");
-                hc.SetText(this, connection, "Connected");
-                SendCallBack(_toServerSocket, this.Text);
-                _socketDict.Add(keyName, _toServerSocket);
-                _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
-            }
-            catch (SocketException)
-            {
-                hc.SetText(this, tbxStatus, string.Empty);
-                addCommand("# IP This Device  : " + myIP + " (" + this.Text + ")");
-                addCommand("# IP Destination  : " + ipDst + " (" + keyName + ")");
-                addCommand("# Connection attempts: " + attempts.ToString());
-                hc.SetText(this, connection, "Disconnected");
+                if (i == 0)
+                    chkRobotCollect = _chkRobotCollect.ElementAtOrDefault(i);
+                else
+                    chkRobotCollect += "," + _chkRobotCollect.ElementAtOrDefault(i);
             }
         }
 
@@ -729,6 +821,31 @@ namespace BaseStation
         {
             if ((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
+        }
+
+        private void tbxOpenBS_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                SetupServer(tbxPortBS.Text);
+        }
+
+        private void Connection_byDistinct(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if (arr[i, j].Name == obj)
+                        n = i;
+            if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                new Thread(objs => reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+        }
+
+        private void Connection_keyEnter(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Connection_byDistinct(sender, e);
         }
 
         void sendFromTextBox()
@@ -755,19 +872,6 @@ namespace BaseStation
                 sendFromTextBox();
         }
 
-        private void Connection_byDistinct(object sender, EventArgs e)
-        {
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
-                        n = i;
-            if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
-                new Thread(objs => reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
-        }
-
         private void tbxStatus_TextChanged(object sender, EventArgs e)
         {
             try
@@ -779,18 +883,6 @@ namespace BaseStation
             {
                 MessageBox.Show("# Error tbxStatus \n\n" + ex);
             }
-        }
-
-        private void Connection_keyEnter(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                Connection_byDistinct(sender, e);
-        }
-
-        private void tbxIPBS_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                SetupServer(tbxPortBS.Text);
         }
 
         private void TeamSwitch_OnValueChange(object sender, EventArgs e)
@@ -827,90 +919,14 @@ namespace BaseStation
                     arr[n, i].Enabled = false;
         }
 
-        private void ChkRobot_OnChange(object sender, EventArgs e)
-        {
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { chkR1, lblRobot1 }, { chkR2, lblRobot2 }, { chkR3, lblRobot3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
-                        n = i;
-            if (arr[n, 0].Checked == true)
-                _chkRobotCollect.Add(arr[n, 1].Text);
-            else
-                _chkRobotCollect.Remove(arr[n, 1].Text);
-            _chkRobotCollect.Sort();
-            if (_chkRobotCollect.Count == 0)
-                chkRobotCollect = string.Empty;
-            for (int i = 0; i < _chkRobotCollect.Count; i++)
-            {
-                if (i == 0)
-                    chkRobotCollect = _chkRobotCollect.ElementAtOrDefault(i);
-                else
-                    chkRobotCollect += "," + _chkRobotCollect.ElementAtOrDefault(i);
-            }
-        }
-
-
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
             //lblTimer.Text = "00:00";
-            //timer.Start();
-            //timer.Enabled = true;]
             //setFormation();
-
-            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard2R1 });
-            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R2, YCard2R2 });
-            setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R3, YCard2R3 });
-            setTimer("Robot1", 120);
-            setTimer("Robot2", 120);
-            setTimer("Robot3", 120);
-        }
-        
-        void setTimer(string obj, int time)
-        {
-            dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1 }, { "Robot2", ProgressR2, lblTimerR2 }, { "Robot3", ProgressR3, lblTimerR3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 0] == obj)
-                    n = i;
-            arr[n, 1].MaxValue = time; hc.SetValue(this, arr[n, 1], time); 
-            hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
-            hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
-            timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
-        }
-
-        void tickRobot(object state)
-        {
-            var obj = state;
-            dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1, YCard1R1, YCard2R1 }, { "Robot2", ProgressR2, lblTimerR2, YCard1R2, YCard2R2 }, { "Robot3", ProgressR3, lblTimerR3, YCard1R3, YCard2R3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 0] == obj)
-                    n = i;
-            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 1));
-            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 1).ToString());
-            if (arr[n, 1].Value == 0)
-            {
-                hc.SetVisible(this, arr[n, 1], false);
-                setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
-                timerDict[arr[n, 0]].Change(Timeout.Infinite, Timeout.Infinite);
-                timerDict.Remove(arr[n, 0]);
-                arr[n, 1].ProgressColor = Color.SeaGreen;
-            }
-            else if (arr[n, 1].Value == arr[n, 1].MaxValue / 2)
-                arr[n, 1].ProgressColor = Color.Goldenrod;
-            else if (arr[n, 1].Value == 10)
-                arr[n, 1].ProgressColor = Color.Firebrick;
-        }
-
-        void setCard(string dir, dynamic[] obj)
-        {
-            foreach(var i in obj)
-                i.BackgroundImage = Image.FromFile(dir);
+            ProgressTM.MaxValue += 300;
+            ProgressTM.Value += 300;
         }
     }
 }
