@@ -262,7 +262,7 @@
             // 
             this.lblConnectionR1.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR1.Font = new System.Drawing.Font("Arial", 9F);
-            this.lblConnectionR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblConnectionR1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblConnectionR1.Location = new System.Drawing.Point(173, 315);
             this.lblConnectionR1.Name = "lblConnectionR1";
             this.lblConnectionR1.Size = new System.Drawing.Size(85, 20);
@@ -498,7 +498,7 @@
             // 
             this.lblConnectionBS.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionBS.Font = new System.Drawing.Font("Arial", 9F);
-            this.lblConnectionBS.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblConnectionBS.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblConnectionBS.Location = new System.Drawing.Point(218, 113);
             this.lblConnectionBS.Name = "lblConnectionBS";
             this.lblConnectionBS.Size = new System.Drawing.Size(40, 20);
@@ -594,7 +594,7 @@
             // 
             this.lblConnectionRB.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionRB.Font = new System.Drawing.Font("Arial", 9F);
-            this.lblConnectionRB.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblConnectionRB.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblConnectionRB.Location = new System.Drawing.Point(173, 214);
             this.lblConnectionRB.Name = "lblConnectionRB";
             this.lblConnectionRB.Size = new System.Drawing.Size(85, 20);
@@ -784,7 +784,7 @@
             // 
             this.lblConnectionR2.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR2.Font = new System.Drawing.Font("Arial", 9F);
-            this.lblConnectionR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblConnectionR2.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblConnectionR2.Location = new System.Drawing.Point(173, 416);
             this.lblConnectionR2.Name = "lblConnectionR2";
             this.lblConnectionR2.Size = new System.Drawing.Size(85, 20);
@@ -1171,7 +1171,7 @@
             // 
             this.lblConnectionR3.BackColor = System.Drawing.Color.Firebrick;
             this.lblConnectionR3.Font = new System.Drawing.Font("Arial", 9F);
-            this.lblConnectionR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblConnectionR3.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblConnectionR3.Location = new System.Drawing.Point(173, 517);
             this.lblConnectionR3.Name = "lblConnectionR3";
             this.lblConnectionR3.Size = new System.Drawing.Size(85, 20);

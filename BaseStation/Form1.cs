@@ -46,11 +46,13 @@ namespace BaseStation
 
         HelperClass hc = new HelperClass();
 
-        System.Threading.Timer time, timer;
+        System.Threading.Timer time, timer, chkConnection;
         Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
 
         private void Form1_Load(object sender, EventArgs e)
-        {         
+        {
+            //new Thread(obj => cekConnection()).Start();
+
             tbxIPBS.Text = GetIPAddress() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
@@ -59,8 +61,8 @@ namespace BaseStation
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
             resetLocation();
-            time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer));
-            time.Change(1000, 1000); timer.Change(1000, 1000);
+            time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
+            time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(100, 100);
         }
 
         private void tickTime(object state)
@@ -355,6 +357,23 @@ namespace BaseStation
             return myIP;
         }
 
+        void checkConnection(object state)
+        {
+            dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+            var obj = string.Empty;
+            if ((lblConnectionBS.Text.Equals("Open")) && (!_serverSocket.IsBound))    // Check for Server Connection
+                obj = lblBaseStation.Text;
+            for (int i = 0; i < _socketDict.Count; i++)                                 // Check for Client Connection
+                if (!_socketDict.ElementAtOrDefault(i).Value.Connected)
+                    obj = _socketDict.ElementAtOrDefault(i).Key;
+            for (int j = 0; j < arr.GetLength(0); j++)
+                if (arr[j, 0].Text == obj)
+                    if (obj == lblBaseStation.Text)
+                        hc.SetText(this, arr[j, 1], "Close");
+                    else
+                        hc.SetText(this, arr[j, 1], "Disconnected");
+        }
+
         string socketToIP(Socket socket)
         {
             return (socket.RemoteEndPoint.ToString().Split(':'))[0];
@@ -412,6 +431,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to open server connection \n\n" + e);
+                hc.SetText(this, lblConnectionBS, "Close");
             }
         }
 
@@ -444,6 +464,8 @@ namespace BaseStation
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
                 string text = Encoding.ASCII.GetString(dataBuf).Trim();
+                if (string.IsNullOrWhiteSpace(text))
+                    socket.Disconnect(true);
                 var _data = text.Split('|');
                 addCommand("> " + socketToName(socket) + " : " + _data[0]);
 
@@ -935,9 +957,15 @@ namespace BaseStation
             }
             else
             {
+                if (obj == lblConnectionBS.Name)
+                    addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
+                else
+                    addCommand("\n# " + arr[n, 1].Text + " has DISCONNECTED :<");
+                _socketDict.Remove(arr[n, 1].Text);
                 arr[n, 0].BackColor = Color.Firebrick;
                 for (int i = 0; i < arr.GetLength(1); i++)
-                    arr[n, i].Enabled = false;
+                    if (i != 0)
+                        arr[n, i].Enabled = false;
             }
         }
 
