@@ -237,7 +237,7 @@
             this.tbxStatus.Name = "tbxStatus";
             this.tbxStatus.ShowSelectionMargin = true;
             this.tbxStatus.Size = new System.Drawing.Size(490, 159);
-            this.tbxStatus.TabIndex = 39;
+            this.tbxStatus.TabIndex = 36;
             this.tbxStatus.Text = "";
             this.tbxStatus.TextChanged += new System.EventHandler(this.tbxStatus_TextChanged);
             // 
@@ -253,7 +253,7 @@
             this.grpRobot1.Name = "grpRobot1";
             this.grpRobot1.Primary = true;
             this.grpRobot1.Size = new System.Drawing.Size(270, 100);
-            this.grpRobot1.TabIndex = 47;
+            this.grpRobot1.TabIndex = 8;
             this.grpRobot1.UseVisualStyleBackColor = true;
             this.grpRobot1.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
@@ -311,7 +311,7 @@
             this.tbxIPR1.Name = "tbxIPR1";
             this.tbxIPR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxIPR1.Size = new System.Drawing.Size(100, 25);
-            this.tbxIPR1.TabIndex = 53;
+            this.tbxIPR1.TabIndex = 6;
             this.tbxIPR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxIPR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -333,7 +333,7 @@
             this.tbxPortR1.Name = "tbxPortR1";
             this.tbxPortR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxPortR1.Size = new System.Drawing.Size(45, 25);
-            this.tbxPortR1.TabIndex = 56;
+            this.tbxPortR1.TabIndex = 7;
             this.tbxPortR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxPortR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -410,7 +410,7 @@
             this.tbxEncXR1.Name = "tbxEncXR1";
             this.tbxEncXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR1.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncXR1.TabIndex = 61;
+            this.tbxEncXR1.TabIndex = 15;
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -434,7 +434,7 @@
             this.tbxEncYR1.Name = "tbxEncYR1";
             this.tbxEncYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR1.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncYR1.TabIndex = 63;
+            this.tbxEncYR1.TabIndex = 16;
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -468,7 +468,7 @@
             this.tbxPortBS.Name = "tbxPortBS";
             this.tbxPortBS.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxPortBS.Size = new System.Drawing.Size(45, 25);
-            this.tbxPortBS.TabIndex = 69;
+            this.tbxPortBS.TabIndex = 1;
             this.tbxPortBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxPortBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxOpenBS_KeyDown);
             // 
@@ -490,7 +490,7 @@
             this.tbxIPBS.Name = "tbxIPBS";
             this.tbxIPBS.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxIPBS.Size = new System.Drawing.Size(100, 25);
-            this.tbxIPBS.TabIndex = 68;
+            this.tbxIPBS.TabIndex = 0;
             this.tbxIPBS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxIPBS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxOpenBS_KeyDown);
             // 
@@ -542,7 +542,7 @@
             this.grpBaseStation.Name = "grpBaseStation";
             this.grpBaseStation.Primary = true;
             this.grpBaseStation.Size = new System.Drawing.Size(270, 100);
-            this.grpBaseStation.TabIndex = 64;
+            this.grpBaseStation.TabIndex = 2;
             this.grpBaseStation.UseVisualStyleBackColor = true;
             this.grpBaseStation.Click += new System.EventHandler(this.grpBaseStation_Click);
             // 
@@ -564,7 +564,7 @@
             this.tbxPortRB.Name = "tbxPortRB";
             this.tbxPortRB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxPortRB.Size = new System.Drawing.Size(45, 25);
-            this.tbxPortRB.TabIndex = 75;
+            this.tbxPortRB.TabIndex = 4;
             this.tbxPortRB.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxPortRB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -586,7 +586,7 @@
             this.tbxIPRB.Name = "tbxIPRB";
             this.tbxIPRB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxIPRB.Size = new System.Drawing.Size(100, 25);
-            this.tbxIPRB.TabIndex = 74;
+            this.tbxIPRB.TabIndex = 3;
             this.tbxIPRB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxIPRB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -638,7 +638,7 @@
             this.grpRefereeBox.Name = "grpRefereeBox";
             this.grpRefereeBox.Primary = true;
             this.grpRefereeBox.Size = new System.Drawing.Size(270, 100);
-            this.grpRefereeBox.TabIndex = 70;
+            this.grpRefereeBox.TabIndex = 5;
             this.grpRefereeBox.UseVisualStyleBackColor = true;
             this.grpRefereeBox.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
@@ -661,7 +661,7 @@
             this.tbxEncYR2.Name = "tbxEncYR2";
             this.tbxEncYR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR2.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncYR2.TabIndex = 89;
+            this.tbxEncYR2.TabIndex = 21;
             this.tbxEncYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -696,7 +696,7 @@
             this.tbxEncXR2.Name = "tbxEncXR2";
             this.tbxEncXR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR2.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncXR2.TabIndex = 87;
+            this.tbxEncXR2.TabIndex = 20;
             this.tbxEncXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -754,7 +754,7 @@
             this.tbxPortR2.Name = "tbxPortR2";
             this.tbxPortR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxPortR2.Size = new System.Drawing.Size(45, 25);
-            this.tbxPortR2.TabIndex = 81;
+            this.tbxPortR2.TabIndex = 10;
             this.tbxPortR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxPortR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -776,7 +776,7 @@
             this.tbxIPR2.Name = "tbxIPR2";
             this.tbxIPR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxIPR2.Size = new System.Drawing.Size(100, 25);
-            this.tbxIPR2.TabIndex = 80;
+            this.tbxIPR2.TabIndex = 9;
             this.tbxIPR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxIPR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -848,7 +848,7 @@
             this.grpRobot2.Name = "grpRobot2";
             this.grpRobot2.Primary = true;
             this.grpRobot2.Size = new System.Drawing.Size(270, 100);
-            this.grpRobot2.TabIndex = 76;
+            this.grpRobot2.TabIndex = 11;
             this.grpRobot2.UseVisualStyleBackColor = true;
             this.grpRobot2.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
@@ -871,7 +871,7 @@
             this.tbxScrYR1.Name = "tbxScrYR1";
             this.tbxScrYR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrYR1.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrYR1.TabIndex = 92;
+            this.tbxScrYR1.TabIndex = 18;
             this.tbxScrYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -906,7 +906,7 @@
             this.tbxScrXR1.Name = "tbxScrXR1";
             this.tbxScrXR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrXR1.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrXR1.TabIndex = 90;
+            this.tbxScrXR1.TabIndex = 17;
             this.tbxScrXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -930,7 +930,7 @@
             this.tbxScrYR2.Name = "tbxScrYR2";
             this.tbxScrYR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrYR2.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrYR2.TabIndex = 95;
+            this.tbxScrYR2.TabIndex = 23;
             this.tbxScrYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -965,7 +965,7 @@
             this.tbxScrXR2.Name = "tbxScrXR2";
             this.tbxScrXR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrXR2.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrXR2.TabIndex = 93;
+            this.tbxScrXR2.TabIndex = 22;
             this.tbxScrXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -989,7 +989,7 @@
             this.tbxScrYR3.Name = "tbxScrYR3";
             this.tbxScrYR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrYR3.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrYR3.TabIndex = 112;
+            this.tbxScrYR3.TabIndex = 28;
             this.tbxScrYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -1024,7 +1024,7 @@
             this.tbxScrXR3.Name = "tbxScrXR3";
             this.tbxScrXR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxScrXR3.Size = new System.Drawing.Size(45, 25);
-            this.tbxScrXR3.TabIndex = 110;
+            this.tbxScrXR3.TabIndex = 27;
             this.tbxScrXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxScrXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -1048,7 +1048,7 @@
             this.tbxEncYR3.Name = "tbxEncYR3";
             this.tbxEncYR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncYR3.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncYR3.TabIndex = 109;
+            this.tbxEncYR3.TabIndex = 26;
             this.tbxEncYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -1083,7 +1083,7 @@
             this.tbxEncXR3.Name = "tbxEncXR3";
             this.tbxEncXR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxEncXR3.Size = new System.Drawing.Size(45, 25);
-            this.tbxEncXR3.TabIndex = 107;
+            this.tbxEncXR3.TabIndex = 25;
             this.tbxEncXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxEncXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -1141,7 +1141,7 @@
             this.tbxPortR3.Name = "tbxPortR3";
             this.tbxPortR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxPortR3.Size = new System.Drawing.Size(45, 25);
-            this.tbxPortR3.TabIndex = 101;
+            this.tbxPortR3.TabIndex = 13;
             this.tbxPortR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxPortR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -1163,7 +1163,7 @@
             this.tbxIPR3.Name = "tbxIPR3";
             this.tbxIPR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxIPR3.Size = new System.Drawing.Size(100, 25);
-            this.tbxIPR3.TabIndex = 100;
+            this.tbxIPR3.TabIndex = 12;
             this.tbxIPR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxIPR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Connection_keyEnter);
             // 
@@ -1235,7 +1235,7 @@
             this.grpRobot3.Name = "grpRobot3";
             this.grpRobot3.Primary = true;
             this.grpRobot3.Size = new System.Drawing.Size(270, 100);
-            this.grpRobot3.TabIndex = 96;
+            this.grpRobot3.TabIndex = 14;
             this.grpRobot3.UseVisualStyleBackColor = true;
             this.grpRobot3.Click += new System.EventHandler(this.Connection_byDistinct);
             // 
@@ -1263,7 +1263,7 @@
             this.TeamSwitch.OffColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(0)))), ((int)(((byte)(123)))));
             this.TeamSwitch.OnColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(168)))), ((int)(((byte)(236)))));
             this.TeamSwitch.Size = new System.Drawing.Size(35, 20);
-            this.TeamSwitch.TabIndex = 113;
+            this.TeamSwitch.TabIndex = 30;
             this.TeamSwitch.Value = true;
             this.TeamSwitch.OnValueChange += new System.EventHandler(this.TeamSwitch_OnValueChange);
             // 
@@ -1280,8 +1280,7 @@
             this.tbxMessage.SelectionLength = 0;
             this.tbxMessage.SelectionStart = 0;
             this.tbxMessage.Size = new System.Drawing.Size(243, 23);
-            this.tbxMessage.TabIndex = 114;
-            this.tbxMessage.TabStop = false;
+            this.tbxMessage.TabIndex = 31;
             this.tbxMessage.UseSystemPasswordChar = false;
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
@@ -1313,7 +1312,7 @@
             this.btnSend.OnHoverTextColor = System.Drawing.Color.White;
             this.btnSend.selected = false;
             this.btnSend.Size = new System.Drawing.Size(80, 25);
-            this.btnSend.TabIndex = 115;
+            this.btnSend.TabIndex = 32;
             this.btnSend.Text = "Send";
             this.btnSend.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSend.Textcolor = System.Drawing.Color.White;
@@ -1330,7 +1329,7 @@
             this.cbxFormation.Location = new System.Drawing.Point(1045, 267);
             this.cbxFormation.Name = "cbxFormation";
             this.cbxFormation.Size = new System.Drawing.Size(121, 29);
-            this.cbxFormation.TabIndex = 119;
+            this.cbxFormation.TabIndex = 33;
             this.cbxFormation.SelectedIndexChanged += new System.EventHandler(this.cbxFormation_SelectedIndexChanged);
             // 
             // lblGoalCyan
@@ -1544,7 +1543,7 @@
             this.btnTO.Location = new System.Drawing.Point(1091, 543);
             this.btnTO.Name = "btnTO";
             this.btnTO.Size = new System.Drawing.Size(75, 23);
-            this.btnTO.TabIndex = 44;
+            this.btnTO.TabIndex = 37;
             this.btnTO.Text = "Try Out";
             this.btnTO.UseVisualStyleBackColor = true;
             this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
@@ -1630,7 +1629,7 @@
             this.tbxGotoX.SelectionLength = 0;
             this.tbxGotoX.SelectionStart = 0;
             this.tbxGotoX.Size = new System.Drawing.Size(45, 23);
-            this.tbxGotoX.TabIndex = 148;
+            this.tbxGotoX.TabIndex = 34;
             this.tbxGotoX.TabStop = false;
             this.tbxGotoX.Text = "0";
             this.tbxGotoX.UseSystemPasswordChar = false;
@@ -1649,7 +1648,7 @@
             this.tbxGotoY.SelectionLength = 0;
             this.tbxGotoY.SelectionStart = 0;
             this.tbxGotoY.Size = new System.Drawing.Size(45, 23);
-            this.tbxGotoY.TabIndex = 149;
+            this.tbxGotoY.TabIndex = 35;
             this.tbxGotoY.TabStop = false;
             this.tbxGotoY.Text = "0";
             this.tbxGotoY.UseSystemPasswordChar = false;
@@ -1892,7 +1891,7 @@
             this.tbxAngleR1.Name = "tbxAngleR1";
             this.tbxAngleR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxAngleR1.Size = new System.Drawing.Size(35, 25);
-            this.tbxAngleR1.TabIndex = 169;
+            this.tbxAngleR1.TabIndex = 19;
             this.tbxAngleR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxAngleR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxAngleR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -1966,7 +1965,7 @@
             this.tbxAngleR2.Name = "tbxAngleR2";
             this.tbxAngleR2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxAngleR2.Size = new System.Drawing.Size(35, 25);
-            this.tbxAngleR2.TabIndex = 172;
+            this.tbxAngleR2.TabIndex = 24;
             this.tbxAngleR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxAngleR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxAngleR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
@@ -2015,7 +2014,7 @@
             this.tbxAngleR3.Name = "tbxAngleR3";
             this.tbxAngleR3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxAngleR3.Size = new System.Drawing.Size(35, 25);
-            this.tbxAngleR3.TabIndex = 175;
+            this.tbxAngleR3.TabIndex = 29;
             this.tbxAngleR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
