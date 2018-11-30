@@ -280,7 +280,7 @@ namespace BaseStation
                     shiftX *= -1;
                 if (startY > endY)
                     shiftY *= -1;
-                addCommand("@ " + socketToIP(_socketDict[Robot]) + " : " + ("X:" + endX + ",Y:" + endY));
+                addCommand("@ " + socketToName(_socketDict[Robot]) + " : " + ("X:" + endX + ",Y:" + endY));
                 bool[] chk = { true, true };
                 while (chk[0] |= chk[1])
                 {

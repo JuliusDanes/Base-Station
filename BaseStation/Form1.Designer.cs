@@ -199,7 +199,7 @@
             this.picRobot1.BackColor = System.Drawing.Color.Transparent;
             this.picRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot1.BackgroundImage")));
             this.picRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picRobot1.Location = new System.Drawing.Point(625, 358);
+            this.picRobot1.Location = new System.Drawing.Point(725, 341);
             this.picRobot1.Name = "picRobot1";
             this.picRobot1.Size = new System.Drawing.Size(25, 25);
             this.picRobot1.TabIndex = 26;
