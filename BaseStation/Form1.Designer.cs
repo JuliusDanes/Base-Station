@@ -120,7 +120,6 @@
             this.lblRCard = new System.Windows.Forms.Label();
             this.lblYCard = new System.Windows.Forms.Label();
             this.lblPenalty = new System.Windows.Forms.Label();
-            this.btnTO = new System.Windows.Forms.Button();
             this.chkR1 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR2 = new Bunifu.Framework.UI.BunifuCheckbox();
             this.chkR3 = new Bunifu.Framework.UI.BunifuCheckbox();
@@ -151,6 +150,8 @@
             this.lblDegR3 = new System.Windows.Forms.Label();
             this.lblPipe2R3 = new System.Windows.Forms.Label();
             this.tbxAngleR3 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
+            this.btnTO = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -1281,6 +1282,7 @@
             this.tbxMessage.SelectionStart = 0;
             this.tbxMessage.Size = new System.Drawing.Size(243, 23);
             this.tbxMessage.TabIndex = 31;
+            this.tbxMessage.TabStop = false;
             this.tbxMessage.UseSystemPasswordChar = false;
             this.tbxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxMessage_KeyDown);
             // 
@@ -1326,9 +1328,9 @@
             this.cbxFormation.Items.AddRange(new object[] {
             "Stand By",
             "Kick Off"});
-            this.cbxFormation.Location = new System.Drawing.Point(1045, 267);
+            this.cbxFormation.Location = new System.Drawing.Point(1046, 263);
             this.cbxFormation.Name = "cbxFormation";
-            this.cbxFormation.Size = new System.Drawing.Size(121, 29);
+            this.cbxFormation.Size = new System.Drawing.Size(120, 29);
             this.cbxFormation.TabIndex = 33;
             this.cbxFormation.SelectedIndexChanged += new System.EventHandler(this.cbxFormation_SelectedIndexChanged);
             // 
@@ -1537,16 +1539,6 @@
             this.lblPenalty.TabIndex = 133;
             this.lblPenalty.Text = "0";
             this.lblPenalty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnTO
-            // 
-            this.btnTO.Location = new System.Drawing.Point(1091, 543);
-            this.btnTO.Name = "btnTO";
-            this.btnTO.Size = new System.Drawing.Size(75, 23);
-            this.btnTO.TabIndex = 37;
-            this.btnTO.Text = "Try Out";
-            this.btnTO.UseVisualStyleBackColor = true;
-            this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
             // 
             // chkR1
             // 
@@ -2019,13 +2011,54 @@
             this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
             this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
             // 
+            // btnTO
+            // 
+            this.btnTO.ActiveBorderThickness = 1;
+            this.btnTO.ActiveCornerRadius = 20;
+            this.btnTO.ActiveFillColor = System.Drawing.Color.Firebrick;
+            this.btnTO.ActiveForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnTO.ActiveLineColor = System.Drawing.Color.Firebrick;
+            this.btnTO.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.btnTO.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTO.BackgroundImage")));
+            this.btnTO.ButtonText = "Try Out";
+            this.btnTO.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTO.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTO.ForeColor = System.Drawing.Color.SeaGreen;
+            this.btnTO.IdleBorderThickness = 1;
+            this.btnTO.IdleCornerRadius = 40;
+            this.btnTO.IdleFillColor = System.Drawing.Color.Maroon;
+            this.btnTO.IdleForecolor = System.Drawing.Color.Gainsboro;
+            this.btnTO.IdleLineColor = System.Drawing.Color.Firebrick;
+            this.btnTO.Location = new System.Drawing.Point(1086, 535);
+            this.btnTO.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnTO.Name = "btnTO";
+            this.btnTO.Size = new System.Drawing.Size(80, 50);
+            this.btnTO.TabIndex = 217;
+            this.btnTO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
+            // 
+            // materialDivider1
+            // 
+            this.materialDivider1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialDivider1.Depth = 0;
+            this.materialDivider1.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.materialDivider1.ForeColor = System.Drawing.Color.Black;
+            this.materialDivider1.Location = new System.Drawing.Point(1036, 259);
+            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider1.Name = "materialDivider1";
+            this.materialDivider1.Size = new System.Drawing.Size(140, 10);
+            this.materialDivider1.TabIndex = 219;
+            this.materialDivider1.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnTO);
             this.Controls.Add(this.lblDegR3);
             this.Controls.Add(this.lblPipe2R3);
             this.Controls.Add(this.tbxAngleR3);
@@ -2045,7 +2078,6 @@
             this.Controls.Add(this.ProgressR2);
             this.Controls.Add(this.lblTimerR1);
             this.Controls.Add(this.ProgressR1);
-            this.Controls.Add(this.btnTO);
             this.Controls.Add(this.lblGotoComma);
             this.Controls.Add(this.tbxGotoY);
             this.Controls.Add(this.lblScale);
@@ -2148,6 +2180,7 @@
             this.Controls.Add(this.lblDiv2);
             this.Controls.Add(this.lblGoto);
             this.Controls.Add(this.picTimer);
+            this.Controls.Add(this.materialDivider1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -2249,46 +2282,15 @@
         protected System.Windows.Forms.PictureBox RCardR3;
         protected System.Windows.Forms.PictureBox YCard1R3;
         protected MaterialSkin.Controls.MaterialRaisedButton grpRobot3;
-        private Bunifu.Framework.UI.BunifuiOSSwitch TeamSwitch;
         protected System.Windows.Forms.RichTextBox tbxStatus;
-        private MaterialSkin.Controls.MaterialSingleLineTextField tbxMessage;
-        private Bunifu.Framework.UI.BunifuFlatButton btnSend;
-        private MetroFramework.Controls.MetroComboBox cbxFormation;
         protected System.Windows.Forms.Label lblGoalCyan;
         protected System.Windows.Forms.Label lblGoalMagenta;
         protected System.Windows.Forms.Label lblSplitScore;
-        private System.Windows.Forms.Label lblTime;
-        private MaterialSkin.Controls.MaterialDivider lblDiv;
-        private System.Windows.Forms.Label lblPenaltyTxt;
-        private System.Windows.Forms.Label lblYCardTxt;
-        private System.Windows.Forms.Label lblRCardTxt;
-        private System.Windows.Forms.Label lblCornerTxt;
-        private System.Windows.Forms.Label lblGoalKickTxt;
-        private System.Windows.Forms.Label lblFoulsTxt;
-        private System.Windows.Forms.Label lblFouls;
-        private System.Windows.Forms.Label lblGoalKick;
-        private System.Windows.Forms.Label lblCorner;
-        private System.Windows.Forms.Label lblRCard;
-        private System.Windows.Forms.Label lblYCard;
-        private System.Windows.Forms.Label lblPenalty;
-        protected System.Windows.Forms.Button btnTO;
-        private Bunifu.Framework.UI.BunifuCheckbox chkR1;
-        private Bunifu.Framework.UI.BunifuCheckbox chkR2;
-        private Bunifu.Framework.UI.BunifuCheckbox chkR3;
         protected System.Windows.Forms.Label lblHalf;
-        private System.Windows.Forms.Label lblScale;
-        private MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoX;
-        private MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoY;
         protected System.Windows.Forms.Label lblGotoComma;
-        private MaterialSkin.Controls.MaterialDivider lblDiv2;
-        private System.Windows.Forms.Label lblGoto;
-        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR1;
         protected System.Windows.Forms.Label lblTimerR1;
         protected System.Windows.Forms.Label lblTimerR2;
-        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
         protected System.Windows.Forms.Label lblTimerR3;
-        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
-        private Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
         protected System.Windows.Forms.PictureBox ballR1;
         protected System.Windows.Forms.PictureBox ballR2;
         protected System.Windows.Forms.PictureBox ballR3;
@@ -2302,6 +2304,38 @@
         protected System.Windows.Forms.Label lblDegR3;
         protected System.Windows.Forms.Label lblPipe2R3;
         protected Bunifu.Framework.UI.BunifuMaterialTextbox tbxAngleR3;
+        protected Bunifu.Framework.UI.BunifuiOSSwitch TeamSwitch;
+        protected MaterialSkin.Controls.MaterialSingleLineTextField tbxMessage;
+        protected Bunifu.Framework.UI.BunifuFlatButton btnSend;
+        protected MetroFramework.Controls.MetroComboBox cbxFormation;
+        protected System.Windows.Forms.Label lblTime;
+        protected MaterialSkin.Controls.MaterialDivider lblDiv;
+        protected System.Windows.Forms.Label lblPenaltyTxt;
+        protected System.Windows.Forms.Label lblYCardTxt;
+        protected System.Windows.Forms.Label lblRCardTxt;
+        protected System.Windows.Forms.Label lblCornerTxt;
+        protected System.Windows.Forms.Label lblGoalKickTxt;
+        protected System.Windows.Forms.Label lblFoulsTxt;
+        protected System.Windows.Forms.Label lblFouls;
+        protected System.Windows.Forms.Label lblGoalKick;
+        protected System.Windows.Forms.Label lblCorner;
+        protected System.Windows.Forms.Label lblRCard;
+        protected System.Windows.Forms.Label lblYCard;
+        protected System.Windows.Forms.Label lblPenalty;
+        protected Bunifu.Framework.UI.BunifuCheckbox chkR1;
+        protected Bunifu.Framework.UI.BunifuCheckbox chkR2;
+        protected Bunifu.Framework.UI.BunifuCheckbox chkR3;
+        protected System.Windows.Forms.Label lblScale;
+        protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoX;
+        protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoY;
+        protected MaterialSkin.Controls.MaterialDivider lblDiv2;
+        protected System.Windows.Forms.Label lblGoto;
+        protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR1;
+        protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
+        protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
+        protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
+        protected Bunifu.Framework.UI.BunifuThinButton2 btnTO;
+        protected MaterialSkin.Controls.MaterialDivider materialDivider1;
     }
 }
 

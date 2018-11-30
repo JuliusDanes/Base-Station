@@ -60,7 +60,7 @@ namespace BaseStation
             tbxIPR1.Text /*= "169.254.162.201"*/ = GetIPAddress();
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
-            resetLocation();
+            resetText();
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(100, 100);
         }
@@ -307,11 +307,10 @@ namespace BaseStation
                 }
             }
             catch (Exception e)
-            {
-            }
+            { }
         }
 
-        void resetLocation()
+        void resetText()
         {
             dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3 };
             foreach (var i in arr)
@@ -380,6 +379,38 @@ namespace BaseStation
             { }
         }
 
+        private void lblConnection_TextChanged(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr;
+            if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
+                arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
+            else
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0].Name == obj)
+                    n = i;
+            if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open"))
+            {
+                arr[n, 0].BackColor = Color.SeaGreen;
+                for (int i = 0; i < arr.GetLength(1); i++)
+                    arr[n, i].Enabled = true;
+            }
+            else
+            {
+                if (obj == lblConnectionBS.Name)
+                    addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
+                else
+                    addCommand("\n# " + arr[n, 1].Text + " has DISCONNECTED :<");
+                _socketDict.Remove(arr[n, 1].Text);
+                arr[n, 0].BackColor = Color.Firebrick;
+                for (int i = 0; i < arr.GetLength(1); i++)
+                    if (i != 0)
+                        arr[n, i].Enabled = false;
+            }
+        }
+
         string socketToIP(Socket socket)
         {
             return (socket.RemoteEndPoint.ToString().Split(':'))[0];
@@ -387,7 +418,7 @@ namespace BaseStation
 
         string socketToName(Socket socket)
         {
-            dynamic[] arr = { "RefereeBox", "Robot1", "Robot2", "Robot3" };
+            dynamic[] arr = { "BaseStation", "RefereeBox", "Robot1", "Robot2", "Robot3" };
             for (int i = 0; i < arr.Length; i++)
                 if ((_socketDict.ContainsKey(arr[i])) && (_socketDict[arr[i]].RemoteEndPoint == socket.RemoteEndPoint))
                     return arr[i];
@@ -860,7 +891,8 @@ namespace BaseStation
         private void tbxOpenBS_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                SetupServer(tbxPortBS.Text);
+                if ((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+                    new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
         }
 
         private void Connection_byDistinct(object sender, EventArgs e)
@@ -885,10 +917,10 @@ namespace BaseStation
         void sendFromTextBox()
         {
             var dataMessage = tbxMessage.Text.Trim().Split('|');
-            if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
-                sendByHostList(chkRobotCollect, dataMessage[0]);
-            else if (dataMessage.Count() == 2)  //for to be Server
-                sendByHostList(dataMessage[1], dataMessage[0]);
+            if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
+                sendByHostList(chkRobotCollect, dataMessage[0].Trim());
+            else if ((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(dataMessage[1])))  //for to be Server
+                sendByHostList(dataMessage[1].Trim(), dataMessage[0].Trim());
             else
                 MessageBox.Show("Incorrect Format!");
             tbxMessage.ResetText();
@@ -942,39 +974,7 @@ namespace BaseStation
         {
             if (cbxFormation.SelectedIndex != -1)
                 setFormation();
-        }
-
-        private void lblConnection_TextChanged(object sender, EventArgs e)
-        {
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr;
-            if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
-                arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
-            else
-                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 0].Name == obj)
-                    n = i;
-            if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open"))
-            {
-                arr[n, 0].BackColor = Color.SeaGreen;
-                for (int i = 0; i < arr.GetLength(1); i++)
-                    arr[n, i].Enabled = true;
-            }
-            else
-            {
-                if (obj == lblConnectionBS.Name)
-                    addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
-                else
-                    addCommand("\n# " + arr[n, 1].Text + " has DISCONNECTED :<");
-                _socketDict.Remove(arr[n, 1].Text);
-                arr[n, 0].BackColor = Color.Firebrick;
-                for (int i = 0; i < arr.GetLength(1); i++)
-                    if (i != 0)
-                        arr[n, i].Enabled = false;
-            }
-        }
+        }        
 
         private void btnTO_Click(object sender, EventArgs e)
         {
