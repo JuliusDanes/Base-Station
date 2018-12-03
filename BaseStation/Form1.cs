@@ -187,7 +187,7 @@ namespace BaseStation
         void changeCounter(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY }, { tbxAngleR1, tbxAngleR1 }, { tbxAngleR2, tbxAngleR2 }, { tbxAngleR3, tbxAngleR3 } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY }, { tbxAngleR1, tbxAngleR1 }, { tbxAngleR2, tbxAngleR2 }, { tbxAngleR3, tbxAngleR3 }, { tbxGotoAngle, tbxGotoAngle } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -213,7 +213,7 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)))
+            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
             {
                 if (obj.StartsWith("tbxEnc"))   // Encoder then using scale 1:20
                 {
@@ -249,7 +249,7 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            string dtGoto = "X:" + arr[n, 1].Text + ",Y:" + arr[n, 2].Text;
+            string dtGoto = arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
             SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
         }
 
@@ -257,32 +257,34 @@ namespace BaseStation
         {
             changeCounter(sender, e);
             var chkRobot = chkRobotCollect.Split(',');
-            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)))
+            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
                 if (!string.IsNullOrEmpty(chkRobotCollect))
                     foreach (var dt in chkRobot)
                     {
-                        dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3 } };
+                        dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
                         int n = 0;
                         int[] val = new int[2];
                         for (int i = 0; i < arr.GetLength(0); i++)
                             if (arr[i, 0].Text == dt)
                                 n = i;
-                        new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), 20, 20)).Start();
+                        new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1)).Start();
                     }
         }
 
-        void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, int endX, int endY, int shiftX, int shiftY)
+        void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
         {
             try
             {
-                int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text);
+                int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text), startAngle = int.Parse(angleRobot.Text);
                 if (startX > endX)
                     shiftX *= -1;
                 if (startY > endY)
                     shiftY *= -1;
-                addCommand("@ " + socketToName(_socketDict[Robot]) + " : " + ("X:" + endX + ",Y:" + endY));
-                bool[] chk = { true, true };
-                while (chk[0] |= chk[1])
+                if (startAngle > endAngle)
+                    shiftAngle *= -1;
+                addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " Ɵ:" + endAngle + "°"));
+                bool[] chk = { true, true, true };
+                while (chk[0] |= chk[1] |= chk[2])
                 {
                     if (startX != endX)
                     {
@@ -300,8 +302,16 @@ namespace BaseStation
                     }
                     else
                         chk[1] = false;     // Done
+                    if (startAngle != endAngle)
+                    {
+                        if (Math.Abs(endAngle - startAngle) < Math.Abs(shiftAngle))     // Shift not corresponding
+                            shiftAngle = (endAngle - startAngle);
+                        startAngle += shiftAngle;   // On process
+                    }
+                    else
+                        chk[2] = false;     // Done
 
-                    string dtGoto = "X:" + startX + ",Y:" + startY;
+                    string dtGoto = startX + "," + startY + "," + startAngle;
                     SendCallBack(_socketDict[Robot], dtGoto, "Goto");
                     Thread.Sleep(100);    // time per limit
                 }
@@ -312,7 +322,7 @@ namespace BaseStation
 
         void resetText()
         {
-            dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3 };
+            dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3, tbxGotoAngle };
             foreach (var i in arr)
                 i.Text = "0";
         }
@@ -320,18 +330,18 @@ namespace BaseStation
         void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = { 20, 20 };   // Distance(cm) per shift
+            int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
             dynamic[,] arr = null;
             if (formation == "Stand By")
-                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, 0, 6000 }, { tbxEncXR2, tbxEncYR2, 0, 5120 }, { tbxEncXR3, tbxEncYR3, 0, 4380 } };
+                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, tbxAngleR1, 0, 6000, 0 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, 0, 5120, 0 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, 0, 4380, 0 } };
             else if (formation == "Kick Off")
-                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, 4300, 3000 }, { tbxEncXR2, tbxEncYR2, 3000, 4100 }, { tbxEncXR3, tbxEncYR3, 100, 3000 } };                //for (int i = 0; i < arr.GetLength(0); i++)
+                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, tbxAngleR1, 4300, 3000, 0 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, 3000, 4100, 0 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, 100, 3000, 0 } };                //for (int i = 0; i < arr.GetLength(0); i++)
 
-            new Thread(obj => GotoLoc("Robot1", arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], shift[0], shift[1])).Start();
-            new Thread(obj => GotoLoc("Robot2", arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], shift[0], shift[1])).Start();
-            new Thread(obj => GotoLoc("Robot3", arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], shift[0], shift[1])).Start();
+            new Thread(obj => GotoLoc("Robot1", arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], shift[0], shift[1], shift[2])).Start();
+            new Thread(obj => GotoLoc("Robot2", arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], shift[0], shift[1], shift[2])).Start();
+            new Thread(obj => GotoLoc("Robot3", arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], arr[2, 4], arr[2, 5], shift[0], shift[1], shift[2])).Start();
             //for (int i = 0; i < arr.GetLength(0); i++)
-            //    new Thread(obj => GotoLoc(arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], 1, 1)).Start();
+            //    new Thread(obj => GotoLoc("Robot1", arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], arr[i, 4], arr[i, 5], shift[0], shift[1], shift[2])).Start();
         }
 
 
@@ -504,7 +514,6 @@ namespace BaseStation
                 if (string.IsNullOrWhiteSpace(text))
                     socket.Disconnect(true);
                 var _data = text.Split('|');
-                addCommand("> " + socketToName(socket) + " : " + _data[0]);
 
                 string respone = ResponeCallback(_data[0], socket);
                 if (!string.IsNullOrEmpty(respone))
@@ -526,7 +535,13 @@ namespace BaseStation
         {
             try
             {
-                addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
+                if (Regex.IsMatch(txtMessage, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
+                {
+                    var pos = txtMessage.Split(',');
+                    addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " Ɵ:" + pos[2] + "°"));
+                }
+                else
+                    addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
                 byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
                 _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
@@ -578,24 +593,19 @@ namespace BaseStation
         string ResponeCallback(dynamic text, Socket socket)
         {
             string respone = string.Empty;
-            if (Regex.IsMatch(text, @"X:[-]{0,1}[0-9]{1,4},Y:[-]{0,1}[0-9]{1,4}"))
+            if (Regex.IsMatch(text, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
             {
                 // If message is data X & Y from encoder
                 /// Scale is 1 : 20 
                 string objName = null;
-                int[] _posXY = new int[2];
                 var posXY = text.Split(',');
-                if (posXY.Length == 2) // If data receive only one X & Y
+                if (posXY.Length > 3) // If data receive multi value X & Y (error bug problem)
                 {
-                    _posXY[0] = int.Parse(posXY[0].Split(':')[1]);
-                    _posXY[1] = int.Parse(posXY[1].Split(':')[1]);
+                    posXY[0] = posXY[posXY.Length - 3];
+                    posXY[1] = posXY[posXY.Length - 2];
+                    posXY[2] = posXY[posXY.Length - 1];
                 }
-                else // If data receive multi X & Y (error problems)
-                {
-                    _posXY[0] = int.Parse(posXY[posXY.Length - 2].Split(':')[2]);
-                    _posXY[1] = int.Parse(posXY[posXY.Length - 1].Split(':')[1]);
-                }
-                foreach (var _temp in _socketDict)
+                foreach (var _temp in _socketDict)                              // Get socket name from IP
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
 
@@ -604,8 +614,10 @@ namespace BaseStation
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
                         n = i;
-                hc.SetText(this, arr[n, 1], _posXY[0].ToString());          // On encoder tbx
-                hc.SetText(this, arr[n, 2], _posXY[1].ToString());
+                hc.SetText(this, arr[n, 1], posXY[0].ToString());          // On encoder tbx
+                hc.SetText(this, arr[n, 2], posXY[1].ToString());
+                hc.SetText(this, arr[n, 3], posXY[2].ToString());
+                text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " Ɵ:" + posXY[2] + "°";
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -842,6 +854,7 @@ namespace BaseStation
             return string.Empty;
 
             end:
+            addCommand("> " + socketToName(socket) + " : " + text);
             return respone;
         }
 

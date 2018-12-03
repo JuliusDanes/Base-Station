@@ -152,6 +152,9 @@
             this.tbxAngleR3 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.btnTO = new Bunifu.Framework.UI.BunifuThinButton2();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.lblDegGoto = new System.Windows.Forms.Label();
+            this.lblPipeGoto = new System.Windows.Forms.Label();
+            this.tbxGotoAngle = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -2050,6 +2053,52 @@
             this.materialDivider1.TabIndex = 219;
             this.materialDivider1.Text = "0";
             // 
+            // lblDegGoto
+            // 
+            this.lblDegGoto.BackColor = System.Drawing.Color.Transparent;
+            this.lblDegGoto.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Bold);
+            this.lblDegGoto.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblDegGoto.Location = new System.Drawing.Point(1202, 507);
+            this.lblDegGoto.Name = "lblDegGoto";
+            this.lblDegGoto.Size = new System.Drawing.Size(10, 20);
+            this.lblDegGoto.TabIndex = 222;
+            this.lblDegGoto.Text = "o";
+            this.lblDegGoto.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPipeGoto
+            // 
+            this.lblPipeGoto.BackColor = System.Drawing.Color.Transparent;
+            this.lblPipeGoto.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPipeGoto.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblPipeGoto.Location = new System.Drawing.Point(1170, 511);
+            this.lblPipeGoto.Name = "lblPipeGoto";
+            this.lblPipeGoto.Size = new System.Drawing.Size(10, 20);
+            this.lblPipeGoto.TabIndex = 221;
+            this.lblPipeGoto.Text = "|";
+            this.lblPipeGoto.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbxGotoAngle
+            // 
+            this.tbxGotoAngle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.tbxGotoAngle.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbxGotoAngle.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.tbxGotoAngle.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.tbxGotoAngle.HintForeColor = System.Drawing.Color.WhiteSmoke;
+            this.tbxGotoAngle.HintText = "deg";
+            this.tbxGotoAngle.isPassword = false;
+            this.tbxGotoAngle.LineFocusedColor = System.Drawing.Color.Yellow;
+            this.tbxGotoAngle.LineIdleColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(71)))), ((int)(((byte)(79)))));
+            this.tbxGotoAngle.LineMouseHoverColor = System.Drawing.Color.Gold;
+            this.tbxGotoAngle.LineThickness = 1;
+            this.tbxGotoAngle.Location = new System.Drawing.Point(1175, 506);
+            this.tbxGotoAngle.Margin = new System.Windows.Forms.Padding(4);
+            this.tbxGotoAngle.Name = "tbxGotoAngle";
+            this.tbxGotoAngle.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tbxGotoAngle.Size = new System.Drawing.Size(35, 25);
+            this.tbxGotoAngle.TabIndex = 220;
+            this.tbxGotoAngle.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxGotoAngle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2058,6 +2107,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblDegGoto);
+            this.Controls.Add(this.lblPipeGoto);
+            this.Controls.Add(this.tbxGotoAngle);
             this.Controls.Add(this.btnTO);
             this.Controls.Add(this.lblDegR3);
             this.Controls.Add(this.lblPipe2R3);
@@ -2336,6 +2388,9 @@
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
         protected Bunifu.Framework.UI.BunifuThinButton2 btnTO;
         protected MaterialSkin.Controls.MaterialDivider materialDivider1;
+        protected System.Windows.Forms.Label lblDegGoto;
+        protected System.Windows.Forms.Label lblPipeGoto;
+        protected Bunifu.Framework.UI.BunifuMaterialTextbox tbxGotoAngle;
     }
 }
 
