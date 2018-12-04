@@ -240,7 +240,6 @@ namespace BaseStation
         private void tbxEncScr_KeyDown(object sender, KeyEventArgs e)
         {
             changeCounter(sender, e);
-
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
             int n = 0;
@@ -282,7 +281,7 @@ namespace BaseStation
                     shiftY *= -1;
                 if (startAngle > endAngle)
                     shiftAngle *= -1;
-                addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " Ɵ:" + endAngle + "°"));
+                addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
                 bool[] chk = { true, true, true };
                 while (chk[0] |= chk[1] |= chk[2])
                 {
@@ -538,7 +537,7 @@ namespace BaseStation
                 if (Regex.IsMatch(txtMessage, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
                 {
                     var pos = txtMessage.Split(',');
-                    addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " Ɵ:" + pos[2] + "°"));
+                    addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
                 }
                 else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
@@ -617,7 +616,7 @@ namespace BaseStation
                 hc.SetText(this, arr[n, 1], posXY[0].ToString());          // On encoder tbx
                 hc.SetText(this, arr[n, 2], posXY[1].ToString());
                 hc.SetText(this, arr[n, 3], posXY[2].ToString());
-                text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " Ɵ:" + posXY[2] + "°";
+                text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " ∠:" + posXY[2] + "°";
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
