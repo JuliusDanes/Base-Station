@@ -51,8 +51,6 @@ namespace BaseStation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //new Thread(obj => cekConnection()).Start();
-
             tbxIPBS.Text = GetIPAddress() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
@@ -350,7 +348,8 @@ namespace BaseStation
         static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
-        List<string> _chkRobotCollect = new List<string>();
+        Dictionary<dynamic, bool> chkReconnect = new Dictionary<dynamic, bool>();
+        List<dynamic> _chkRobotCollect = new List<dynamic>(), notConnectionCollect = new List<dynamic>();
         internal int port, attempts = 0, ctr = 0;
         internal string myIP, chkRobotCollect = string.Empty;
 
@@ -371,18 +370,23 @@ namespace BaseStation
             try
             {
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-                var obj = string.Empty;
-                if ((lblConnectionBS.Text.Equals("Open")) && (!_serverSocket.IsBound))      // Check for Server Connection
-                    obj = lblBaseStation.Text;
-                for (int i = 0; i < _socketDict.Count; i++)                                 // Check for Client Connection
-                    if (!_socketDict.ElementAtOrDefault(i).Value.Connected)
-                        obj = _socketDict.ElementAtOrDefault(i).Key;
-                for (int j = 0; j < arr.GetLength(0); j++)
-                    if (arr[j, 0].Text == obj)
-                        if (obj == lblBaseStation.Text)
-                            hc.SetText(this, arr[j, 1], "Close");
-                        else
-                            hc.SetText(this, arr[j, 1], "Disconnected");
+                for (int i = 0; i < arr.GetLength(0); i++)      // Check for Server and Client Connection
+                    if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))) && (!notConnectionCollect.Contains(arr[i, 1])))
+                    {
+                        notConnectionCollect.Add(arr[i, 1]);
+                        chkReconnect.Add(arr[i,1].Name, true);
+                    }
+                    else if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (_serverSocket.IsBound))) && (notConnectionCollect.Contains(arr[i, 1])))
+                        notConnectionCollect.Remove(arr[i, 1]);
+                foreach (dynamic j in notConnectionCollect)          // Auto Reconnecting
+                    if (chkReconnect[j.Name] == true)
+                    {
+                        if (j.Text == "Connected")
+                            hc.SetText(this, j, "Disconnected");
+                        else if (j.Text == "Open")
+                            hc.SetText(this, j, "Close");
+                        Connection_byDistinct(j, EventArgs.Empty);
+                    }
             }
             catch (Exception e)
             { }
@@ -434,7 +438,7 @@ namespace BaseStation
             return socket.RemoteEndPoint.ToString();
         }
 
-        void reqConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
+        void requestConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
         {
             addCommand("# Connecting to " + ipDst + " (" + keyName + ") \t Port : " + port);
             try
@@ -445,10 +449,12 @@ namespace BaseStation
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ") \t Port : " + port);
+                _socketDict.Add(keyName, _toServerSocket);
                 hc.SetText(this, connection, "Connected");
                 SendCallBack(_toServerSocket, this.Text);
-                _socketDict.Add(keyName, _toServerSocket);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+                if (chkReconnect.ContainsKey(connection.Name))
+                    chkReconnect.Remove(connection.Name);
             }
             catch (SocketException)
             {
@@ -457,6 +463,8 @@ namespace BaseStation
                 addCommand("# IP Destination  : " + ipDst + " (" + keyName + ") \t Port : " + port);
                 addCommand("# Connection attempts: " + attempts.ToString());
                 hc.SetText(this, connection, "Disconnected");
+                if (chkReconnect.ContainsKey(connection.Name))
+                    chkReconnect[connection.Name] = true;
             }
         }
 
@@ -916,8 +924,10 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
+            if (chkReconnect.ContainsKey(arr[n, 2].Name))
+                chkReconnect[arr[n, 2].Name] = false;
             if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
-                new Thread(objs => reqConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+                new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
         }
 
         private void Connection_keyEnter(object sender, KeyEventArgs e)
@@ -994,8 +1004,12 @@ namespace BaseStation
             //MessageBox.Show(a.ToString());
             //lblTimer.Text = "00:00";
             //setFormation();
-            ProgressTM.MaxValue += 300;
-            ProgressTM.Value += 300;
+            //ProgressTM.MaxValue += 300;
+            //ProgressTM.Value += 300;
+
+            //Connection_byDistinct(lblRobot1, EventArgs.Empty);
+            foreach (var i in notConnectionCollect)
+                MessageBox.Show(((dynamic)i).Name.ToString());
         }
     }
 }
