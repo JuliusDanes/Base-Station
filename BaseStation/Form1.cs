@@ -67,7 +67,7 @@ namespace BaseStation
         {
             try { 
             hc.SetText(this, lblTime, ("[  " + DateTime.Now.ToString("HH:mm:ss") + "  ]"));
-            } catch (Exception e) { }
+            } catch (Exception) { }
         }
 
         private void tickTimer(object state)
@@ -99,7 +99,7 @@ namespace BaseStation
                 else if (ProgressTM.Value > ProgressTM.MaxValue / 2)
                     ProgressTM.ProgressColor = Color.SeaGreen;
             }
-            catch (Exception e)
+            catch (Exception)
             { }
         }
 
@@ -313,7 +313,7 @@ namespace BaseStation
                     Thread.Sleep(100);    // time per limit
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             { }
         }
 
@@ -385,10 +385,13 @@ namespace BaseStation
                             hc.SetText(this, j, "Disconnected");
                         else if (j.Text == "Open")
                             hc.SetText(this, j, "Close");
-                        Connection_byDistinct(j, EventArgs.Empty);
+                        if (j.Text == "Disconnected")
+                            Connection_byDistinct(j, EventArgs.Empty);
+                        else if (j.Text == "Open")
+                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
                     }
             }
-            catch (Exception e)
+            catch (Exception)
             { }
         }
 
