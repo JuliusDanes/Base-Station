@@ -176,6 +176,8 @@ namespace BaseStation
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
+        Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
+
         void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
             foreach (var frontImage in frontImages)
@@ -281,13 +283,8 @@ namespace BaseStation
                         for (int i = 0; i < arr.GetLength(0); i++)
                             if (arr[i, 0].Text == dt)
                                 n = i;
-                        new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1)).Start();
+                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1)));
                     }
-        }
-
-        dynamic[] aa()
-        {
-            return new dynamic[2] {"","" };
         }
 
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
@@ -347,6 +344,15 @@ namespace BaseStation
             { }
         }
 
+        void threadGoto(string keyName, Thread th)
+        {
+            if (gotoDict.ContainsKey(keyName)) {
+                gotoDict[keyName].Abort();
+                gotoDict.Remove(keyName); }
+            gotoDict.Add(keyName, th);
+            gotoDict[keyName].Start();
+        }
+
         void resetText()
         {
             dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3, tbxGotoAngle };
@@ -360,15 +366,15 @@ namespace BaseStation
             int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
             dynamic[,] arr = null;
             if (formation == "Stand By")
-                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, tbxAngleR1, 0, 6000, 0 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, 0, 5120, 0 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, 0, 4380, 0 } };
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, 0, 6000, 0 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, 0, 5120, 0 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, 0, 4380, 0 } };
             else if (formation == "Kick Off")
-                arr = new dynamic[,] { { tbxEncXR1, tbxEncYR1, tbxAngleR1, 4300, 3000, 0 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, 3000, 4100, 0 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, 100, 3000, 0 } };                //for (int i = 0; i < arr.GetLength(0); i++)
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, 4300, 3000, 0 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, 3000, 4100, 0 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, 100, 3000, 0 } };                //for (int i = 0; i < arr.GetLength(0); i++)
 
-            new Thread(obj => GotoLoc("Robot1", arr[0, 0], arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], shift[0], shift[1], shift[2])).Start();
-            new Thread(obj => GotoLoc("Robot2", arr[1, 0], arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], shift[0], shift[1], shift[2])).Start();
-            new Thread(obj => GotoLoc("Robot3", arr[2, 0], arr[2, 1], arr[2, 2], arr[2, 3], arr[2, 4], arr[2, 5], shift[0], shift[1], shift[2])).Start();
-            //for (int i = 0; i < arr.GetLength(0); i++)
-            //    new Thread(obj => GotoLoc("Robot1", arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3], arr[i, 4], arr[i, 5], shift[0], shift[1], shift[2])).Start();
+            threadGoto(arr[0, 0].Text, new Thread(obj => GotoLoc(arr[0, 0].Text, arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], arr[0, 6], shift[0], shift[1], shift[2])));
+            threadGoto(arr[1, 0].Text, new Thread(obj => GotoLoc(arr[1, 0].Text, arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], arr[1, 6], shift[0], shift[1], shift[2])));
+            threadGoto(arr[2, 0].Text, new Thread(obj => GotoLoc(arr[2, 0].Text, arr[2, 1], arr[2, 2], arr[2, 3], arr[2, 4], arr[2, 5], arr[2, 6], shift[0], shift[1], shift[2])));
+            //for (int i = 0; i <2; i++)
+            //    threadGoto(arr[i, 0].Text, new Thread(obj => GotoLoc(arr[i, 0].Text, arr[i, 1], arr[i, 2], arr[i, 3], arr[i, 4], arr[i, 5], arr[i, 6], shift[0], shift[1], shift[2])));
         }
 
 
@@ -547,8 +553,8 @@ namespace BaseStation
 
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
-            //try
-            //{
+            try
+            {
                 Socket socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
@@ -567,11 +573,11 @@ namespace BaseStation
                         sendByHostList(_data[1], respone);
                 }
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
-            //}
-            //catch (Exception e)
-            //{
-            //    addCommand("# FAILED to receive message \n\n" + e);
-            //}
+            }
+            catch (Exception e)
+            {
+                addCommand("# FAILED to receive message \n\n" + e);
+            }
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage)
@@ -1063,8 +1069,8 @@ namespace BaseStation
         {
             if (cbxFormation.SelectedIndex != -1)
                 setFormation();
-        }        
-
+        }
+        
         private void btnTO_Click(object sender, EventArgs e)
         {
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
@@ -1080,10 +1086,6 @@ namespace BaseStation
             //int a = 95000;
             //if (a.ToString().Length > 4)
             //    a = int.Parse(a.ToString().Substring(1));
-            string[] a = { "sd", "qw", "", "cv","" };
-            a = a.Where(obj => (!string.IsNullOrWhiteSpace(obj))).ToArray();
-            foreach(var i in a)
-                MessageBox.Show(i.ToString());
-        }
+        }     
     }
 }
