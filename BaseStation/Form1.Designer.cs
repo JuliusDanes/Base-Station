@@ -285,6 +285,7 @@
             this.lblConnectionR1.Text = "Disconnected";
             this.lblConnectionR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR1.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
+            this.lblConnectionR1.Click += new System.EventHandler(this.Disconnect_byDistinct);
             // 
             // lblPipeR1
             // 
@@ -521,6 +522,7 @@
             this.lblConnectionBS.Text = "Close";
             this.lblConnectionBS.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionBS.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
+            this.lblConnectionBS.Click += new System.EventHandler(this.Disconnect_byDistinct);
             // 
             // lblBaseStation
             // 
@@ -617,6 +619,7 @@
             this.lblConnectionRB.Text = "Disconnected";
             this.lblConnectionRB.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionRB.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
+            this.lblConnectionRB.Click += new System.EventHandler(this.Disconnect_byDistinct);
             // 
             // lblRefereeBox
             // 
@@ -807,6 +810,7 @@
             this.lblConnectionR2.Text = "Disconnected";
             this.lblConnectionR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR2.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
+            this.lblConnectionR2.Click += new System.EventHandler(this.Disconnect_byDistinct);
             // 
             // lblRobot2
             // 
@@ -1194,6 +1198,7 @@
             this.lblConnectionR3.Text = "Disconnected";
             this.lblConnectionR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR3.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
+            this.lblConnectionR3.Click += new System.EventHandler(this.Disconnect_byDistinct);
             // 
             // lblRobot3
             // 

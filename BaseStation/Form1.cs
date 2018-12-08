@@ -185,7 +185,7 @@ namespace BaseStation
         void changeCounter(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1 }, { tbxEncXR2, tbxEncYR2 }, { tbxEncXR3, tbxEncYR3 }, { tbxScrXR1, tbxScrYR1 }, { tbxScrXR2, tbxScrYR2 }, { tbxScrXR3, tbxScrYR3 }, { tbxGotoX, tbxGotoY }, { tbxAngleR1, tbxAngleR1 }, { tbxAngleR2, tbxAngleR2 }, { tbxAngleR3, tbxAngleR3 }, { tbxGotoAngle, tbxGotoAngle } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { tbxScrXR3, tbxScrYR3, tbxAngleR3 }, { tbxGotoX, tbxGotoY, tbxGotoAngle } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -199,6 +199,10 @@ namespace BaseStation
                 arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
             else if (e.KeyCode == Keys.Down)
                 arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+            else if (e.KeyCode == Keys.PageUp)
+                arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
+            else if (e.KeyCode == Keys.PageDown)
+                arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
         }
 
         void tbxXYChanged(object sender, EventArgs e)
@@ -213,7 +217,7 @@ namespace BaseStation
                         n = i;
             if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
             {
-                if (obj.StartsWith("tbxEnc"))   // Encoder then using scale 1:20
+                if (obj.StartsWith("tbxEnc"))           // Obj is tbxEncoder & Encoder then using scale 1:20
                 {
                     val[0] = (int.Parse(arr[n, 0].Text));
                     val[1] = (int.Parse(arr[n, 1].Text));
@@ -222,7 +226,7 @@ namespace BaseStation
                     hc.SetText(this, arr[n, 2], (val[0] / 20).ToString());   // On screen tbx
                     hc.SetText(this, arr[n, 3], (val[1] / 20).ToString());
                 }
-                else
+                else if (obj.StartsWith("tbxScr"))      // obj is tbxScreen
                 {
                     val[0] = (int.Parse(arr[n, 2].Text));
                     val[1] = (int.Parse(arr[n, 3].Text));
@@ -374,7 +378,7 @@ namespace BaseStation
                     if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))) && (!notConnectionCollect.Contains(arr[i, 1])))
                     {
                         notConnectionCollect.Add(arr[i, 1]);
-                        chkReconnect.Add(arr[i,1].Name, true);
+                        chkReconnect.Add(arr[i, 1].Name, true);
                     }
                     else if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (_serverSocket.IsBound))) && (notConnectionCollect.Contains(arr[i, 1])))
                         notConnectionCollect.Remove(arr[i, 1]);
@@ -385,9 +389,10 @@ namespace BaseStation
                             hc.SetText(this, j, "Disconnected");
                         else if (j.Text == "Open")
                             hc.SetText(this, j, "Close");
-                        if (j.Text == "Disconnected")
+                        if (j.Text == "Disconnected") { 
                             Connection_byDistinct(j, EventArgs.Empty);
-                        else if (j.Text == "Open")
+                            chkReconnect[j.Name] = false; }
+                        else if (j.Text == "Close")
                             grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
                     }
             }
@@ -477,10 +482,11 @@ namespace BaseStation
             {
                 if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 {
+                    _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     addCommand("# Setting up server...");
                     addCommand("# Open for IP : " + tbxIPBS.Text + " (" + this.Text + ") \t Port : " + port);
                     hc.SetText(this, lblConnectionBS, "Open");
-                    _serverSocket.Bind(new IPEndPoint(IPAddress.Any, this.port = int.Parse(port)));
+                    _serverSocket.Bind(new IPEndPoint(IPAddress.Any, (this.port = int.Parse(port))));
                     _serverSocket.Listen(1);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                 }
@@ -488,7 +494,8 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to open server connection \n\n" + e);
-                hc.SetText(this, lblConnectionBS, "Close");
+                _serverSocket.Dispose();
+                //hc.SetText(this, lblConnectionBS, "Close");
             }
         }
 
@@ -508,7 +515,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to connected \n\n" + e);
+                addCommand("# FAILED to connect \n\n" + e);
             }
         }
 
@@ -608,13 +615,14 @@ namespace BaseStation
                 // If message is data X & Y from encoder
                 /// Scale is 1 : 20 
                 string objName = null;
-                var posXY = text.Split(',');
-                if (posXY.Length > 3) // If data receive multi value X & Y (error bug problem)
+                var posXYZ = text.Split(',');
+                if (posXYZ.Length > 3) // If data receive multi value X & Y (error bug problem)
                 {
-                    posXY[0] = posXY[posXY.Length - 3];
-                    posXY[1] = posXY[posXY.Length - 2];
-                    posXY[2] = posXY[posXY.Length - 1];
+                    posXYZ[0] = posXYZ[posXYZ.Length - 3];
+                    posXYZ[1] = posXYZ[posXYZ.Length - 2];
+                    posXYZ[2] = posXYZ[posXYZ.Length - 1];
                 }
+                text = string.Empty;
                 foreach (var _temp in _socketDict)                              // Get socket name from IP
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
@@ -624,10 +632,10 @@ namespace BaseStation
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
                         n = i;
-                hc.SetText(this, arr[n, 1], posXY[0].ToString());          // On encoder tbx
-                hc.SetText(this, arr[n, 2], posXY[1].ToString());
-                hc.SetText(this, arr[n, 3], posXY[2].ToString());
-                text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " ∠:" + posXY[2] + "°";
+                hc.SetText(this, arr[n, 1], posXYZ[0].ToString());          // On encoder tbx
+                hc.SetText(this, arr[n, 2], posXYZ[1].ToString());
+                hc.SetText(this, arr[n, 3], posXYZ[2].ToString());
+                //text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " ∠:" + posXY[2] + "°";
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -667,10 +675,10 @@ namespace BaseStation
                         goto broadcast;
                     case "U": //TESTMODE_ON (TestMode On)
                         respone = "TESTMODE_ON";
-                        break;
+                        goto broadcast;
                     case "u": //TESTMODE_OFF (TestMode Off)
                         respone = "TESTMODE_OFF";
-                        break;
+                        goto broadcast;
 
                     /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
@@ -702,7 +710,7 @@ namespace BaseStation
                         goto broadcast;
                     case "L": //PARKING
                         respone = "PARKING";
-                        break;
+                        goto broadcast;
 
                     /// 6. OTHERS ///
                     case "get_time": //TIME NOW
@@ -745,7 +753,7 @@ namespace BaseStation
                             goto broadcast;
                         case "D": //SUBGOAL_CYAN
                             respone = "SUBGOAL_CYAN";
-                            break;
+                            goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
                         case "K": //KICKOFF_CYAN
@@ -759,14 +767,14 @@ namespace BaseStation
                         case "G": //GOALKICK_CYAN
                             respone = "GOALKICK_CYAN";
                             setMatchInfo(new dynamic[] { lblGoalKick });
-                            break;
+                            goto broadcast;
                         case "T": //THROWN_CYAN
                             respone = "THROWN_CYAN";
                             break;
                         case "C": //CORNER_CYAN
                             respone = "CORNER_CYAN";
                             setMatchInfo(new dynamic[] { lblCorner });
-                            break;
+                            goto broadcast;
                     }
                 }
                 else if (TeamSwitch.Value == false)   // Condition in MAGENTA Team
@@ -801,7 +809,7 @@ namespace BaseStation
                             goto broadcast;
                         case "d": //SUBGOAL_MAGENTA
                             respone = "SUBGOAL_MAGENTA";
-                            break;
+                            goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
                         case "k": //KICKOFF_MAGENTA
@@ -815,14 +823,14 @@ namespace BaseStation
                         case "g": //GOALKICK_MAGENTA
                             respone = "GOALKICK_MAGENTA";
                             setMatchInfo(new dynamic[] { lblGoalKick });
-                            break;
+                            goto broadcast;
                         case "t": //THROWN_MAGENTA
                             respone = "THROWN_MAGENTA";
-                            break;
+                            goto broadcast;
                         case "c": //CORNER_MAGENTA
                             respone = "CORNER_MAGENTA";
                             setMatchInfo(new dynamic[] { lblCorner });
-                            break;
+                            goto broadcast;
                     }
                 }
             }
@@ -864,7 +872,8 @@ namespace BaseStation
             return string.Empty;
 
             end:
-            addCommand("> " + socketToName(socket) + " : " + text);
+            if (text != string.Empty)
+                addCommand("> " + socketToName(socket) + " : " + text);
             return respone;
         }
 
@@ -927,8 +936,6 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            if (chkReconnect.ContainsKey(arr[n, 2].Name))
-                chkReconnect[arr[n, 2].Name] = false;
             if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
                 new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
         }
@@ -937,6 +944,29 @@ namespace BaseStation
         {
             if (e.KeyCode == Keys.Enter)
                 Connection_byDistinct(sender, e);
+        }
+
+        private void Disconnect_byDistinct(object sender, EventArgs e)
+        {
+            try
+            { 
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { lblBaseStation, lblConnectionBS}, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 1].Name == obj)
+                    n = i;            
+            if (chkReconnect.ContainsKey(arr[n, 1].Name))
+                chkReconnect.Remove(arr[n, 1].Name);
+            if (arr[n,1].Text == "Connected") {
+                _socketDict[arr[n,0].Text].Dispose();
+                hc.SetText(this, arr[n,1], "Disconnected"); }
+            else if (arr[n, 1].Text == "Open") {
+                _serverSocket.Dispose();
+                hc.SetText(this, arr[n, 1], "Close"); }
+            }
+            catch
+            { }
         }
 
         void sendFromTextBox()
