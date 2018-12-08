@@ -285,44 +285,57 @@ namespace BaseStation
                     }
         }
 
+        dynamic[] aa()
+        {
+            return new dynamic[2] {"","" };
+        }
+
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
         {
             try
             {
                 int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text), startAngle = int.Parse(angleRobot.Text);
-                if (startX > endX)
-                    shiftX *= -1;
-                if (startY > endY)
-                    shiftY *= -1;
-                if (startAngle > endAngle)
-                    shiftAngle *= -1;
                 addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
                 bool[] chk = { true, true, true };
                 while (chk[0] |= chk[1] |= chk[2])
                 {
-                    if (startX != endX)
-                    {
+                    if (startX > 12000)
+                        startX = int.Parse(startX.ToString().Substring(0, 4));
+                    if (startY > 12000)
+                        startY = int.Parse(startY.ToString().Substring(0, 4));
+                    if (startAngle > 360)
+                        startAngle = int.Parse(startAngle.ToString().Substring(0, 2));
+
+                    if ((startX > endX) && (shiftX > 0))
+                        shiftX *= -1;
+                    else if ((startX < endX) && (shiftX < 0))
+                        shiftX *= -1;
+                    if ((startY > endY) && (shiftY > 0))
+                        shiftY *= -1;
+                    else if ((startY < endY) && (shiftY < 0))
+                        shiftY *= -1;
+                    if ((startAngle > endAngle) && (shiftAngle > 0))
+                        shiftAngle *= -1;
+                    else if ((startAngle < endAngle) && (shiftAngle < 0))
+                        shiftAngle *= -1;
+
+                    if (startX != endX) {
                         if (Math.Abs(endX - startX) < Math.Abs(shiftX))     // Shift not corresponding
                             shiftX = (endX - startX);
                         startX += shiftX;   // On process
-                    }
-                    else
+                    } else
                         chk[0] = false;     // Done
-                    if (startY != endY)
-                    {
+                    if (startY != endY) {
                         if (Math.Abs(endY - startY) < Math.Abs(shiftY))     // Shift not corresponding
                             shiftY = (endY - startY);
                         startY += shiftY;   // On process
-                    }
-                    else
+                    } else
                         chk[1] = false;     // Done
-                    if (startAngle != endAngle)
-                    {
+                    if (startAngle != endAngle) {
                         if (Math.Abs(endAngle - startAngle) < Math.Abs(shiftAngle))     // Shift not corresponding
                             shiftAngle = (endAngle - startAngle);
                         startAngle += shiftAngle;   // On process
-                    }
-                    else
+                    } else
                         chk[2] = false;     // Done
 
                     string dtGoto = startX + "," + startY + "," + startAngle;
@@ -534,8 +547,8 @@ namespace BaseStation
 
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
-            try
-            {
+            //try
+            //{
                 Socket socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
@@ -554,11 +567,11 @@ namespace BaseStation
                         sendByHostList(_data[1], respone);
                 }
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
-            }
-            catch (Exception e)
-            {
-                addCommand("# FAILED to receive message \n\n" + e);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    addCommand("# FAILED to receive message \n\n" + e);
+            //}
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage)
@@ -567,8 +580,8 @@ namespace BaseStation
             {
                 if (Regex.IsMatch(txtMessage, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
                 {
-                    var pos = txtMessage.Split(',');
-                    addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
+                    //var pos = txtMessage.Split(',');
+                    //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
                 }
                 else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
@@ -628,14 +641,22 @@ namespace BaseStation
                 // If message is data X & Y from encoder
                 /// Scale is 1 : 20 
                 string objName = null;
-                var posXYZ = text.Split(',');
+                dynamic[] posXYZ = text.Split(',');
+                posXYZ = posXYZ.Where(item => (!string.IsNullOrWhiteSpace(item))).ToArray();
+                text = string.Empty;
                 if (posXYZ.Length > 3) // If data receive multi value X & Y (error bug problem)
                 {
-                    posXYZ[0] = posXYZ[posXYZ.Length - 3];
+                    posXYZ[0] = posXYZ[posXYZ.Length - 3].Substring(posXYZ[posXYZ.Length - 1].Length);
                     posXYZ[1] = posXYZ[posXYZ.Length - 2];
                     posXYZ[2] = posXYZ[posXYZ.Length - 1];
                 }
-                text = string.Empty;
+
+                if ((!string.IsNullOrWhiteSpace(posXYZ[0])) && (Convert.ToInt64(posXYZ[0]) > 12000))
+                    posXYZ[0] = posXYZ[0].ToString().Substring(0, 4);
+                if ((!string.IsNullOrWhiteSpace(posXYZ[1])) && (Convert.ToInt64(posXYZ[1]) > 12000))
+                    posXYZ[1] = posXYZ[1].ToString().Substring(0, 4);
+                if ((!string.IsNullOrWhiteSpace(posXYZ[2])) && (Convert.ToInt64(posXYZ[2]) > 360))
+                    posXYZ[2] = posXYZ[2].ToString().Substring(0, 2);
                 foreach (var _temp in _socketDict)                              // Get socket name from IP
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
@@ -645,10 +666,10 @@ namespace BaseStation
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
                         n = i;
-                hc.SetText(this, arr[n, 1], posXYZ[0].ToString());          // On encoder tbx
-                hc.SetText(this, arr[n, 2], posXYZ[1].ToString());
-                hc.SetText(this, arr[n, 3], posXYZ[2].ToString());
-                //text = "X:" + posXY[0]+ " Y:" + posXY[1]+ " ∠:" + posXY[2] + "°";
+                hc.SetText(this, arr[n, 1], posXYZ[0]);          // On encoder tbx
+                hc.SetText(this, arr[n, 2], posXYZ[1]);
+                hc.SetText(this, arr[n, 3], posXYZ[2]);
+                //text = "X:" + posXYZ[0] + " Y:" + posXYZ[1] + " ∠:" + posXYZ[2] + "°";
             }
             else if (Regex.IsMatch(text, @"Robot[0-9]"))
             {
@@ -1054,8 +1075,15 @@ namespace BaseStation
             //ProgressTM.Value += 300;
 
             //Connection_byDistinct(lblRobot1, EventArgs.Empty);
-            foreach (var i in notConnectionCollect)
-                MessageBox.Show(((dynamic)i).Name.ToString());
+            //foreach (var i in notConnectionCollect)
+            //    MessageBox.Show(((dynamic)i).Name.ToString());
+            //int a = 95000;
+            //if (a.ToString().Length > 4)
+            //    a = int.Parse(a.ToString().Substring(1));
+            string[] a = { "sd", "qw", "", "cv","" };
+            a = a.Where(obj => (!string.IsNullOrWhiteSpace(obj))).ToArray();
+            foreach(var i in a)
+                MessageBox.Show(i.ToString());
         }
     }
 }
