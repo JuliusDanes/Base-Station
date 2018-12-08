@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -46,7 +47,7 @@ namespace BaseStation
 
         HelperClass hc = new HelperClass();
 
-        System.Threading.Timer time, timer, chkConnection;
+        System.Threading.Timer time, timer, chkConnection, chkAppResponding;
         Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
 
         private void Form1_Load(object sender, EventArgs e)
@@ -60,7 +61,19 @@ namespace BaseStation
 
             resetText();
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
-            time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(100, 100);
+            time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
+            //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
+        }
+
+        void checkAppResponding(object state)
+        {
+            try {
+                Process[] processes = Process.GetProcessesByName("RobotCS");
+                foreach (var i in processes)
+                    if (!i.Responding)      // When the application not responding
+                        i.Kill(); }
+            catch (Exception)
+            { }
         }
 
         private void tickTime(object state)
@@ -374,7 +387,7 @@ namespace BaseStation
             try
             {
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-                for (int i = 0; i < arr.GetLength(0); i++)      // Check for Server and Client Connection
+                for (int i = 0; i < arr.GetLength(0); i++)          // Check for Server and Client Connection
                     if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))) && (!notConnectionCollect.Contains(arr[i, 1])))
                     {
                         notConnectionCollect.Add(arr[i, 1]);
@@ -382,18 +395,18 @@ namespace BaseStation
                     }
                     else if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (_serverSocket.IsBound))) && (notConnectionCollect.Contains(arr[i, 1])))
                         notConnectionCollect.Remove(arr[i, 1]);
-                foreach (dynamic j in notConnectionCollect)          // Auto Reconnecting
+                foreach (dynamic j in notConnectionCollect)         // Auto Reconnecting
                     if (chkReconnect[j.Name] == true)
                     {
+                        if (j.Text == "Disconnected") {
+                            chkReconnect[j.Name] = false;
+                            Connection_byDistinct(j, EventArgs.Empty); }
+                        else if (j.Text == "Close")
+                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
                         if (j.Text == "Connected")
                             hc.SetText(this, j, "Disconnected");
                         else if (j.Text == "Open")
                             hc.SetText(this, j, "Close");
-                        if (j.Text == "Disconnected") { 
-                            Connection_byDistinct(j, EventArgs.Empty);
-                            chkReconnect[j.Name] = false; }
-                        else if (j.Text == "Close")
-                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
                     }
             }
             catch (Exception)
