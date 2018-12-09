@@ -298,7 +298,7 @@ namespace BaseStation
                 {
                     if (startX > 12000)
                         startX = int.Parse(startX.ToString().Substring(0, 4));
-                    if (startY > 12000)
+                    if (startY > 9000)
                         startY = int.Parse(startY.ToString().Substring(0, 4));
                     if (startAngle > 360)
                         startAngle = int.Parse(startAngle.ToString().Substring(0, 2));
@@ -420,8 +420,9 @@ namespace BaseStation
                         if (j.Text == "Disconnected") {
                             chkReconnect[j.Name] = false;
                             Connection_byDistinct(j, EventArgs.Empty); }
-                        else if (j.Text == "Close")
-                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
+                        else if (j.Text == "Close") { 
+                            chkReconnect[j.Name] = false;
+                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty); }
                         if (j.Text == "Connected")
                             hc.SetText(this, j, "Disconnected");
                         else if (j.Text == "Open")
@@ -521,13 +522,17 @@ namespace BaseStation
                     _serverSocket.Bind(new IPEndPoint(IPAddress.Any, (this.port = int.Parse(port))));
                     _serverSocket.Listen(1);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
+                    if (chkReconnect.ContainsKey(lblConnectionBS.Name))
+                        chkReconnect.Remove(lblConnectionBS.Name);
                 }
             }
             catch (Exception e)
             {
                 addCommand("# FAILED to open server connection \n\n" + e);
-                _serverSocket.Dispose();
-                //hc.SetText(this, lblConnectionBS, "Close");
+                if (chkReconnect.ContainsKey(lblConnectionBS.Name))
+                    chkReconnect[lblConnectionBS.Name] = true;
+                hc.SetText(this, lblConnectionBS, "Close");
+                //_serverSocket.Dispose();
             }
         }
 
@@ -547,7 +552,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                addCommand("# FAILED to connect \n\n" + e);
+                //addCommand("# FAILED to connect \n\n" + e);
             }
         }
 
@@ -659,7 +664,7 @@ namespace BaseStation
 
                 if ((!string.IsNullOrWhiteSpace(posXYZ[0])) && (Convert.ToInt64(posXYZ[0]) > 12000))
                     posXYZ[0] = posXYZ[0].ToString().Substring(0, 4);
-                if ((!string.IsNullOrWhiteSpace(posXYZ[1])) && (Convert.ToInt64(posXYZ[1]) > 12000))
+                if ((!string.IsNullOrWhiteSpace(posXYZ[1])) && (Convert.ToInt64(posXYZ[1]) > 9000))
                     posXYZ[1] = posXYZ[1].ToString().Substring(0, 4);
                 if ((!string.IsNullOrWhiteSpace(posXYZ[2])) && (Convert.ToInt64(posXYZ[2]) > 360))
                     posXYZ[2] = posXYZ[2].ToString().Substring(0, 2);
@@ -969,15 +974,19 @@ namespace BaseStation
 
         private void Connection_byDistinct(object sender, EventArgs e)
         {
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
-                        n = i;
-            if ((arr[n, 2].Text == "Disconnected") && (!String.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!String.IsNullOrWhiteSpace(arr[n, 4].Text)))
-                new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+            try {
+                var obj = ((dynamic)sender).Name;
+                dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+                int n = 0;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    for (int j = 0; j < arr.GetLength(1); j++)
+                        if (arr[i, j].Name == obj)
+                            n = i;
+                if ((arr[n, 2].Text == "Disconnected") && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                    new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+            }
+            catch (Exception)
+            { }
         }
 
         private void Connection_keyEnter(object sender, KeyEventArgs e)
@@ -999,11 +1008,11 @@ namespace BaseStation
             if (chkReconnect.ContainsKey(arr[n, 1].Name))
                 chkReconnect.Remove(arr[n, 1].Name);
             if (arr[n,1].Text == "Connected") {
-                _socketDict[arr[n,0].Text].Dispose();
-                hc.SetText(this, arr[n,1], "Disconnected"); }
+                hc.SetText(this, arr[n,1], "Disconnected");
+                _socketDict[arr[n,0].Text].Dispose(); }
             else if (arr[n, 1].Text == "Open") {
-                _serverSocket.Dispose();
-                hc.SetText(this, arr[n, 1], "Close"); }
+                hc.SetText(this, arr[n, 1], "Close");
+                _serverSocket.Dispose(); }
             }
             catch
             { }
@@ -1086,6 +1095,6 @@ namespace BaseStation
             //int a = 95000;
             //if (a.ToString().Length > 4)
             //    a = int.Parse(a.ToString().Substring(1));
-        }     
+        }        
     }
 }
