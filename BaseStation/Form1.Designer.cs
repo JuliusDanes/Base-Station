@@ -155,6 +155,7 @@
             this.lblDegGoto = new System.Windows.Forms.Label();
             this.lblPipeGoto = new System.Windows.Forms.Label();
             this.tbxGotoAngle = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.Trackbar = new Bunifu.Framework.UI.BunifuTrackbar();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -180,9 +181,9 @@
             this.picRobot3.BackColor = System.Drawing.Color.Transparent;
             this.picRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot3.BackgroundImage")));
             this.picRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picRobot3.Location = new System.Drawing.Point(835, 311);
+            this.picRobot3.Location = new System.Drawing.Point(420, 309);
             this.picRobot3.Name = "picRobot3";
-            this.picRobot3.Size = new System.Drawing.Size(25, 25);
+            this.picRobot3.Size = new System.Drawing.Size(30, 30);
             this.picRobot3.TabIndex = 28;
             this.picRobot3.TabStop = false;
             // 
@@ -191,9 +192,9 @@
             this.picRobot2.BackColor = System.Drawing.Color.Transparent;
             this.picRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot2.BackgroundImage")));
             this.picRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picRobot2.Location = new System.Drawing.Point(725, 220);
+            this.picRobot2.Location = new System.Drawing.Point(554, 376);
             this.picRobot2.Name = "picRobot2";
-            this.picRobot2.Size = new System.Drawing.Size(25, 25);
+            this.picRobot2.Size = new System.Drawing.Size(30, 30);
             this.picRobot2.TabIndex = 27;
             this.picRobot2.TabStop = false;
             // 
@@ -202,9 +203,9 @@
             this.picRobot1.BackColor = System.Drawing.Color.Transparent;
             this.picRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot1.BackgroundImage")));
             this.picRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picRobot1.Location = new System.Drawing.Point(725, 341);
+            this.picRobot1.Location = new System.Drawing.Point(598, 309);
             this.picRobot1.Name = "picRobot1";
-            this.picRobot1.Size = new System.Drawing.Size(25, 25);
+            this.picRobot1.Size = new System.Drawing.Size(30, 30);
             this.picRobot1.TabIndex = 26;
             this.picRobot1.TabStop = false;
             // 
@@ -214,7 +215,7 @@
             this.picBall.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picBall.BackgroundImage")));
             this.picBall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picBall.Enabled = false;
-            this.picBall.Location = new System.Drawing.Point(612, 311);
+            this.picBall.Location = new System.Drawing.Point(658, 311);
             this.picBall.Name = "picBall";
             this.picBall.Size = new System.Drawing.Size(18, 18);
             this.picBall.TabIndex = 25;
@@ -2102,6 +2103,22 @@
             this.tbxGotoAngle.UseSystemPasswordChar = false;
             this.tbxGotoAngle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
+            // Trackbar
+            // 
+            this.Trackbar.BackColor = System.Drawing.Color.Transparent;
+            this.Trackbar.BackgroudColor = System.Drawing.Color.DarkGray;
+            this.Trackbar.BorderRadius = 0;
+            this.Trackbar.IndicatorColor = System.Drawing.Color.SeaGreen;
+            this.Trackbar.Location = new System.Drawing.Point(431, 119);
+            this.Trackbar.MaximumValue = 100;
+            this.Trackbar.MinimumValue = 0;
+            this.Trackbar.Name = "Trackbar";
+            this.Trackbar.Size = new System.Drawing.Size(415, 28);
+            this.Trackbar.SliderRadius = 0;
+            this.Trackbar.TabIndex = 224;
+            this.Trackbar.Value = 0;
+            this.Trackbar.ValueChanged += new System.EventHandler(this.Trackbar_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2110,6 +2127,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.Trackbar);
             this.Controls.Add(this.tbxGotoAngle);
             this.Controls.Add(this.lblDegGoto);
             this.Controls.Add(this.lblPipeGoto);
@@ -2243,6 +2261,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).EndInit();
@@ -2394,6 +2414,7 @@
         protected System.Windows.Forms.Label lblDegGoto;
         protected System.Windows.Forms.Label lblPipeGoto;
         protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoAngle;
+        private Bunifu.Framework.UI.BunifuTrackbar Trackbar;
     }
 }
 
