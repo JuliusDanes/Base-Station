@@ -63,6 +63,12 @@ namespace BaseStation
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
+
+            notConnectionCollect.Add(lblConnectionBS);
+            notConnectionCollect.Add(lblConnectionRB);
+            notConnectionCollect.Add(lblConnectionR1);
+            notConnectionCollect.Add(lblConnectionR2);
+            notConnectionCollect.Add(lblConnectionR3);
         }
 
         void checkAppResponding(object state)
@@ -384,8 +390,8 @@ namespace BaseStation
         static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
-        Dictionary<dynamic, bool> chkReconnect = new Dictionary<dynamic, bool>();
-        List<dynamic> _chkRobotCollect = new List<dynamic>(), notConnectionCollect = new List<dynamic>();
+        HashSet<dynamic> notConnectionCollect = new HashSet<dynamic>(), autoReconnectCollect = new HashSet<dynamic>();
+        List<dynamic> _chkRobotCollect = new List<dynamic>();
         internal int port, attempts = 0, ctr = 0;
         internal string myIP, chkRobotCollect = string.Empty;
 
@@ -401,36 +407,48 @@ namespace BaseStation
             return myIP;
         }
 
-        void checkConnection(object state)
+        void Reconnect(dynamic socket)
         {
             try
-            {
+            {   // Force for reconnecting  
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-                for (int i = 0; i < arr.GetLength(0); i++)          // Check for Server and Client Connection
-                    if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))) && (!notConnectionCollect.Contains(arr[i, 1])))
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if ((((arr[i, 0].Text == socket) || (_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint))))
                     {
                         notConnectionCollect.Add(arr[i, 1]);
-                        chkReconnect.Add(arr[i, 1].Name, true);
-                    }
-                    else if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (_serverSocket.IsBound))) && (notConnectionCollect.Contains(arr[i, 1])))
-                        notConnectionCollect.Remove(arr[i, 1]);
-                foreach (dynamic j in notConnectionCollect)         // Auto Reconnecting
-                    if (chkReconnect[j.Name] == true)
-                    {
-                        if (j.Text == "Disconnected") {
-                            chkReconnect[j.Name] = false;
-                            Connection_byDistinct(j, EventArgs.Empty); }
-                        else if (j.Text == "Close") { 
-                            chkReconnect[j.Name] = false;
-                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty); }
-                        if (j.Text == "Connected")
-                            hc.SetText(this, j, "Disconnected");
-                        else if (j.Text == "Open")
-                            hc.SetText(this, j, "Close");
+                        autoReconnectCollect.Add(arr[i, 1]);
                     }
             }
             catch (Exception)
             { }
+        }
+        void checkConnection(object state)
+        {
+            Recheck:
+            try
+            {
+                dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                for (int i = 0; i < arr.GetLength(0); i++)          // Check for Server and Client Connection
+                    if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))))
+                    {
+                        notConnectionCollect.Add(arr[i, 1]);
+                        autoReconnectCollect.Add(arr[i, 1]);
+                    }
+                foreach (dynamic j in notConnectionCollect)         // Auto Reconnecting
+                    if (autoReconnectCollect.Contains(j))
+                    {
+                        if (j.Text == "Connected")
+                            hc.SetText(this, j, "Disconnected");
+                        else if (j.Text == "Open")
+                            hc.SetText(this, j, "Close");
+                        if (j.Text == "Disconnected")
+                            Connection_byDistinct(j, EventArgs.Empty);
+                        else if (j.Text == "Close")
+                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
+                    }
+            }
+            catch (Exception)
+            { goto Recheck; }
         }
 
         private void lblConnection_TextChanged(object sender, EventArgs e)
@@ -488,14 +506,14 @@ namespace BaseStation
                 _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
+                if (_socketDict.ContainsKey(keyName))
+                    return;
+                _socketDict.Add(keyName, _toServerSocket);
                 if (_toServerSocket.Connected)
                     addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ") \t Port : " + port);
-                _socketDict.Add(keyName, _toServerSocket);
                 hc.SetText(this, connection, "Connected");
                 SendCallBack(_toServerSocket, this.Text);
                 _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
-                if (chkReconnect.ContainsKey(connection.Name))
-                    chkReconnect.Remove(connection.Name);
             }
             catch (SocketException)
             {
@@ -503,9 +521,9 @@ namespace BaseStation
                 addCommand("# IP This Device  : " + myIP + " (" + this.Text + ")");
                 addCommand("# IP Destination  : " + ipDst + " (" + keyName + ") \t Port : " + port);
                 addCommand("# Connection attempts: " + attempts.ToString());
-                hc.SetText(this, connection, "Disconnected");
-                if (chkReconnect.ContainsKey(connection.Name))
-                    chkReconnect[connection.Name] = true;
+                Reconnect(_toServerSocket);
+                notConnectionCollect.Add(connection);
+                autoReconnectCollect.Add(connection);
             }
         }
 
@@ -515,32 +533,31 @@ namespace BaseStation
             {
                 if ((!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 {
-                    _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     addCommand("# Setting up server...");
-                    addCommand("# Open for IP : " + tbxIPBS.Text + " (" + this.Text + ") \t Port : " + port);
-                    hc.SetText(this, lblConnectionBS, "Open");
+                    _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     _serverSocket.Bind(new IPEndPoint(IPAddress.Any, (this.port = int.Parse(port))));
                     _serverSocket.Listen(1);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
-                    if (chkReconnect.ContainsKey(lblConnectionBS.Name))
-                        chkReconnect.Remove(lblConnectionBS.Name);
+                    addCommand("# Open for IP : " + tbxIPBS.Text + " (" + this.Text + ") \t Port : " + port);
+                    hc.SetText(this, lblConnectionBS, "Open");
                 }
             }
             catch (Exception e)
             {
+                hc.SetText(this, tbxStatus, string.Empty);
                 addCommand("# FAILED to open server connection \n\n" + e);
-                if (chkReconnect.ContainsKey(lblConnectionBS.Name))
-                    chkReconnect[lblConnectionBS.Name] = true;
-                hc.SetText(this, lblConnectionBS, "Close");
-                //_serverSocket.Dispose();
+                Reconnect(lblBaseStation.Text);
+                notConnectionCollect.Add(lblConnectionBS);
+                autoReconnectCollect.Add(lblConnectionBS);
             }
         }
 
         void AcceptCallback(IAsyncResult AR)
         {
+            Socket socket = null;
             try
             {
-                Socket socket = _serverSocket.EndAccept(AR);
+                socket = _serverSocket.EndAccept(AR);
                 if (socket.Connected)
                 {
                     _socketDict.Add(socket.RemoteEndPoint.ToString(), socket);
@@ -553,14 +570,16 @@ namespace BaseStation
             catch (Exception e)
             {
                 //addCommand("# FAILED to connect \n\n" + e);
+                Reconnect(socket);
             }
         }
 
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
+            Socket socket = null;
             try
             {
-                Socket socket = (Socket)AR.AsyncState;
+                socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
@@ -582,6 +601,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to receive message \n\n" + e);
+                Reconnect(socket);
             }
         }
 
@@ -603,6 +623,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to send message \n\n" + e);
+                Reconnect(_dstSocket);
             }
         }
 
@@ -617,6 +638,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to send message \n\n" + e);
+                Reconnect(_dstSocket);
             }
         }
 
@@ -640,7 +662,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to send message \n\n" + e);
-                MessageBox.Show("host Not Found :<");
+                //MessageBox.Show("host Not Found :<");
             }
         }
 
@@ -986,7 +1008,7 @@ namespace BaseStation
                     for (int j = 0; j < arr.GetLength(1); j++)
                         if (arr[i, j].Name == obj)
                             n = i;
-                if ((arr[n, 2].Text == "Disconnected") && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                if ((notConnectionCollect.Remove(arr[n, 2])) && (arr[n, 2].Text == "Disconnected") && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
                     new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
             }
             catch (Exception)
@@ -1008,9 +1030,9 @@ namespace BaseStation
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 1].Name == obj)
-                    n = i;            
-            if (chkReconnect.ContainsKey(arr[n, 1].Name))
-                chkReconnect.Remove(arr[n, 1].Name);
+                    n = i;
+            hc.SetText(this, tbxIPR2, autoReconnectCollect.Contains(arr[n, 1]).ToString());
+            autoReconnectCollect.Remove(arr[n, 1]);
             if (arr[n,1].Text == "Connected") {
                 _socketDict[arr[n,0].Text].Dispose();
                 hc.SetText(this, arr[n,1], "Disconnected"); }
@@ -1018,7 +1040,7 @@ namespace BaseStation
                 _serverSocket.Dispose();
                 hc.SetText(this, arr[n, 1], "Close"); }
             }
-            catch
+            catch (Exception)
             { }
         }
 
