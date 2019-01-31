@@ -52,11 +52,12 @@ namespace BaseStation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tbxIPBS.Text = GetIPAddress() /*= "192.168.165.10"*/;
+            addCommand("~ Welcome to Base Station ~");
+            tbxIPBS.Text = GetMyIP() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
             tbxPortRB.Text = "28097";
-            tbxIPR1.Text /*= "169.254.162.201"*/ = GetIPAddress();
+            tbxIPR1.Text /*= "169.254.162.201"*/ = GetMyIP();
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
             resetText();
@@ -275,11 +276,10 @@ namespace BaseStation
             SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
         }
 
-        private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
+        private void runGoto()
         {
-            changeCounter(sender, e);
             var chkRobot = chkRobotCollect.Split(',');
-            if ((e.KeyCode == Keys.Enter) && (!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
+            if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
                 if (!string.IsNullOrEmpty(chkRobotCollect))
                     foreach (var dt in chkRobot)
                     {
@@ -291,6 +291,20 @@ namespace BaseStation
                                 n = i;
                         threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1)));
                     }
+                else
+                    MessageBox.Show("# Please Select/Checklist the Robot");
+        }
+
+        private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
+        {
+            changeCounter(sender, e);
+            if (e.KeyCode == Keys.Enter)
+                runGoto();
+        }
+
+        private void lblDiv2_Click(object sender, EventArgs e)
+        {
+            runGoto();
         }
 
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
@@ -343,7 +357,7 @@ namespace BaseStation
 
                     string dtGoto = startX + "," + startY + "," + startAngle;
                     SendCallBack(_socketDict[Robot], dtGoto, "Goto");
-                    Thread.Sleep(100);    // time per limit
+                    Thread.Sleep(100);    // time per limit (milisecond)
                 }
             }
             catch (Exception)
@@ -395,7 +409,7 @@ namespace BaseStation
         internal int port, attempts = 0, ctr = 0;
         internal string myIP, chkRobotCollect = string.Empty;
 
-        string GetIPAddress()
+        string GetMyIP()
         {
             IPHostEntry Host = default(IPHostEntry);
             string Hostname = null;
@@ -584,6 +598,7 @@ namespace BaseStation
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
                 string text = Encoding.ASCII.GetString(dataBuf).Trim();
+                text = new string(text.Where(c => !char.IsControl(c)).ToArray());
                 if (string.IsNullOrWhiteSpace(text))
                     socket.Disconnect(true);
                 var _data = text.Split('|');
@@ -616,6 +631,7 @@ namespace BaseStation
                 }
                 else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
+                txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
                 byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
                 _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
@@ -631,6 +647,7 @@ namespace BaseStation
         {
             try
             {
+                txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
                 byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
                 _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
@@ -666,7 +683,7 @@ namespace BaseStation
             }
         }
 
-        string ResponeCallback(dynamic text, Socket socket)
+        string ResponeCallback(string text, Socket socket)
         {
             string respone = string.Empty;
             if (Regex.IsMatch(text, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
@@ -924,6 +941,9 @@ namespace BaseStation
                         goto broadcast;
 
                     /// OTHERS ///
+                    case "ip": //TIME NOW
+                        respone = GetMyIP();
+                        break;
                     case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
                         break;
@@ -1047,7 +1067,9 @@ namespace BaseStation
         void sendFromTextBox()
         {
             var dataMessage = tbxMessage.Text.Trim().Split('|');
-            if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
+            if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (dataMessage[0].ToLower() == "myip"))
+                MessageBox.Show("MyIP: " + GetMyIP());
+            else if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
                 sendByHostList(chkRobotCollect, dataMessage[0].Trim());
             else if ((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(dataMessage[1])))  //for to be Server
                 sendByHostList(dataMessage[1].Trim(), dataMessage[0].Trim());

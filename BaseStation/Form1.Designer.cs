@@ -1679,6 +1679,7 @@
             this.lblDiv2.Size = new System.Drawing.Size(10, 23);
             this.lblDiv2.TabIndex = 151;
             this.lblDiv2.Text = "0";
+            this.lblDiv2.Click += new System.EventHandler(this.lblDiv2_Click);
             // 
             // lblGoto
             // 
