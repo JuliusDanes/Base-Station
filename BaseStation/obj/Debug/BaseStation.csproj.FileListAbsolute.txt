@@ -44,7 +44,6 @@ D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\Bunifu_UI_v1.5
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MaterialSkin.dll
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MetroFramework.dll
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MetroFramework.Fonts.dll
-D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csprojAssemblyReference.cache
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.Form1.resources
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.Properties.Resources.resources
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.GenerateResource.cache
