@@ -272,7 +272,7 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            string dtGoto = arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
+            string dtGoto =  "E"+ arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
             SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
         }
 
@@ -597,20 +597,26 @@ namespace BaseStation
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
                 Array.Copy(_buffer, dataBuf, received);
-                string text = Encoding.ASCII.GetString(dataBuf).Trim();
-                text = new string(text.Where(c => !char.IsControl(c)).ToArray());
-                if (string.IsNullOrWhiteSpace(text))
+                string message = Encoding.ASCII.GetString(dataBuf).Trim();
+                message = new string(message.Where(c => !char.IsControl(c)).ToArray());
+                if (string.IsNullOrWhiteSpace(message))
                     socket.Disconnect(true);
-                var _data = text.Split('|');
+                ResponeReceivedCallback(message, socket);
 
-                string respone = ResponeCallback(_data[0], socket);
-                if (!string.IsNullOrEmpty(respone))
-                {
-                    if (_data.Count() == 1)
-                        SendCallBack(socket, respone);
-                    else
-                        sendByHostList(_data[1], respone);
-                }
+                //var _data = message.Split('|');
+
+                //string respone = ResponeReceivedCallback(_data[0], socket);
+                //if (!string.IsNullOrEmpty(respone))
+                //{
+                //    if (_data.Count() == 1)
+                //        SendCallBack(socket, respone);
+                //    else
+                //        sendByHostList(_data[1], respone);
+                //}
+
+
+                //if (_dtMessage[0] != string.Empty)
+                //    addCommand("> " + socketToName(socket) + " : " + _dtMessage[0]);
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
             }
             catch (Exception e)
@@ -647,10 +653,11 @@ namespace BaseStation
         {
             try
             {
-                txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
-                byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
-                _dstSocket.Send(buffer);
-                _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
+                txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
+                if (!string.IsNullOrWhiteSpace(txtMessage)) {
+                    byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
+                    _dstSocket.Send(buffer);
+                    _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); }
             }
             catch (Exception e)
             {
@@ -682,16 +689,76 @@ namespace BaseStation
                 //MessageBox.Show("host Not Found :<");
             }
         }
-
-        string ResponeCallback(string text, Socket socket)
+        string ResponeSendCallback(string message)
         {
-            string respone = string.Empty;
-            if (Regex.IsMatch(text, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
+            string respone = string.Empty, text = string.Empty;
+            var _dtMessage = message.Split('|');
+
+            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {    // Broadcast message
+                _dtMessage[0] = _dtMessage[0].Substring(1);
+                _dtMessage[1] = "Robot1,Robot2,Robot3"; }
+            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {    // Forward & Broadcast message
+                respone = _dtMessage[0];
+                goto broadcast; }
+            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {    // Forward & Multicast message
+                goto multicast; }
+
+            if (_dtMessage[0].ToLower() == "myip") {
+                text = "MyIP: " + GetMyIP();
+                if (_dtMessage.Count() > 1)
+                    respone = GetMyIP();
+                goto multicast; }
+            else if ((!string.IsNullOrWhiteSpace(_dtMessage[0])) && (((_dtMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(_dtMessage[1]))) || (!string.IsNullOrWhiteSpace(chkRobotCollect)) )) {
+                // If to send Robot socket   
+                switch (_dtMessage[0]) {
+                    /// INFORMATION ///
+                    default:
+                        //respone = text = "# Invalid Command :<";
+                        goto multicast; } }
+            else
+                MessageBox.Show("Incorrect Format!");
+            goto end;
+
+        broadcast:
+            sendByHostList("Robot1,Robot2,Robot3", respone);
+            goto end;
+
+        multicast:
+            if (!string.IsNullOrWhiteSpace(respone))
+                respone = _dtMessage[0];
+            if (_dtMessage.Count() > 1)
+                sendByHostList(_dtMessage[1], respone);
+            else if (!string.IsNullOrWhiteSpace(chkRobotCollect))
+                sendByHostList(chkRobotCollect, respone);
+            goto end;
+
+        end:
+            if (!string.IsNullOrWhiteSpace(text))
+                addCommand("# " + text);
+            return respone;
+        }
+
+        string ResponeReceivedCallback(string message, Socket socket)
+        {
+            string respone = string.Empty, text = string.Empty;
+            var _dtMessage = message.Split('|');
+            
+            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {    // Broadcast message
+                _dtMessage[0] = _dtMessage[0].Substring(1);
+                _dtMessage[1] = "Robot1,Robot2,Robot3"; }
+            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {    // Forward & Broadcast message
+                respone = _dtMessage[0].Substring(2);
+                goto broadcast; }
+            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {    // Forward & Multicast message
+                respone = _dtMessage[0].Substring(1);
+                goto multicast; }
+
+            if (Regex.IsMatch(_dtMessage[0], "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
             {
-                // If message is data X & Y from encoder
+                // If _dtMessage[0] is data X & Y from encoder
                 /// Scale is 1 : 20 
                 string objName = null;
-                dynamic[] posXYZ = text.Split(',');
+                dynamic[] posXYZ = _dtMessage[0].Split(',');
                 posXYZ = posXYZ.Where(item => (!string.IsNullOrWhiteSpace(item))).ToArray();
                 if (posXYZ.Length > 3) // If data receive multi value X & Y (error bug problem)
                 {
@@ -718,21 +785,20 @@ namespace BaseStation
                 hc.SetText(this, arr[n, 1], posXYZ[0]);          // On encoder tbx
                 hc.SetText(this, arr[n, 2], posXYZ[1]);
                 hc.SetText(this, arr[n, 3], posXYZ[2]);
-                text = string.Empty;
                 //text = "X:" + posXYZ[0] + " Y:" + posXYZ[1] + " ∠:" + posXYZ[2] + "°";
             }
-            else if (Regex.IsMatch(text, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
+            else if (Regex.IsMatch(_dtMessage[0], "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
                 text = string.Empty;
-            else if (Regex.IsMatch(text, @"Robot[0-9]"))
+            else if (Regex.IsMatch(_dtMessage[0], @"Robot[0-9]"))
             {
                 // If will rename key in socket dictionary
                 Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
                 _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
-                _socketDict.Add(text, temp);                                    // Add with new key
+                _socketDict.Add(_dtMessage[0], temp);                                    // Add with new key
                 dynamic[,] arr = { { lblRobot1.Text, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2.Text, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3.Text, lblConnectionR3, tbxIPR3, tbxPortR3 } };
                 int n = 0;
                 for (int i = 0; i < arr.GetLength(0); i++)
-                    if (arr[i, 0] == text)
+                    if (arr[i, 0] == _dtMessage[0])
                         n = i;
                 hc.SetText(this, arr[n, 1], "Connected");
                 hc.SetText(this, arr[n, 2], socketToIP(socket));
@@ -741,66 +807,67 @@ namespace BaseStation
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)
             {
-                // If socket is Referee Box socket                
-                switch (text)       // Condition in General
+                // If socket is Referee Box socket 
+                respone = _dtMessage[0]; //Forward the _dtMessage[0]
+                switch (_dtMessage[0])       // Condition in General
                 {
                     /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
-                        respone = "STOP";
+                        text = "STOP";
                         timer.Change(Timeout.Infinite, Timeout.Infinite);
                         goto broadcast;
                     case "s": //START
-                        respone = "START";
+                        text = "START";
                         timer.Change(1000, 1000);
                         goto broadcast;
-                    case "W": //WELCOME (welcome message)
-                        respone = "WELCOME";
+                    case "W": //WELCOME (welcome _dtMessage[0])
+                        text = "WELCOME";
                         goto broadcast;
                     case "Z": //RESET (Reset Game)
-                        respone = "RESET";
+                        text = "RESET";
                         goto broadcast;
                     case "U": //TESTMODE_ON (TestMode On)
-                        respone = "TESTMODE_ON";
+                        text = "TESTMODE_ON";
                         goto broadcast;
                     case "u": //TESTMODE_OFF (TestMode Off)
-                        respone = "TESTMODE_OFF";
+                        text = "TESTMODE_OFF";
                         goto broadcast;
 
                     /// 3. GAME FLOW COMMANDS ///
                     case "1": //FIRST_HALF
-                        respone = "FIRST_HALF";
+                        text = "FIRST_HALF";
                         hc.SetText(this, lblHalf, "1");
                         hc.SetText(this, lblTimer, "00:00");
                         goto broadcast;
                     case "2": //SECOND_HALF
-                        respone = "SECOND_HALF";
+                        text = "SECOND_HALF";
                         hc.SetText(this, lblHalf, "2");
                         hc.SetText(this, lblTimer, "00:00");
                         goto broadcast;
                     case "3": //FIRST_HALF_OVERTIME
-                        respone = "FIRST_HALF_OVERTIME";
+                        text = "FIRST_HALF_OVERTIME";
                         goto broadcast;
                     case "4": //SECOND_HALF_OVERTIME
-                        respone = "SECOND_HALF_OVERTIME";
+                        text = "SECOND_HALF_OVERTIME";
                         goto broadcast;
                     case "h": //HALF_TIME
-                        respone = "HALF_TIME";
+                        text = "HALF_TIME";
                         goto broadcast;
                     case "e": //END_GAME (ends 2nd part, may go into overtime)
-                        respone = "END_GAME";
+                        text = "END_GAME";
                         timer.Change(Timeout.Infinite, Timeout.Infinite);
                         goto broadcast;
                     case "z": //GAMEOVER (Game Over)
-                        respone = "GAMEOVER";
+                        text = "GAMEOVER";
                         timer.Change(Timeout.Infinite, Timeout.Infinite);
                         goto broadcast;
                     case "L": //PARKING
-                        respone = "PARKING";
+                        text = "PARKING";
                         goto broadcast;
 
                     /// 6. OTHERS ///
                     case "get_time": //TIME NOW
-                        respone = DateTime.Now.ToLongTimeString();
+                        text = DateTime.Now.ToLongTimeString();
                         break;
                     default:
                         //addCommand("# Invalid Command :<");
@@ -809,21 +876,21 @@ namespace BaseStation
 
                 if (TeamSwitch.Value == true)   // Condition in CYAN Team
                 {
-                    switch (text)
+                    switch (_dtMessage[0])
                     {
                         /// 2. PENALTY COMMANDS ///
                         case "Y": //YELLOW_CARD_CYAN
-                            respone = "YELLOW_CARD_CYAN";
+                            text = "YELLOW_CARD_CYAN";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard1R2, YCard1R3 });
                             goto broadcast;
                         case "R": //RED_CARD_CYAN
-                            respone = "RED_CARD_CYAN";
+                            text = "RED_CARD_CYAN";
                             setMatchInfo(new dynamic[] { lblRCard, lblFouls });
                             setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
                             goto broadcast;
                         case "B": //DOUBLE_YELLOW_CYAN
-                            respone = "DOUBLE_YELLOW_CYAN";
+                            text = "DOUBLE_YELLOW_CYAN";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
                             //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
@@ -834,52 +901,52 @@ namespace BaseStation
 
                         /// 4. GOAL STATUS ///
                         case "A": //GOAL_CYAN
-                            respone = "GOAL_CYAN";
+                            text = "GOAL_CYAN";
                             setMatchInfo(new dynamic[] { lblGoalCyan });
                             goto broadcast;
                         case "D": //SUBGOAL_CYAN
-                            respone = "SUBGOAL_CYAN";
+                            text = "SUBGOAL_CYAN";
                             goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
                         case "K": //KICKOFF_CYAN
-                            respone = "KICKOFF_CYAN";
+                            text = "KICKOFF_CYAN";
                             //cbxFormation.SelectedItem = "Kick Off";
                             goto broadcast;
                         case "F": //FREEKICK_CYAN
-                            respone = "FREEKICK_CYAN";
+                            text = "FREEKICK_CYAN";
                             setMatchInfo(new dynamic[] { lblFouls });
                             break;
                         case "G": //GOALKICK_CYAN
-                            respone = "GOALKICK_CYAN";
+                            text = "GOALKICK_CYAN";
                             setMatchInfo(new dynamic[] { lblGoalKick });
                             goto broadcast;
                         case "T": //THROWN_CYAN
-                            respone = "THROWN_CYAN";
+                            text = "THROWN_CYAN";
                             break;
                         case "C": //CORNER_CYAN
-                            respone = "CORNER_CYAN";
+                            text = "CORNER_CYAN";
                             setMatchInfo(new dynamic[] { lblCorner });
                             goto broadcast;
                     }
                 }
                 else if (TeamSwitch.Value == false)   // Condition in MAGENTA Team
                 {
-                    switch (text)
+                    switch (_dtMessage[0])
                     {
                         /// 2. PENALTY COMMANDS ///
                         case "y": //YELLOW_CARD_MAGENTA	
-                            respone = "YELLOW_CARD_MAGENTA";
+                            text = "YELLOW_CARD_MAGENTA";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard1R1, YCard1R2, YCard1R3 });
                             goto broadcast;
                         case "r": //RED_CARD_MAGENTA
-                            respone = "RED_CARD_MAGENTA";
+                            text = "RED_CARD_MAGENTA";
                             setMatchInfo(new dynamic[] { lblRCard, lblFouls });
                             setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
                             goto broadcast;
                         case "b": //DOUBLE_YELLOW_MAGENTA
-                            respone = "DOUBLE_YELLOW_MAGENTA";
+                            text = "DOUBLE_YELLOW_MAGENTA";
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
                             //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
@@ -890,31 +957,31 @@ namespace BaseStation
 
                         /// 4. GOAL STATUS ///
                         case "a": //GOAL_MAGENTA
-                            respone = "GOAL_MAGENTA";
+                            text = "GOAL_MAGENTA";
                             setMatchInfo(new dynamic[] { lblGoalMagenta });
                             goto broadcast;
                         case "d": //SUBGOAL_MAGENTA
-                            respone = "SUBGOAL_MAGENTA";
+                            text = "SUBGOAL_MAGENTA";
                             goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
                         case "k": //KICKOFF_MAGENTA
-                            respone = "KICKOFF_MAGENTA";
+                            text = "KICKOFF_MAGENTA";
                             //cbxFormation.SelectedItem = "Kick Off";
                             goto broadcast;
                         case "f": //FREEKICK_MAGENTA
-                            respone = "FREEKICK_MAGENTA";
+                            text = "FREEKICK_MAGENTA";
                             setMatchInfo(new dynamic[] { lblFouls });
                             break;
                         case "g": //GOALKICK_MAGENTA
-                            respone = "GOALKICK_MAGENTA";
+                            text = "GOALKICK_MAGENTA";
                             setMatchInfo(new dynamic[] { lblGoalKick });
                             goto broadcast;
                         case "t": //THROWN_MAGENTA
-                            respone = "THROWN_MAGENTA";
+                            text = "THROWN_MAGENTA";
                             goto broadcast;
                         case "c": //CORNER_MAGENTA
-                            respone = "CORNER_MAGENTA";
+                            text = "CORNER_MAGENTA";
                             setMatchInfo(new dynamic[] { lblCorner });
                             goto broadcast;
                     }
@@ -923,11 +990,11 @@ namespace BaseStation
             else
             {
                 // If socket is Robot socket   
-                switch (text)
+                switch (_dtMessage[0])
                 {
                     /// INFORMATION ///
-                    case "B": //Get the ball
-                        respone = "Ball on " + socketToName(socket);
+                    case "B_": //Get the ball
+                        respone = "B_" + socketToName(socket);
                         var obj = socketToName(socket);
                         dynamic[,] arr = { {lblRobot1, ballR1, picRobot1, "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3,picRobot3, "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
                         int[] val = new int[2];
@@ -943,28 +1010,34 @@ namespace BaseStation
                     /// OTHERS ///
                     case "ip": //TIME NOW
                         respone = GetMyIP();
-                        break;
+                        goto multicast;
                     case "get_time": //TIME NOW
                         respone = DateTime.Now.ToLongTimeString();
-                        break;
-                    default:
-                        //addCommand("# Invalid Command :<");
-                        break;
+                        goto multicast;
+                    //default:
+                        //respone = text = "# Invalid Command :<";
                 }
             }
+            //if ((string.IsNullOrWhiteSpace(respone)) && (_dtMessage.Count() > 1))
+            //    sendByHostList(_dtMessage[1], _dtMessage[0]);
             goto end;
 
-            broadcast:
+        broadcast:
             sendByHostList("Robot1,Robot2,Robot3", respone);
-            return string.Empty;
+            goto end;
 
-            multicast:
-            sendByHostList(chkRobotCollect, respone);
-            return string.Empty;
+        multicast:
+            if (_dtMessage.Count() > 1)
+                sendByHostList(_dtMessage[1], respone);
+            else if (!string.IsNullOrWhiteSpace(chkRobotCollect))
+                sendByHostList(chkRobotCollect, respone);
+            else
+                SendCallBack(socket, respone);
+            goto end;
 
-            end:
-            if (text != string.Empty)
-                addCommand("> " + socketToName(socket) + " : " + text);
+        end:
+            if (!string.IsNullOrWhiteSpace(text))
+                addCommand("# " + text);
             return respone;
         }
 
@@ -1066,15 +1139,24 @@ namespace BaseStation
 
         void sendFromTextBox()
         {
-            var dataMessage = tbxMessage.Text.Trim().Split('|');
-            if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (dataMessage[0].ToLower() == "myip"))
-                MessageBox.Show("MyIP: " + GetMyIP());
-            else if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
-                sendByHostList(chkRobotCollect, dataMessage[0].Trim());
-            else if ((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(dataMessage[1])))  //for to be Server
-                sendByHostList(dataMessage[1].Trim(), dataMessage[0].Trim());
-            else
-                MessageBox.Show("Incorrect Format!");
+            //var dataMessage = tbxMessage.Text.Trim().Split('|');
+
+            //if (!string.IsNullOrWhiteSpace(tbxMessage.Text.Trim()))
+                ResponeSendCallback(tbxMessage.Text.Trim());
+
+            //if ((!string.IsNullOrWhiteSpace(dataMessage[0])) && (((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[1]))) || (!string.IsNullOrWhiteSpace(chkRobotCollect)) || ((dataMessage[0].StartsWith("!")) || (dataMessage[0].StartsWith("**"))) ))
+            //    ResponeSendCallback(tbxMessage.Text.Trim());
+            //else if (dataMessage[0].ToLower() == "myip")
+            //    ResponeSendCallback(tbxMessage.Text.Trim());
+
+            //if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (dataMessage[0].ToLower() == "myip"))
+            //    MessageBox.Show("MyIP: " + GetMyIP());
+            //else if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
+            //    sendByHostList(chkRobotCollect, dataMessage[0].Trim());
+            //else if ((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(dataMessage[1])))  //for to be Server
+            //    sendByHostList(dataMessage[1].Trim(), dataMessage[0].Trim());
+            //else
+            //    MessageBox.Show("Incorrect Format!");
             tbxMessage.ResetText();
         }
 

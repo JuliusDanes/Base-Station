@@ -51,3 +51,4 @@ D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.cs
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.CopyComplete
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.exe
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.pdb
+D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csprojAssemblyReference.cache
