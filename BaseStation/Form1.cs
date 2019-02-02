@@ -69,7 +69,7 @@ namespace BaseStation
             notConnectionCollect.Add(lblConnectionRB);
             notConnectionCollect.Add(lblConnectionR1);
             notConnectionCollect.Add(lblConnectionR2);
-            notConnectionCollect.Add(lblConnectionR3);
+            notConnectionCollect.Add(lblConnectionR3);   
         }
 
         void checkAppResponding(object state)
@@ -198,8 +198,8 @@ namespace BaseStation
 
         void moveLoc(int encodX, int encodY, dynamic robot)
         {
-            Point point00Lap = new Point(26, 20);
-            Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);
+            Point point00Lap = new Point(26, 20);   // Reference (0, 0) of Arena
+            Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);    // Reference (0, 0) of Robot
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
             hc.SetLocation(this, robot, newLoc);
         }
@@ -355,7 +355,7 @@ namespace BaseStation
                     } else
                         chk[2] = false;     // Done
 
-                    string dtGoto = startX + "," + startY + "," + startAngle;
+                    string dtGoto = "E" + startX + "," + startY + "," + startAngle;
                     SendCallBack(_socketDict[Robot], dtGoto, "Goto");
                     Thread.Sleep(100);    // time per limit (milisecond)
                 }
@@ -601,22 +601,9 @@ namespace BaseStation
                 message = new string(message.Where(c => !char.IsControl(c)).ToArray());
                 if (string.IsNullOrWhiteSpace(message))
                     socket.Disconnect(true);
+                if ((!string.IsNullOrWhiteSpace(message)) && (!Regex.IsMatch(message, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")))
+                    addCommand("> " + socketToName(socket) + " : " + message);
                 ResponeReceivedCallback(message, socket);
-
-                //var _data = message.Split('|');
-
-                //string respone = ResponeReceivedCallback(_data[0], socket);
-                //if (!string.IsNullOrEmpty(respone))
-                //{
-                //    if (_data.Count() == 1)
-                //        SendCallBack(socket, respone);
-                //    else
-                //        sendByHostList(_data[1], respone);
-                //}
-
-
-                //if (_dtMessage[0] != string.Empty)
-                //    addCommand("> " + socketToName(socket) + " : " + _dtMessage[0]);
                 socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
             }
             catch (Exception e)
@@ -630,15 +617,14 @@ namespace BaseStation
         {
             try
             {
-                if (Regex.IsMatch(txtMessage, "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
-                {
+                if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
                     //var pos = txtMessage.Split(',');
-                    //addCommand("@ " + soc8\[;gkjketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
+                    //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°")); 
                 }
                 else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
-                txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
-                byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
+                    txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
+                    byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                 _dstSocket.Send(buffer);
                 _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket);
             }
@@ -694,24 +680,26 @@ namespace BaseStation
             string respone = string.Empty, text = string.Empty;
             var _dtMessage = message.Split('|');
 
-            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {    // Broadcast message
-                _dtMessage[0] = _dtMessage[0].Substring(1);
-                _dtMessage[1] = "Robot1,Robot2,Robot3"; }
-            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {    // Forward & Broadcast message
+            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {        // Broadcast message
+                _dtMessage = new string[] { _dtMessage[0].Substring(1), "Robot1,Robot2,Robot3" }; }
+            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {       // Forward & Broadcast message
                 respone = _dtMessage[0];
                 goto broadcast; }
-            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {    // Forward & Multicast message
+            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {   // Forward & Multicast message
                 goto multicast; }
 
             if (_dtMessage[0].ToLower() == "myip") {
                 text = "MyIP: " + GetMyIP();
+                respone = GetMyIP();
                 if (_dtMessage.Count() > 1)
-                    respone = GetMyIP();
-                goto multicast; }
+                    goto multicast;
+                MessageBox.Show(text);
+                goto end; }
             else if ((!string.IsNullOrWhiteSpace(_dtMessage[0])) && (((_dtMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(_dtMessage[1]))) || (!string.IsNullOrWhiteSpace(chkRobotCollect)) )) {
                 // If to send Robot socket   
                 switch (_dtMessage[0]) {
                     /// INFORMATION ///
+                    /// OTHERS ///
                     default:
                         //respone = text = "# Invalid Command :<";
                         goto multicast; } }
@@ -724,7 +712,7 @@ namespace BaseStation
             goto end;
 
         multicast:
-            if (!string.IsNullOrWhiteSpace(respone))
+            if (string.IsNullOrWhiteSpace(respone))
                 respone = _dtMessage[0];
             if (_dtMessage.Count() > 1)
                 sendByHostList(_dtMessage[1], respone);
@@ -743,36 +731,24 @@ namespace BaseStation
             string respone = string.Empty, text = string.Empty;
             var _dtMessage = message.Split('|');
             
-            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {    // Broadcast message
-                _dtMessage[0] = _dtMessage[0].Substring(1);
-                _dtMessage[1] = "Robot1,Robot2,Robot3"; }
-            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {    // Forward & Broadcast message
+            if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {        // Broadcast message
+                _dtMessage = new string[] { _dtMessage[0].Substring(1), "Robot1,Robot2,Robot3" }; }
+            if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {       // Forward & Broadcast message
                 respone = _dtMessage[0].Substring(2);
                 goto broadcast; }
-            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {    // Forward & Multicast message
+            else if ((_dtMessage[0].StartsWith("*")) && (_dtMessage[0].Length > 1)) {   // Forward & Multicast message
                 respone = _dtMessage[0].Substring(1);
                 goto multicast; }
 
-            if (Regex.IsMatch(_dtMessage[0], "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
+            if (Regex.IsMatch(_dtMessage[0], "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
             {
                 // If _dtMessage[0] is data X & Y from encoder
                 /// Scale is 1 : 20 
                 string objName = null;
-                dynamic[] posXYZ = _dtMessage[0].Split(',');
+                dynamic[] posXYZs = _dtMessage[0].Split('E');
+                dynamic[] posXYZ = (posXYZs[posXYZs.Length-1]).Split(',');
                 posXYZ = posXYZ.Where(item => (!string.IsNullOrWhiteSpace(item))).ToArray();
-                if (posXYZ.Length > 3) // If data receive multi value X & Y (error bug problem)
-                {
-                    posXYZ[0] = posXYZ[posXYZ.Length - 3].Substring(posXYZ[posXYZ.Length - 1].Length);
-                    posXYZ[1] = posXYZ[posXYZ.Length - 2];
-                    posXYZ[2] = posXYZ[posXYZ.Length - 1];
-                }
 
-                if ((!string.IsNullOrWhiteSpace(posXYZ[0])) && (Convert.ToInt64(posXYZ[0]) > 12000))
-                    posXYZ[0] = posXYZ[0].ToString().Substring(0, 4);
-                if ((!string.IsNullOrWhiteSpace(posXYZ[1])) && (Convert.ToInt64(posXYZ[1]) > 9000))
-                    posXYZ[1] = posXYZ[1].ToString().Substring(0, 4);
-                if ((!string.IsNullOrWhiteSpace(posXYZ[2])) && (Convert.ToInt64(posXYZ[2]) > 360))
-                    posXYZ[2] = posXYZ[2].ToString().Substring(0, 2);
                 foreach (var _temp in _socketDict)                              // Get socket name from IP
                     if (_temp.Value.RemoteEndPoint == socket.RemoteEndPoint)
                         objName = _temp.Key.ToString();
@@ -787,22 +763,21 @@ namespace BaseStation
                 hc.SetText(this, arr[n, 3], posXYZ[2]);
                 //text = "X:" + posXYZ[0] + " Y:" + posXYZ[1] + " ∠:" + posXYZ[2] + "°";
             }
-            else if (Regex.IsMatch(_dtMessage[0], "[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
-                text = string.Empty;
-            else if (Regex.IsMatch(_dtMessage[0], @"Robot[0-9]"))
+            else if (Regex.IsMatch(_dtMessage[0], "^(Robot[0-9])$"))
             {
                 // If will rename key in socket dictionary
-                Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
-                _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
-                _socketDict.Add(_dtMessage[0], temp);                                    // Add with new key
                 dynamic[,] arr = { { lblRobot1.Text, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2.Text, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3.Text, lblConnectionR3, tbxIPR3, tbxPortR3 } };
                 int n = 0;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0] == _dtMessage[0])
                         n = i;
-                hc.SetText(this, arr[n, 1], "Connected");
-                hc.SetText(this, arr[n, 2], socketToIP(socket));
-                hc.SetText(this, arr[n, 3], this.port.ToString());
+                if (_socketDict.ContainsKey(socket.RemoteEndPoint.ToString())) {
+                    Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
+                    _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
+                    _socketDict.Add(_dtMessage[0], temp);                           // Add with new key
+                    hc.SetText(this, arr[n, 1], "Connected");
+                    hc.SetText(this, arr[n, 2], socketToIP(socket));
+                    hc.SetText(this, arr[n, 3], this.port.ToString()); }
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)
@@ -993,22 +968,33 @@ namespace BaseStation
                 switch (_dtMessage[0])
                 {
                     /// INFORMATION ///
-                    case "B_": //Get the ball
+                    case "B_": //Get the Ball
                         respone = "B_" + socketToName(socket);
+                        text = "Get the Ball";
                         var obj = socketToName(socket);
                         dynamic[,] arr = { {lblRobot1, ballR1, picRobot1, "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3,picRobot3, "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
-                        int[] val = new int[2];
-                        for (int i = 0; i < arr.GetLength(0); i++) {
+                        for (int i = 0; i < arr.GetLength(0); i++) {    /// PREVIOUS
                             hc.SetVisible(this, arr[i, 1], false);
                             arr[i, 2].BackgroundImage = Image.FromFile(@"images\"+ arr[i, 3]); }
-                        for (int i = 0; i < arr.GetLength(0); i++)
+                        for (int i = 0; i < arr.GetLength(0); i++)      /// CURRENT
                             if (arr[i, 0].Text == obj) {
                                 hc.SetVisible(this, arr[i, 1], true);
                                 arr[i, 2].BackgroundImage = Image.FromFile(@"images\" + arr[i, 4]); }
                         goto broadcast;
+                    case "b_": //Lose the Ball
+                        respone = "b_";
+                        text = "Lose the Ball";
+                        dynamic[,] arr2 = { { lblRobot1, ballR1, picRobot1, "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
+                        for (int i = 0; i < arr2.GetLength(0); i++) {    /// CURRENT
+                            hc.SetVisible(this, arr2[i, 1], false);
+                            arr2[i, 2].BackgroundImage = Image.FromFile(@"images\" + arr2[i, 3]); }
+                        goto broadcast;
 
                     /// OTHERS ///
-                    case "ip": //TIME NOW
+                    case "ping": //PING-REPLY
+                        respone = "Reply " + this.Text;
+                        goto multicast;
+                    case "ip": //IP Address Info
                         respone = GetMyIP();
                         goto multicast;
                     case "get_time": //TIME NOW
@@ -1018,8 +1004,8 @@ namespace BaseStation
                         //respone = text = "# Invalid Command :<";
                 }
             }
-            //if ((string.IsNullOrWhiteSpace(respone)) && (_dtMessage.Count() > 1))
-            //    sendByHostList(_dtMessage[1], _dtMessage[0]);
+            if ((string.IsNullOrWhiteSpace(respone)) && (_dtMessage.Count() > 1))
+                sendByHostList(_dtMessage[1], _dtMessage[0]);
             goto end;
 
         broadcast:
@@ -1139,24 +1125,7 @@ namespace BaseStation
 
         void sendFromTextBox()
         {
-            //var dataMessage = tbxMessage.Text.Trim().Split('|');
-
-            //if (!string.IsNullOrWhiteSpace(tbxMessage.Text.Trim()))
-                ResponeSendCallback(tbxMessage.Text.Trim());
-
-            //if ((!string.IsNullOrWhiteSpace(dataMessage[0])) && (((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[1]))) || (!string.IsNullOrWhiteSpace(chkRobotCollect)) || ((dataMessage[0].StartsWith("!")) || (dataMessage[0].StartsWith("**"))) ))
-            //    ResponeSendCallback(tbxMessage.Text.Trim());
-            //else if (dataMessage[0].ToLower() == "myip")
-            //    ResponeSendCallback(tbxMessage.Text.Trim());
-
-            //if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (dataMessage[0].ToLower() == "myip"))
-            //    MessageBox.Show("MyIP: " + GetMyIP());
-            //else if ((dataMessage.Count() == 1) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(chkRobotCollect)))       //for to be Client
-            //    sendByHostList(chkRobotCollect, dataMessage[0].Trim());
-            //else if ((dataMessage.Count() == 2) && (!string.IsNullOrWhiteSpace(dataMessage[0])) && (!string.IsNullOrWhiteSpace(dataMessage[1])))  //for to be Server
-            //    sendByHostList(dataMessage[1].Trim(), dataMessage[0].Trim());
-            //else
-            //    MessageBox.Show("Incorrect Format!");
+            ResponeSendCallback(tbxMessage.Text.Trim());
             tbxMessage.ResetText();
         }
 
@@ -1212,6 +1181,7 @@ namespace BaseStation
         
         private void btnTO_Click(object sender, EventArgs e)
         {
+            //MessageBox.Show((Regex.IsMatch(tbxMessage.Text, "^(Robot[0-9])$")).ToString());
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
             //lblTimer.Text = "00:00";
@@ -1219,12 +1189,12 @@ namespace BaseStation
             //ProgressTM.MaxValue += 300;
             //ProgressTM.Value += 300;
 
-            //Connection_byDistinct(lblRobot1, EventArgs.Empty);
-            //foreach (var i in notConnectionCollect)
-            //    MessageBox.Show(((dynamic)i).Name.ToString());
-            //int a = 95000;
-            //if (a.ToString().Length > 4)
-            //    a = int.Parse(a.ToString().Substring(1));
+                //Connection_byDistinct(lblRobot1, EventArgs.Empty);
+                //foreach (var i in notConnectionCollect)
+                //    MessageBox.Show(((dynamic)i).Name.ToString());
+                //int a = 95000;
+                //if (a.ToString().Length > 4)
+                //    a = int.Parse(a.ToString().Substring(1));
         }
 
         private void Trackbar_ValueChanged(object sender, EventArgs e)
