@@ -620,12 +620,13 @@ namespace BaseStation
             try
             {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
-                if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
-                    //var pos = txtMessage.Split(',');
-                    //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°")); 
-                }
-                else if (!string.IsNullOrWhiteSpace(txtMessage)) { 
+                if (!string.IsNullOrWhiteSpace(txtMessage)) {                     
+                    if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
+                        //var pos = txtMessage.Split(',');
+                        //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
+                    } else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
+
                     txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                     _dstSocket.Send(buffer);
@@ -644,6 +645,8 @@ namespace BaseStation
             {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
                 if (!string.IsNullOrWhiteSpace(txtMessage)) {
+                    //var pos = txtMessage.Split(',');
+                    //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                     _dstSocket.Send(buffer);
                     _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); }
