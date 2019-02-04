@@ -25,6 +25,7 @@ HALF_TIME 				= 'h'
 END_GAME				= 'e' (ends 2nd part, may go into overtime)
 GAMEOVER 				= 'z' (Game Over)
 PARKING					= 'L'
+DROP_BALL				= 'N'
 
 4. Goal status
 GOAL_MAGENTA		= 'a'
@@ -43,3 +44,7 @@ THROWN_MAGENTA		= 't'
 THROWN_CYAN			= 'T'
 CORNER_MAGENTA		= 'c'
 CORNER_CYAN			= 'C'
+PENALTY_CYAN		= 'P'
+PENALTY_MAGENTA		= 'p'
+REPAIR_CYAN			= 'O'
+REPAIR_MAGENTA		= 'o'
