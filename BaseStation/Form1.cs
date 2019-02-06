@@ -47,11 +47,9 @@ namespace BaseStation
 
         HelperClass hc = new HelperClass();
 
-        System.Threading.Timer time, timer, chkConnection, chkAppResponding;
-        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
-
         private void Form1_Load(object sender, EventArgs e)
         {
+
             addCommand("~ Welcome to Base Station ~");
             tbxIPBS.Text = GetMyIP() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
@@ -69,8 +67,11 @@ namespace BaseStation
             notConnectionCollect.Add(lblConnectionRB);
             notConnectionCollect.Add(lblConnectionR1);
             notConnectionCollect.Add(lblConnectionR2);
-            notConnectionCollect.Add(lblConnectionR3);   
+            notConnectionCollect.Add(lblConnectionR3);
         }
+
+        System.Threading.Timer time, timer, chkConnection, chkAppResponding;
+        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
 
         void checkAppResponding(object state)
         {
@@ -184,6 +185,7 @@ namespace BaseStation
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
         Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
+        Image[] imgRobot = { Image.FromFile("images/Robot 1 Attacker.png"), Image.FromFile("images/Robot 2 Defence.png"), Image.FromFile("images/Robot 3 Kiper.png") };
 
         void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
@@ -225,17 +227,18 @@ namespace BaseStation
                 arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
             else if (e.KeyCode == Keys.PageDown)
                 arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
+            if ((int.Parse(arr[n, 2].Text) % 2) == 0);
         }
 
         void tbxXYChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3 } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
             int n = 0;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
+                    if ((j != 6) && (arr[i, j].Name == obj))
                         n = i;
             if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
             {
@@ -258,7 +261,29 @@ namespace BaseStation
                     hc.SetText(this, arr[n, 3], val[1].ToString());
                 }
                 moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     // Encoder then using scale 1:20
+                if ((float.Parse(arr[n, 4].Text) % 2) == 0)
+                    RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));
             }
+        }
+
+        private Image RotateImage(dynamic pictureBox, Image imgPbx, float rotationAngle)
+        {
+            pictureBox.Image = imgPbx;
+            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            Image img = pictureBox.Image;
+
+            Bitmap bmp = new Bitmap(img.Width, img.Height);
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
+            gfx.RotateTransform(rotationAngle);
+            gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
+
+            gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            gfx.DrawImage(img, new Point(0, 0));
+
+            gfx.Dispose();
+            return pictureBox.Image = bmp;
         }
 
         private void tbxEncScr_KeyDown(object sender, KeyEventArgs e)
@@ -1010,28 +1035,26 @@ namespace BaseStation
                         text = "Ball on " + socketToName(socket);
                         ballOn = socketToName(socket);
                         var obj = socketToName(socket);
-                        dynamic[,] arr = { { lblRobot1, ballR1, picRobot1, "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
+                        dynamic[,] arr = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
                         for (int i = 0; i < arr.GetLength(0); i++)
                         {    /// PREVIOUS
                             hc.SetVisible(this, arr[i, 1], false);
-                            arr[i, 2].BackgroundImage = Image.FromFile(@"images\" + arr[i, 3]);
+                            arr[i, 3].Image = arr[i, 2] = Image.FromFile(@"images\" + arr[i, 3]);
                         }
                         for (int i = 0; i < arr.GetLength(0); i++)      /// CURRENT
-                            if (arr[i, 0].Text == obj)
-                            {
+                            if (arr[i, 0].Text == obj) {
                                 hc.SetVisible(this, arr[i, 1], true);
-                                arr[i, 2].BackgroundImage = Image.FromFile(@"images\" + arr[i, 4]);
-                            }
+                                arr[i, 3].Image = arr[i, 2] = Image.FromFile(@"images\" + arr[i, 4]); }
                         goto broadcast;
                     case "b_": //Lose the Ball
                         respone = "b_";
                         text = "Lose the Ball";
                         ballOn = string.Empty;
-                        dynamic[,] arr2 = { { lblRobot1, ballR1, picRobot1, "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
+                        dynamic[,] arr2 = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
                         for (int i = 0; i < arr2.GetLength(0); i++)
                         {    /// CURRENT
                             hc.SetVisible(this, arr2[i, 1], false);
-                            arr2[i, 2].BackgroundImage = Image.FromFile(@"images\" + arr2[i, 3]);
+                            arr2[i, 3].Image = arr2[i, 2] = Image.FromFile(@"images\" + arr2[i, 3]);
                         }
                         goto broadcast;
                     case "B?": // Ball Status
@@ -1215,7 +1238,7 @@ namespace BaseStation
                 hc.SetVisible(this, picTimer, true);
             }
         }
-
+        
         private void TeamSwitch_OnValueChange(object sender, EventArgs e)
         {
             if (TeamSwitch.Value == true)
@@ -1246,60 +1269,6 @@ namespace BaseStation
             //int a = 95000;
             //if (a.ToString().Length > 4)
             //    a = int.Parse(a.ToString().Substring(1));
-        }
-
-        private void Trackbar_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Resize(object sender, EventArgs e)
-        {
-            Invalidate();
-        }
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-
-            //int newWidth = 0;
-            //int newHeight = 0;
-            //angle = (int)(angle * 3.6);
-
-            //Bitmap bmp = new Bitmap(img.Width, img.Height);
-
-            //if (angle <= 90)
-            //{
-            //    newWidth = (int)(bmp.Width * Math.Cos(2 * Math.PI * angle / 360) + bmp.Height * Math.Sin(2 * Math.PI * angle / 360));
-            //    newHeight = (int)(bmp.Height * Math.Cos(2 * Math.PI * angle / 360) + bmp.Width * Math.Sin(2 * Math.PI * angle / 360));
-            //}
-            //else if (angle > 90 && angle <= 180)
-            //{
-            //    newWidth = (int)(bmp.Width * -Math.Cos(2 * Math.PI * angle / 360) + bmp.Height * Math.Sin(2 * Math.PI * angle / 360));
-            //    newHeight = (int)(bmp.Height * -Math.Cos(2 * Math.PI * angle / 360) + bmp.Width * Math.Sin(2 * Math.PI * angle / 360));
-            //}
-            //else if (angle > 180 && angle <= 270)
-            //{
-            //    newWidth = (int)(bmp.Width * -Math.Cos(2 * Math.PI * angle / 360) + bmp.Height * -Math.Sin(2 * Math.PI * angle / 360));
-            //    newHeight = (int)(bmp.Height * -Math.Cos(2 * Math.PI * angle / 360) + bmp.Width * -Math.Sin(2 * Math.PI * angle / 360));
-            //}
-            //else if (angle > 270 && angle <= 360)
-            //{
-            //    newWidth = (int)(bmp.Width * Math.Cos(2 * Math.PI * angle / 360) + bmp.Height * -Math.Sin(2 * Math.PI * angle / 360));
-            //    newHeight = (int)(bmp.Height * Math.Cos(2 * Math.PI * angle / 360) + bmp.Width * -Math.Sin(2 * Math.PI * angle / 360));
-            //}
-
-            //this.Text = angle.ToString() + "%%" + newWidth.ToString() + "%%" + newHeight.ToString();
-
-            //Bitmap bit_map = new Bitmap(newWidth, newHeight);
-            //Graphics gfx = Graphics.FromImage(bit_map);
-            //gfx.TranslateTransform(newWidth / 2, newHeight / 2);
-            //gfx.RotateTransform(angle);
-            //gfx.TranslateTransform(-img.Width / 2, -img.Height / 2);
-            //gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            //gfx.DrawImage(img, 0, 0);
-            //e.Graphics.TranslateTransform(this.Width / 2, this.Height / 2);
-            //e.Graphics.DrawImage(bit_map, -bit_map.Width / 2, -bit_map.Height / 2);
-        }
+        }        
     }
 }

@@ -10,6 +10,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace BaseStation
 {
@@ -20,6 +22,7 @@ namespace BaseStation
         delegate void SetObjectCallback(Form f, Control ctrl, dynamic obj, dynamic val);
         delegate void SetValueCallback(Form f, dynamic ctrl, dynamic val);
         delegate void SetVisibleCallback(Form f, dynamic ctrl, dynamic val);
+        delegate void SetRotateCallback(Form form, dynamic ctrl, dynamic val, dynamic pictureBox, float rotationAngle);
         /// Set text property of various controls
 
         internal void SetText(Form form, Control ctrl, string text)
@@ -112,6 +115,49 @@ namespace BaseStation
             catch (Exception e)
             {
                 MessageBox.Show("# Error setValue \n\n" + e);
+            }
+        }
+
+
+
+        internal void SetRotate(Form form, dynamic ctrl, dynamic val, dynamic pictureBox, float rotationAngle)
+        {
+            try
+            {
+                if (ctrl.InvokeRequired)
+                {
+                    SetRotateCallback d = new SetRotateCallback(SetRotate);
+                    form.Invoke(d, new object[] { form, ctrl, val, pictureBox.rotationAngle });
+                }
+                else
+                {
+                    //ctrl.Visible = val;
+
+                    pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    Image img = pictureBox.Image;
+
+                    Bitmap bmp = new Bitmap(img.Width, img.Height);
+
+                    Graphics gfx = Graphics.FromImage(bmp);
+
+                    gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
+
+                    gfx.RotateTransform(rotationAngle);
+
+                    gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
+
+                    gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                    gfx.DrawImage(img, new Point(0, 0));
+
+                    gfx.Dispose();
+
+                    pictureBox.Image = bmp;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("# Error setRotate \n\n" + e);
             }
         }
     }
