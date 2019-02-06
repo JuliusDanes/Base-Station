@@ -181,7 +181,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot3.BackColor = System.Drawing.Color.Transparent;
-            this.picRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot3.BackgroundImage")));
             this.picRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot3.Location = new System.Drawing.Point(420, 304);
             this.picRobot3.Name = "picRobot3";
@@ -195,7 +194,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot2.BackColor = System.Drawing.Color.Transparent;
-            this.picRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot2.BackgroundImage")));
             this.picRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot2.Location = new System.Drawing.Point(554, 376);
             this.picRobot2.Name = "picRobot2";
@@ -209,7 +207,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot1.BackColor = System.Drawing.Color.Transparent;
-            this.picRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot1.BackgroundImage")));
             this.picRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot1.Location = new System.Drawing.Point(598, 305);
             this.picRobot1.Name = "picRobot1";
@@ -426,8 +423,8 @@
             this.tbxEncXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR1.TabIndex = 15;
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // tbxEncYR1
             // 
@@ -450,8 +447,8 @@
             this.tbxEncYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR1.TabIndex = 16;
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblEncCommaR1
             // 
@@ -679,8 +676,8 @@
             this.tbxEncYR2.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR2.TabIndex = 21;
             this.tbxEncYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxEncYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncYR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblEncCommaR2
             // 
@@ -714,8 +711,8 @@
             this.tbxEncXR2.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR2.TabIndex = 20;
             this.tbxEncXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxEncXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncXR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // YCard2R2
             // 
@@ -890,8 +887,8 @@
             this.tbxScrYR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR1.TabIndex = 18;
             this.tbxScrYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblScrCommaR1
             // 
@@ -925,8 +922,8 @@
             this.tbxScrXR1.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR1.TabIndex = 17;
             this.tbxScrXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // tbxScrYR2
             // 
@@ -949,8 +946,8 @@
             this.tbxScrYR2.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR2.TabIndex = 23;
             this.tbxScrYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxScrYR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrYR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblScrCommaR2
             // 
@@ -984,8 +981,8 @@
             this.tbxScrXR2.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR2.TabIndex = 22;
             this.tbxScrXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxScrXR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrXR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // tbxScrYR3
             // 
@@ -1008,8 +1005,8 @@
             this.tbxScrYR3.Size = new System.Drawing.Size(45, 25);
             this.tbxScrYR3.TabIndex = 28;
             this.tbxScrYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxScrYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrYR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblScrCommaR3
             // 
@@ -1043,8 +1040,8 @@
             this.tbxScrXR3.Size = new System.Drawing.Size(45, 25);
             this.tbxScrXR3.TabIndex = 27;
             this.tbxScrXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxScrXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxScrXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxScrXR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxScrXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // tbxEncYR3
             // 
@@ -1067,8 +1064,8 @@
             this.tbxEncYR3.Size = new System.Drawing.Size(45, 25);
             this.tbxEncYR3.TabIndex = 26;
             this.tbxEncYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tbxEncYR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncYR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblEncCommaR3
             // 
@@ -1102,8 +1099,8 @@
             this.tbxEncXR3.Size = new System.Drawing.Size(45, 25);
             this.tbxEncXR3.TabIndex = 25;
             this.tbxEncXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxEncXR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxEncXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxEncXR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxEncXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // YCard2R3
             // 
@@ -1903,8 +1900,8 @@
             this.tbxAngleR1.Size = new System.Drawing.Size(35, 25);
             this.tbxAngleR1.TabIndex = 19;
             this.tbxAngleR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxAngleR1.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxAngleR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxAngleR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxAngleR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblPipe2R1
             // 
@@ -1977,8 +1974,8 @@
             this.tbxAngleR2.Size = new System.Drawing.Size(35, 25);
             this.tbxAngleR2.TabIndex = 24;
             this.tbxAngleR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxAngleR2.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxAngleR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxAngleR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxAngleR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // lblDegR3
             // 
@@ -2026,8 +2023,8 @@
             this.tbxAngleR3.Size = new System.Drawing.Size(35, 25);
             this.tbxAngleR3.TabIndex = 29;
             this.tbxAngleR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYChanged);
-            this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScr_KeyDown);
+            this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
+            this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
             // 
             // btnTO
             // 

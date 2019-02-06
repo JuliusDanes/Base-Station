@@ -230,7 +230,7 @@ namespace BaseStation
             if ((int.Parse(arr[n, 2].Text) % 2) == 0);
         }
 
-        void tbxXYChanged(object sender, EventArgs e)
+        private void tbxXYZChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
@@ -240,29 +240,20 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if ((j != 6) && (arr[i, j].Name == obj))
                         n = i;
-            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
-            {
-                if (obj.StartsWith("tbxEnc"))           // Obj is tbxEncoder & Encoder then using scale 1:20
-                {
-                    val[0] = (int.Parse(arr[n, 0].Text));
-                    val[1] = (int.Parse(arr[n, 1].Text));
-                    hc.SetText(this, arr[n, 0], val[0].ToString());          // On encoder tbx
-                    hc.SetText(this, arr[n, 1], val[1].ToString());
-                    hc.SetText(this, arr[n, 2], (val[0] / 20).ToString());   // On screen tbx
-                    hc.SetText(this, arr[n, 3], (val[1] / 20).ToString());
-                }
-                else if (obj.StartsWith("tbxScr"))      // obj is tbxScreen
-                {
-                    val[0] = (int.Parse(arr[n, 2].Text));
-                    val[1] = (int.Parse(arr[n, 3].Text));
-                    hc.SetText(this, arr[n, 0], (val[0] * 20).ToString());   // On encoder tbx
-                    hc.SetText(this, arr[n, 1], (val[1] * 20).ToString());
-                    hc.SetText(this, arr[n, 2], val[0].ToString());          // On screen tbx
-                    hc.SetText(this, arr[n, 3], val[1].ToString());
-                }
-                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     // Encoder then using scale 1:20
-                if ((float.Parse(arr[n, 4].Text) % 2) == 0)
-                    RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));
+            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
+                /// Using Scale 1:20
+                if (obj.StartsWith("tbxEncX"))
+                    hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                else if (obj.StartsWith("tbxEncY"))
+                    hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+                else if (obj.StartsWith("tbxScrX"))
+                    hc.SetText(this, arr[n, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                else if (obj.StartsWith("tbxScrY"))
+                    hc.SetText(this, arr[n, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+
+                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     /// Display Location on Screen
+                if ((obj.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 3) == 0))
+                    RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
             }
         }
 
@@ -286,7 +277,7 @@ namespace BaseStation
             return pictureBox.Image = bmp;
         }
 
-        private void tbxEncScr_KeyDown(object sender, KeyEventArgs e)
+        private void tbxEncScrAng_KeyDown(object sender, KeyEventArgs e)
         {
             changeCounter(sender, e);
             var obj = ((dynamic)sender).Name;
@@ -317,7 +308,7 @@ namespace BaseStation
                     MessageBox.Show("# Please Select/Checklist the Robot");
                 else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
                     var _dtXYZ = dtXYZ.Substring(2).Split(',');
-                    threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[3]), 20, 20, 1))); }
+                    threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), 20, 20, 1))); }
             }
         }
 
