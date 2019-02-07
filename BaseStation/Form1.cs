@@ -46,6 +46,8 @@ namespace BaseStation
         }
 
         HelperClass hc = new HelperClass();
+        Dictionary<int, Thread> threadDict = new Dictionary<int, Thread>();
+        int thID = 0;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -1214,8 +1216,8 @@ namespace BaseStation
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 1].Name == obj)
                     n = i;
-            hc.SetText(this, tbxIPR2, autoReconnectCollect.Contains(arr[n, 1]).ToString());
-            autoReconnectCollect.Remove(arr[n, 1]);
+            if (autoReconnectCollect.Contains(arr[n, 1]))
+                autoReconnectCollect.Remove(arr[n, 1]);
             if (arr[n,1].Text == "Connected") {
                 _socketDict[arr[n,0].Text].Dispose();
                 hc.SetText(this, arr[n,1], "Disconnected"); }
@@ -1239,11 +1241,6 @@ namespace BaseStation
             tbxGotoX.Text = arr[n, 1].Text;
             tbxGotoY.Text = arr[n, 2].Text;
             tbxGotoAngle.Text = arr[n, 3].Text;
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         void sendFromTextBox()

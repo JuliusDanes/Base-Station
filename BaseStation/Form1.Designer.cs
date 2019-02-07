@@ -1403,6 +1403,7 @@
             this.lblTime.Size = new System.Drawing.Size(43, 20);
             this.lblTime.TabIndex = 125;
             this.lblTime.Text = "Time";
+            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDiv
             // 
