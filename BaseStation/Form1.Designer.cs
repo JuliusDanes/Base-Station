@@ -128,7 +128,6 @@
             this.tbxGotoX = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.tbxGotoY = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.lblGotoComma = new System.Windows.Forms.Label();
-            this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
             this.lblGoto = new System.Windows.Forms.Label();
             this.ProgressR1 = new Bunifu.Framework.UI.BunifuCircleProgressbar();
             this.lblTimerR1 = new System.Windows.Forms.Label();
@@ -151,10 +150,15 @@
             this.lblPipe2R3 = new System.Windows.Forms.Label();
             this.tbxAngleR3 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.btnTO = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
             this.lblDegGoto = new System.Windows.Forms.Label();
             this.lblPipeGoto = new System.Windows.Forms.Label();
             this.tbxGotoAngle = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.btnDtR1 = new System.Windows.Forms.Label();
+            this.btnDtR3 = new System.Windows.Forms.Label();
+            this.btnDtR2 = new System.Windows.Forms.Label();
+            this.LaserLine = new MaterialSkin.Controls.MaterialDivider();
+            this.lblFormation = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -181,6 +185,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot3.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot3.BackgroundImage")));
             this.picRobot3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot3.Location = new System.Drawing.Point(420, 304);
             this.picRobot3.Name = "picRobot3";
@@ -194,6 +199,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot2.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot2.BackgroundImage")));
             this.picRobot2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot2.Location = new System.Drawing.Point(554, 376);
             this.picRobot2.Name = "picRobot2";
@@ -207,6 +213,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picRobot1.BackColor = System.Drawing.Color.Transparent;
+            this.picRobot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picRobot1.BackgroundImage")));
             this.picRobot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRobot1.Location = new System.Drawing.Point(598, 305);
             this.picRobot1.Name = "picRobot1";
@@ -1623,6 +1630,8 @@
             // 
             // tbxGotoX
             // 
+            this.tbxGotoX.AccessibleDescription = "tbxGotoX";
+            this.tbxGotoX.AccessibleName = "tbxGotoX";
             this.tbxGotoX.Depth = 0;
             this.tbxGotoX.Hint = "X";
             this.tbxGotoX.Location = new System.Drawing.Point(1062, 509);
@@ -1637,12 +1646,15 @@
             this.tbxGotoX.Size = new System.Drawing.Size(45, 23);
             this.tbxGotoX.TabIndex = 34;
             this.tbxGotoX.TabStop = false;
+            this.tbxGotoX.Tag = "tbxGotoX";
             this.tbxGotoX.Text = "0";
             this.tbxGotoX.UseSystemPasswordChar = false;
             this.tbxGotoX.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
             // 
             // tbxGotoY
             // 
+            this.tbxGotoY.AccessibleDescription = "tbxGotoY";
+            this.tbxGotoY.AccessibleName = "tbxGotoY";
             this.tbxGotoY.Depth = 0;
             this.tbxGotoY.Hint = "Y";
             this.tbxGotoY.Location = new System.Drawing.Point(1121, 509);
@@ -1656,6 +1668,7 @@
             this.tbxGotoY.Size = new System.Drawing.Size(45, 23);
             this.tbxGotoY.TabIndex = 35;
             this.tbxGotoY.TabStop = false;
+            this.tbxGotoY.Tag = "tbxGotoY";
             this.tbxGotoY.Text = "0";
             this.tbxGotoY.UseSystemPasswordChar = false;
             this.tbxGotoY.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
@@ -1671,21 +1684,6 @@
             this.lblGotoComma.TabIndex = 148;
             this.lblGotoComma.Text = ",";
             // 
-            // lblDiv2
-            // 
-            this.lblDiv2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblDiv2.Depth = 0;
-            this.lblDiv2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDiv2.ForeColor = System.Drawing.Color.Black;
-            this.lblDiv2.Location = new System.Drawing.Point(1007, 509);
-            this.lblDiv2.Margin = new System.Windows.Forms.Padding(0);
-            this.lblDiv2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblDiv2.Name = "lblDiv2";
-            this.lblDiv2.Size = new System.Drawing.Size(10, 23);
-            this.lblDiv2.TabIndex = 151;
-            this.lblDiv2.Text = "0";
-            this.lblDiv2.Click += new System.EventHandler(this.lblDiv2_Click);
-            // 
             // lblGoto
             // 
             this.lblGoto.BackColor = System.Drawing.Color.Transparent;
@@ -1697,6 +1695,7 @@
             this.lblGoto.TabIndex = 152;
             this.lblGoto.Text = "Goto";
             this.lblGoto.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblGoto.Click += new System.EventHandler(this.lblGoto_Click);
             // 
             // ProgressR1
             // 
@@ -2052,18 +2051,18 @@
             this.btnTO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
             // 
-            // materialDivider1
+            // lblDiv2
             // 
-            this.materialDivider1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialDivider1.Depth = 0;
-            this.materialDivider1.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.materialDivider1.ForeColor = System.Drawing.Color.Black;
-            this.materialDivider1.Location = new System.Drawing.Point(1036, 259);
-            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialDivider1.Name = "materialDivider1";
-            this.materialDivider1.Size = new System.Drawing.Size(140, 10);
-            this.materialDivider1.TabIndex = 219;
-            this.materialDivider1.Text = "0";
+            this.lblDiv2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDiv2.Depth = 0;
+            this.lblDiv2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiv2.ForeColor = System.Drawing.Color.Black;
+            this.lblDiv2.Location = new System.Drawing.Point(1036, 251);
+            this.lblDiv2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDiv2.Name = "lblDiv2";
+            this.lblDiv2.Size = new System.Drawing.Size(140, 20);
+            this.lblDiv2.TabIndex = 219;
+            this.lblDiv2.Text = "0";
             // 
             // lblDegGoto
             // 
@@ -2091,6 +2090,8 @@
             // 
             // tbxGotoAngle
             // 
+            this.tbxGotoAngle.AccessibleDescription = "tbxGotoAngle";
+            this.tbxGotoAngle.AccessibleName = "tbxGotoAngle";
             this.tbxGotoAngle.Depth = 0;
             this.tbxGotoAngle.Hint = "deg";
             this.tbxGotoAngle.Location = new System.Drawing.Point(1177, 509);
@@ -2105,9 +2106,73 @@
             this.tbxGotoAngle.Size = new System.Drawing.Size(30, 23);
             this.tbxGotoAngle.TabIndex = 223;
             this.tbxGotoAngle.TabStop = false;
+            this.tbxGotoAngle.Tag = "tbxGotoAngle";
             this.tbxGotoAngle.Text = "0";
             this.tbxGotoAngle.UseSystemPasswordChar = false;
             this.tbxGotoAngle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxGoto_KeyDown);
+            // 
+            // btnDtR1
+            // 
+            this.btnDtR1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(168)))), ((int)(((byte)(236)))));
+            this.btnDtR1.Font = new System.Drawing.Font("Bahnschrift", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDtR1.ForeColor = System.Drawing.Color.MintCream;
+            this.btnDtR1.Location = new System.Drawing.Point(986, 493);
+            this.btnDtR1.Name = "btnDtR1";
+            this.btnDtR1.Size = new System.Drawing.Size(30, 12);
+            this.btnDtR1.TabIndex = 224;
+            this.btnDtR1.Text = "R1";
+            this.btnDtR1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnDtR1.Click += new System.EventHandler(this.btnDtRobot_Click);
+            // 
+            // btnDtR3
+            // 
+            this.btnDtR3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(5)))), ((int)(((byte)(5)))));
+            this.btnDtR3.Font = new System.Drawing.Font("Bahnschrift", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDtR3.ForeColor = System.Drawing.Color.MintCream;
+            this.btnDtR3.Location = new System.Drawing.Point(986, 519);
+            this.btnDtR3.Name = "btnDtR3";
+            this.btnDtR3.Size = new System.Drawing.Size(30, 12);
+            this.btnDtR3.TabIndex = 225;
+            this.btnDtR3.Text = "R3";
+            this.btnDtR3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnDtR3.Click += new System.EventHandler(this.btnDtRobot_Click);
+            // 
+            // btnDtR2
+            // 
+            this.btnDtR2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(0)))), ((int)(((byte)(123)))));
+            this.btnDtR2.Font = new System.Drawing.Font("Bahnschrift", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDtR2.ForeColor = System.Drawing.Color.MintCream;
+            this.btnDtR2.Location = new System.Drawing.Point(986, 506);
+            this.btnDtR2.Name = "btnDtR2";
+            this.btnDtR2.Size = new System.Drawing.Size(30, 12);
+            this.btnDtR2.TabIndex = 226;
+            this.btnDtR2.Text = "R2";
+            this.btnDtR2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnDtR2.Click += new System.EventHandler(this.btnDtRobot_Click);
+            // 
+            // LaserLine
+            // 
+            this.LaserLine.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.LaserLine.Depth = 0;
+            this.LaserLine.Location = new System.Drawing.Point(342, 514);
+            this.LaserLine.MouseState = MaterialSkin.MouseState.HOVER;
+            this.LaserLine.Name = "LaserLine";
+            this.LaserLine.Size = new System.Drawing.Size(600, 5);
+            this.LaserLine.TabIndex = 227;
+            this.LaserLine.Text = "LaserLine";
+            this.LaserLine.Visible = false;
+            // 
+            // lblFormation
+            // 
+            this.lblFormation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblFormation.Font = new System.Drawing.Font("Bahnschrift", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFormation.ForeColor = System.Drawing.Color.MintCream;
+            this.lblFormation.Location = new System.Drawing.Point(1036, 252);
+            this.lblFormation.Name = "lblFormation";
+            this.lblFormation.Size = new System.Drawing.Size(140, 10);
+            this.lblFormation.TabIndex = 228;
+            this.lblFormation.Text = "F O R M A T I O N";
+            this.lblFormation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // Form1
             // 
@@ -2117,6 +2182,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblFormation);
+            this.Controls.Add(this.LaserLine);
+            this.Controls.Add(this.btnDtR2);
+            this.Controls.Add(this.btnDtR3);
+            this.Controls.Add(this.btnDtR1);
             this.Controls.Add(this.tbxGotoAngle);
             this.Controls.Add(this.lblDegGoto);
             this.Controls.Add(this.lblPipeGoto);
@@ -2239,10 +2309,9 @@
             this.Controls.Add(this.picRobot1);
             this.Controls.Add(this.picBall);
             this.Controls.Add(this.picArena);
-            this.Controls.Add(this.lblDiv2);
             this.Controls.Add(this.lblGoto);
             this.Controls.Add(this.picTimer);
-            this.Controls.Add(this.materialDivider1);
+            this.Controls.Add(this.lblDiv2);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -2391,17 +2460,21 @@
         protected System.Windows.Forms.Label lblScale;
         protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoX;
         protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoY;
-        protected MaterialSkin.Controls.MaterialDivider lblDiv2;
         protected System.Windows.Forms.Label lblGoto;
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR1;
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR2;
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
         protected Bunifu.Framework.UI.BunifuThinButton2 btnTO;
-        protected MaterialSkin.Controls.MaterialDivider materialDivider1;
+        protected MaterialSkin.Controls.MaterialDivider lblDiv2;
         protected System.Windows.Forms.Label lblDegGoto;
         protected System.Windows.Forms.Label lblPipeGoto;
         protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoAngle;
+        protected System.Windows.Forms.Label btnDtR1;
+        protected System.Windows.Forms.Label btnDtR3;
+        protected System.Windows.Forms.Label btnDtR2;
+        private MaterialSkin.Controls.MaterialDivider LaserLine;
+        protected System.Windows.Forms.Label lblFormation;
     }
 }
 

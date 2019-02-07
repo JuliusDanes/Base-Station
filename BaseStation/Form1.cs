@@ -49,16 +49,17 @@ namespace BaseStation
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             addCommand("~ Welcome to Base Station ~");
             tbxIPBS.Text = GetMyIP() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
             tbxIPRB.Text = "169.254.162.201";
             tbxPortRB.Text = "28097";
-            tbxIPR1.Text /*= "169.254.162.201"*/ = GetMyIP();
+            tbxIPR1.Text = tbxIPR2.Text = tbxIPR3.Text = GetMyIP();
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
             resetText();
+            foreach (var picRobot in new dynamic[] { picRobot1, picRobot2, picRobot3 })
+                picRobot.BackgroundImage = null;
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
@@ -200,7 +201,7 @@ namespace BaseStation
 
         void moveLoc(int encodX, int encodY, dynamic robot)
         {
-            Point point00Lap = new Point(26, 20);   // Reference (0, 0) of Arena
+            Point point00Lap = new Point(27, 20);                                           // Reference (0, 0) of Arena
             Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);    // Reference (0, 0) of Robot
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
             hc.SetLocation(this, robot, newLoc);
@@ -208,51 +209,56 @@ namespace BaseStation
 
         void changeCounter(object sender, KeyEventArgs e)
         {
-            var obj = ((dynamic)sender).Name;
+            var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { tbxScrXR3, tbxScrYR3, tbxAngleR3 }, { tbxGotoX, tbxGotoY, tbxGotoAngle } };
             int n = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
+                    if ((i == 6) && (arr[i, j].Tag == obj.Tag))
                         n = i;
-            if (e.KeyCode == Keys.Right)
-                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
-            else if (e.KeyCode == Keys.Left)
-                arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
-            else if (e.KeyCode == Keys.Up)
-                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
-            else if (e.KeyCode == Keys.Down)
-                arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
-            else if (e.KeyCode == Keys.PageUp)
-                arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
-            else if (e.KeyCode == Keys.PageDown)
-                arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
-            if ((int.Parse(arr[n, 2].Text) % 2) == 0);
+                    else if (arr[i, j].Name == obj.Name)
+                        n = i;
+
+            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text))) {
+                if (e.KeyCode == Keys.Right)
+                    arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
+                else if (e.KeyCode == Keys.Left)
+                    arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
+                else if (e.KeyCode == Keys.Up)
+                    arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
+                else if (e.KeyCode == Keys.Down)
+                    arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+                else if (e.KeyCode == Keys.PageUp)
+                    arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
+                else if (e.KeyCode == Keys.PageDown)
+                    arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
+
+                if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.Left)))
+                    hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                else if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)))
+                    hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+            }
         }
 
         private void tbxXYZChanged(object sender, EventArgs e)
         {
-            var obj = ((dynamic)sender).Name;
+            var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
             int n = 0;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
-                    if ((j != 6) && (arr[i, j].Name == obj))
+                    if ((j != 6) && (arr[i, j].Name == obj.Name))
                         n = i;
-            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
+            if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
                 /// Using Scale 1:20
-                if (obj.StartsWith("tbxEncX"))
+                if (obj.Name.StartsWith("tbxEncX"))
                     hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
-                else if (obj.StartsWith("tbxEncY"))
+                else if (obj.Name.StartsWith("tbxEncY"))
                     hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
-                else if (obj.StartsWith("tbxScrX"))
-                    hc.SetText(this, arr[n, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
-                else if (obj.StartsWith("tbxScrY"))
-                    hc.SetText(this, arr[n, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
 
                 moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     /// Display Location on Screen
-                if ((obj.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 3) == 0))
+                if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
                     RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
             }
         }
@@ -279,17 +285,29 @@ namespace BaseStation
 
         private void tbxEncScrAng_KeyDown(object sender, KeyEventArgs e)
         {
-            changeCounter(sender, e);
-            var obj = ((dynamic)sender).Name;
+            var obj = ((dynamic)sender);
             dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
             int n = 0;
-            int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
-                    if (arr[i, j].Name == obj)
+                    if (arr[i, j].Name == obj.Name)
                         n = i;
-            string dtGoto =  "E"+ arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
-            SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
+
+            if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
+                addCommand("# Only Can Input Number [0-9] :<");
+            switch (e.KeyCode) {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.PageUp:
+                case Keys.PageDown:
+                case Keys.Enter:
+                    changeCounter(sender, e);
+                    string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
+                    if (_socketDict.ContainsKey(arr[n, 0].Text))
+                        SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
+                    break; }
         }
 
         private void runGoto(string dtXYZ, string sourceCollect)
@@ -297,7 +315,6 @@ namespace BaseStation
             foreach (var dt in sourceCollect.Split(',')) {
                 dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
                 int n = 0;
-                int[] val = new int[2];
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == dt)
                         n = i;
@@ -314,12 +331,32 @@ namespace BaseStation
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
-            changeCounter(sender, e);
-            if (e.KeyCode == Keys.Enter)
-                runGoto("tbx", chkRobotCollect);
+            var obj = ((dynamic)sender);
+            dynamic[] arr = { tbxGotoX, tbxGotoY, tbxGotoAngle };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i].Tag == obj.Tag)
+                    n = i;
+
+            if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
+                addCommand("# Only Can Input Number [0-9] :<");
+            switch (e.KeyCode)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.PageUp:
+                case Keys.PageDown:
+                    changeCounter(sender, e);
+                    break;
+                case Keys.Enter:
+                    runGoto("tbx", chkRobotCollect);
+                    break;
+            }
         }
 
-        private void lblDiv2_Click(object sender, EventArgs e)
+        private void lblGoto_Click(object sender, EventArgs e)
         {
             runGoto("tbx", chkRobotCollect);
         }
@@ -616,13 +653,14 @@ namespace BaseStation
                 Array.Copy(_buffer, dataBuf, received);
                 string message = Encoding.ASCII.GetString(dataBuf).Trim();
                 message = new string(message.Where(c => !char.IsControl(c)).ToArray());
-                if (string.IsNullOrWhiteSpace(message)) {
-                    socket.Disconnect(true);
-                    return; }
-                if ((!string.IsNullOrWhiteSpace(message)) && (!Regex.IsMatch(message, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")))
-                    addCommand("> " + socketToName(socket) + " : " + message);
-                ResponeReceivedCallback(message, socket);
-                socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
+                if (_socketDict.ContainsValue(socket)) { 
+                    if (string.IsNullOrWhiteSpace(message)) {
+                        socket.Disconnect(true);
+                        return; }
+                    if ((!string.IsNullOrWhiteSpace(message)) && (!Regex.IsMatch(message, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")))
+                        addCommand("> " + socketToName(socket) + " : " + message);
+                    ResponeReceivedCallback(message, socket);
+                    socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket); }
             }
             catch (Exception e)
             {
@@ -636,7 +674,7 @@ namespace BaseStation
             try
             {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
-                if (!string.IsNullOrWhiteSpace(txtMessage)) {                     
+                if ((_socketDict.ContainsValue(_dstSocket)) && (!string.IsNullOrWhiteSpace(txtMessage))) {                     
                     if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
                         //var pos = txtMessage.Split(',');
                         //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
@@ -660,7 +698,7 @@ namespace BaseStation
             try
             {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
-                if (!string.IsNullOrWhiteSpace(txtMessage)) {
+                if ((_socketDict.ContainsValue(_dstSocket)) && (!string.IsNullOrWhiteSpace(txtMessage))) {
                     //var pos = txtMessage.Split(',');
                     //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
@@ -918,10 +956,11 @@ namespace BaseStation
                         /// 4. GOAL STATUS ///
                         case "A": //GOAL_CYAN
                             text = "GOAL_CYAN";
-                            setMatchInfo(new dynamic[] { lblGoalCyan });
+                            hc.SetText(this, lblGoalCyan, (int.Parse(lblGoalCyan.Text) + 1).ToString());
                             goto broadcast;
                         case "D": //SUBGOAL_CYAN
                             text = "SUBGOAL_CYAN";
+                            hc.SetText(this, lblGoalCyan, (int.Parse(lblGoalCyan.Text) - 1).ToString());
                             goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
@@ -980,10 +1019,11 @@ namespace BaseStation
                         /// 4. GOAL STATUS ///
                         case "a": //GOAL_MAGENTA
                             text = "GOAL_MAGENTA";
-                            setMatchInfo(new dynamic[] { lblGoalMagenta });
+                            hc.SetText(this, lblGoalMagenta, (int.Parse(lblGoalMagenta.Text) + 1).ToString());
                             goto broadcast;
                         case "d": //SUBGOAL_MAGENTA
                             text = "SUBGOAL_MAGENTA";
+                            hc.SetText(this, lblGoalMagenta, (int.Parse(lblGoalMagenta.Text) - 1).ToString());
                             goto broadcast;
 
                         /// 5. GAME FLOW COMMANDS ///
@@ -1026,27 +1066,26 @@ namespace BaseStation
                         text = "Ball on " + socketToName(socket);
                         ballOn = socketToName(socket);
                         var obj = socketToName(socket);
-                        dynamic[,] arr = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
-                        for (int i = 0; i < arr.GetLength(0); i++)
-                        {    /// PREVIOUS
+                        dynamic[,] arr = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png", tbxAngleR1 }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png", tbxAngleR2 }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png", tbxAngleR3 } };
+                        for (int i = 0; i < arr.GetLength(0); i++) {    /// PREVIOUS
                             hc.SetVisible(this, arr[i, 1], false);
-                            arr[i, 3].Image = arr[i, 2] = Image.FromFile(@"images\" + arr[i, 3]);
-                        }
+                            arr[i, 2].Image = Image.FromFile("images/" + arr[i, 4]);
+                            imgRobot[i] = Image.FromFile("images/" + arr[i, 4]); }
                         for (int i = 0; i < arr.GetLength(0); i++)      /// CURRENT
                             if (arr[i, 0].Text == obj) {
                                 hc.SetVisible(this, arr[i, 1], true);
-                                arr[i, 3].Image = arr[i, 2] = Image.FromFile(@"images\" + arr[i, 4]); }
+                                arr[i, 2].Image = Image.FromFile("images/" + arr[i, 5]);
+                                imgRobot[i] = Image.FromFile("images/" + arr[i, 5]); }
                         goto broadcast;
                     case "b_": //Lose the Ball
                         respone = "b_";
                         text = "Lose the Ball";
                         ballOn = string.Empty;
-                        dynamic[,] arr2 = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png" }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png" }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png" } };
-                        for (int i = 0; i < arr2.GetLength(0); i++)
-                        {    /// CURRENT
+                        dynamic[,] arr2 = { { lblRobot1, ballR1, picRobot1, imgRobot[0], "Robot 1 Attacker.png", "Robot 1 Attacker-Get Ball.png", tbxAngleR1 }, { lblRobot2, ballR2, picRobot2, imgRobot[1], "Robot 2 Defence.png", "Robot 2 Defence-Get Ball.png", tbxAngleR2 }, { lblRobot3, ballR3, picRobot3, imgRobot[2], "Robot 3 Kiper.png", "Robot 3 Kiper-Get Ball.png", tbxAngleR3 } };
+                        for (int i = 0; i < arr2.GetLength(0); i++) {    /// CURRENT
                             hc.SetVisible(this, arr2[i, 1], false);
-                            arr2[i, 3].Image = arr2[i, 2] = Image.FromFile(@"images\" + arr2[i, 3]);
-                        }
+                            arr2[i, 2].Image = Image.FromFile("images/" + arr2[i, 4]);
+                            imgRobot[i] = Image.FromFile("images/" + arr2[i, 4]); }
                         goto broadcast;
                     case "B?": // Ball Status
                         if (string.IsNullOrWhiteSpace(ballOn))            //Lose the Ball
@@ -1186,6 +1225,25 @@ namespace BaseStation
             }
             catch (Exception)
             { }
+        }
+
+        private void btnDtRobot_Click(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender).Name;
+            dynamic[,] arr = { { btnDtR1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { btnDtR2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { btnDtR3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
+            int n = 0;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                if (arr[i, 0].Name == obj)
+                    n = i;
+
+            tbxGotoX.Text = arr[n, 1].Text;
+            tbxGotoY.Text = arr[n, 2].Text;
+            tbxGotoAngle.Text = arr[n, 3].Text;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
 
         void sendFromTextBox()
