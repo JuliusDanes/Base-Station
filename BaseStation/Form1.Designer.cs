@@ -159,6 +159,11 @@
             this.btnDtR2 = new System.Windows.Forms.Label();
             this.LaserLine = new MaterialSkin.Controls.MaterialDivider();
             this.lblFormation = new System.Windows.Forms.Label();
+            this.tglAutoReconR1 = new MetroFramework.Controls.MetroToggle();
+            this.tglAutoReconR2 = new MetroFramework.Controls.MetroToggle();
+            this.tglAutoReconR3 = new MetroFramework.Controls.MetroToggle();
+            this.tglAutoReconRB = new MetroFramework.Controls.MetroToggle();
+            this.tglAutoReconBS = new MetroFramework.Controls.MetroToggle();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -2175,6 +2180,76 @@
             this.lblFormation.Text = "F O R M A T I O N";
             this.lblFormation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
+            // tglAutoReconR1
+            // 
+            this.tglAutoReconR1.AutoEllipsis = true;
+            this.tglAutoReconR1.Checked = true;
+            this.tglAutoReconR1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tglAutoReconR1.Location = new System.Drawing.Point(128, 317);
+            this.tglAutoReconR1.Name = "tglAutoReconR1";
+            this.tglAutoReconR1.Size = new System.Drawing.Size(40, 17);
+            this.tglAutoReconR1.TabIndex = 230;
+            this.tglAutoReconR1.Text = "On";
+            this.tglAutoReconR1.ThreeState = true;
+            this.tglAutoReconR1.UseCompatibleTextRendering = true;
+            this.tglAutoReconR1.UseVisualStyleBackColor = true;
+            // 
+            // tglAutoReconR2
+            // 
+            this.tglAutoReconR2.AutoEllipsis = true;
+            this.tglAutoReconR2.Checked = true;
+            this.tglAutoReconR2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tglAutoReconR2.Location = new System.Drawing.Point(128, 418);
+            this.tglAutoReconR2.Name = "tglAutoReconR2";
+            this.tglAutoReconR2.Size = new System.Drawing.Size(40, 17);
+            this.tglAutoReconR2.TabIndex = 231;
+            this.tglAutoReconR2.Text = "On";
+            this.tglAutoReconR2.ThreeState = true;
+            this.tglAutoReconR2.UseCompatibleTextRendering = true;
+            this.tglAutoReconR2.UseVisualStyleBackColor = true;
+            // 
+            // tglAutoReconR3
+            // 
+            this.tglAutoReconR3.AutoEllipsis = true;
+            this.tglAutoReconR3.Checked = true;
+            this.tglAutoReconR3.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tglAutoReconR3.Location = new System.Drawing.Point(128, 521);
+            this.tglAutoReconR3.Name = "tglAutoReconR3";
+            this.tglAutoReconR3.Size = new System.Drawing.Size(40, 17);
+            this.tglAutoReconR3.TabIndex = 232;
+            this.tglAutoReconR3.Text = "On";
+            this.tglAutoReconR3.ThreeState = true;
+            this.tglAutoReconR3.UseCompatibleTextRendering = true;
+            this.tglAutoReconR3.UseVisualStyleBackColor = true;
+            // 
+            // tglAutoReconRB
+            // 
+            this.tglAutoReconRB.AutoEllipsis = true;
+            this.tglAutoReconRB.Checked = true;
+            this.tglAutoReconRB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tglAutoReconRB.Location = new System.Drawing.Point(128, 217);
+            this.tglAutoReconRB.Name = "tglAutoReconRB";
+            this.tglAutoReconRB.Size = new System.Drawing.Size(40, 17);
+            this.tglAutoReconRB.TabIndex = 233;
+            this.tglAutoReconRB.Text = "On";
+            this.tglAutoReconRB.ThreeState = true;
+            this.tglAutoReconRB.UseCompatibleTextRendering = true;
+            this.tglAutoReconRB.UseVisualStyleBackColor = true;
+            // 
+            // tglAutoReconBS
+            // 
+            this.tglAutoReconBS.AutoEllipsis = true;
+            this.tglAutoReconBS.Checked = true;
+            this.tglAutoReconBS.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tglAutoReconBS.Location = new System.Drawing.Point(172, 116);
+            this.tglAutoReconBS.Name = "tglAutoReconBS";
+            this.tglAutoReconBS.Size = new System.Drawing.Size(40, 17);
+            this.tglAutoReconBS.TabIndex = 234;
+            this.tglAutoReconBS.Text = "On";
+            this.tglAutoReconBS.ThreeState = true;
+            this.tglAutoReconBS.UseCompatibleTextRendering = true;
+            this.tglAutoReconBS.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2183,6 +2258,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.tglAutoReconBS);
+            this.Controls.Add(this.tglAutoReconRB);
+            this.Controls.Add(this.tglAutoReconR3);
+            this.Controls.Add(this.tglAutoReconR2);
+            this.Controls.Add(this.tglAutoReconR1);
             this.Controls.Add(this.lblFormation);
             this.Controls.Add(this.LaserLine);
             this.Controls.Add(this.btnDtR2);
@@ -2476,6 +2556,11 @@
         protected System.Windows.Forms.Label btnDtR2;
         private MaterialSkin.Controls.MaterialDivider LaserLine;
         protected System.Windows.Forms.Label lblFormation;
+        private MetroFramework.Controls.MetroToggle tglAutoReconR1;
+        private MetroFramework.Controls.MetroToggle tglAutoReconR2;
+        private MetroFramework.Controls.MetroToggle tglAutoReconR3;
+        private MetroFramework.Controls.MetroToggle tglAutoReconRB;
+        private MetroFramework.Controls.MetroToggle tglAutoReconBS;
     }
 }
 

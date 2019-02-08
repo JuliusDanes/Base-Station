@@ -65,12 +65,6 @@ namespace BaseStation
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
-
-            notConnectionCollect.Add(lblConnectionBS);
-            notConnectionCollect.Add(lblConnectionRB);
-            notConnectionCollect.Add(lblConnectionR1);
-            notConnectionCollect.Add(lblConnectionR2);
-            notConnectionCollect.Add(lblConnectionR3);
         }
 
         System.Threading.Timer time, timer, chkConnection, chkAppResponding;
@@ -213,56 +207,57 @@ namespace BaseStation
         {
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { tbxScrXR3, tbxScrYR3, tbxAngleR3 }, { tbxGotoX, tbxGotoY, tbxGotoAngle } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if ((i == 6) && (arr[i, j].Tag == obj.Tag))
                         n = i;
                     else if (arr[i, j].Name == obj.Name)
                         n = i;
+            if (n != -1)
+                if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text))) {
+                    if (e.KeyCode == Keys.Right)
+                        arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
+                    else if (e.KeyCode == Keys.Left)
+                        arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
+                    else if (e.KeyCode == Keys.Up)
+                        arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
+                    else if (e.KeyCode == Keys.Down)
+                        arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+                    else if (e.KeyCode == Keys.PageUp)
+                        arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
+                    else if (e.KeyCode == Keys.PageDown)
+                        arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
 
-            if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text))) {
-                if (e.KeyCode == Keys.Right)
-                    arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
-                else if (e.KeyCode == Keys.Left)
-                    arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
-                else if (e.KeyCode == Keys.Up)
-                    arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
-                else if (e.KeyCode == Keys.Down)
-                    arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
-                else if (e.KeyCode == Keys.PageUp)
-                    arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
-                else if (e.KeyCode == Keys.PageDown)
-                    arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
-
-                if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.Left)))
-                    hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
-                else if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)))
-                    hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
-            }
+                    if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.Left)))
+                        hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                    else if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)))
+                        hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+                }
         }
 
         private void tbxXYZChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
-            int n = 0;
+            int n = -1;
             int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if ((j != 6) && (arr[i, j].Name == obj.Name))
                         n = i;
-            if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
-                /// Using Scale 1:20
-                if (obj.Name.StartsWith("tbxEncX"))
-                    hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
-                else if (obj.Name.StartsWith("tbxEncY"))
-                    hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+            if (n != -1)
+                if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
+                    /// Using Scale 1:20
+                    if (obj.Name.StartsWith("tbxEncX"))
+                        hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                    else if (obj.Name.StartsWith("tbxEncY"))
+                        hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
 
-                moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     /// Display Location on Screen
-                if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
-                    RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
-            }
+                    moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     /// Display Location on Screen
+                    if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
+                        RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
+                }
         }
 
         private Image RotateImage(dynamic pictureBox, Image imgPbx, float rotationAngle)
@@ -289,27 +284,27 @@ namespace BaseStation
         {
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj.Name)
                         n = i;
-
-            if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
+            if (n != -1) { 
+                if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
                 addCommand("# Only Can Input Number [0-9] :<");
-            switch (e.KeyCode) {
-                case Keys.Right:
-                case Keys.Left:
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.PageUp:
-                case Keys.PageDown:
-                case Keys.Enter:
-                    changeCounter(sender, e);
-                    string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
-                    if (_socketDict.ContainsKey(arr[n, 0].Text))
-                        SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
-                    break; }
+                switch (e.KeyCode) {
+                    case Keys.Right:
+                    case Keys.Left:
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.PageUp:
+                    case Keys.PageDown:
+                    case Keys.Enter:
+                        changeCounter(sender, e);
+                        string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
+                        if (_socketDict.ContainsKey(arr[n, 0].Text))
+                            SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
+                        break; } }
         }
 
         private void runGoto(string dtXYZ, string sourceCollect)
@@ -335,27 +330,27 @@ namespace BaseStation
         {
             var obj = ((dynamic)sender);
             dynamic[] arr = { tbxGotoX, tbxGotoY, tbxGotoAngle };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i].Tag == obj.Tag)
                     n = i;
-
-            if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
+            if (n != -1) { 
+                if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
                 addCommand("# Only Can Input Number [0-9] :<");
-            switch (e.KeyCode)
-            {
-                case Keys.Right:
-                case Keys.Left:
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.PageUp:
-                case Keys.PageDown:
-                    changeCounter(sender, e);
-                    break;
-                case Keys.Enter:
-                    runGoto("tbx", chkRobotCollect);
-                    break;
-            }
+                switch (e.KeyCode)
+                {
+                    case Keys.Right:
+                    case Keys.Left:
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.PageUp:
+                    case Keys.PageDown:
+                        changeCounter(sender, e);
+                        break;
+                    case Keys.Enter:
+                        runGoto("tbx", chkRobotCollect);
+                        break;
+                } }
         }
 
         private void lblGoto_Click(object sender, EventArgs e)
@@ -460,7 +455,7 @@ namespace BaseStation
         static Socket _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         static Socket _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
-        HashSet<dynamic> notConnectionCollect = new HashSet<dynamic>(), autoReconnectCollect = new HashSet<dynamic>();
+        HashSet<string> notConnectionCollect = new HashSet<string>(), connectingCollect = new HashSet<string>();
         List<dynamic> _chkRobotCollect = new List<dynamic>();
         internal int port, attempts = 0, ctr = 0;
         internal string myIP, chkRobotCollect = string.Empty, ballOn = string.Empty;
@@ -477,48 +472,45 @@ namespace BaseStation
             return myIP;
         }
 
-        void Reconnect(dynamic socket)
-        {
-            try
-            {   // Force for reconnecting  
-                dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-                for (int i = 0; i < arr.GetLength(0); i++)
-                    if ((((arr[i, 0].Text == socket) || (_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint))))
-                    {
-                        notConnectionCollect.Add(arr[i, 1]);
-                        autoReconnectCollect.Add(arr[i, 1]);
-                    }
-            }
-            catch (Exception)
-            { }
-        }
-        void checkConnection(object state)
+        private void checkConnection(object state)
         {
             Recheck:
-            try
-            {
+            try {
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
                 for (int i = 0; i < arr.GetLength(0); i++)          // Check for Server and Client Connection
-                    if ((((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) ^ ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))))
-                    {
-                        notConnectionCollect.Add(arr[i, 1]);
-                        autoReconnectCollect.Add(arr[i, 1]);
-                    }
-                foreach (dynamic j in notConnectionCollect)         // Auto Reconnecting
-                    if (autoReconnectCollect.Contains(j))
-                    {
-                        if (j.Text == "Connected")
-                            hc.SetText(this, j, "Disconnected");
-                        else if (j.Text == "Open")
-                            hc.SetText(this, j, "Close");
-                        if (j.Text == "Disconnected")
-                            Connection_byDistinct(j, EventArgs.Empty);
-                        else if (j.Text == "Close")
-                            grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
-                    }
-            }
+                    if (((_socketDict.ContainsKey(arr[i, 0].Text)) && (!_socketDict[arr[i, 0].Text].Connected)) || ((arr[i, 1].Text.Equals("Open")) && (!_serverSocket.IsBound))) 
+                        if (arr[i, 0].Text.Equals(lblBaseStation.Text))
+                            forceDisconnect(arr[i, 0].Text);
+                        else
+                            forceDisconnect(_socketDict[arr[i, 0].Text]);
+                foreach (string j in notConnectionCollect) {       // Auto Reconnecting
+                    dynamic[,] arr2 = new dynamic[,] { { lblBaseStation, tglAutoReconBS }, { lblRefereeBox, tglAutoReconRB }, { lblRobot1, tglAutoReconR1 }, { lblRobot2, tglAutoReconR2 }, { lblRobot3, tglAutoReconR3 } };
+                    int n = -1;
+                    for (int i = 0; i < arr.GetLength(0); i++)
+                        if (arr2[i, 0].Text == j)
+                            n = i;
+
+                    if (n != -1)
+                        if (arr2[n, 1].Checked == true)     // If Auto Reconnect ON
+                            if ((arr2[n, 0].Text == lblBaseStation.Text) && (!connectingCollect.Contains(arr2[n, 1].Text)))
+                                grpBaseStation_Click(grpBaseStation, EventArgs.Empty);
+                            else if (!connectingCollect.Contains(arr2[n, 1].Text))
+                                Connection_byDistinct(arr2[n, 0], EventArgs.Empty);  } }
             catch (Exception)
             { goto Recheck; }
+        }
+
+        private void forceDisconnect(dynamic socket)
+        {
+            try {   // Force for Disconnect  
+                dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if ((lblBaseStation.Text != socket) && ((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint)))    // For RefreeBox & Robot
+                        hc.SetText(this, arr[i, 1], "Disconnected");
+                    else if ((i == 0) && (socket.GetType() == typeof(string)) && (lblBaseStation.Text == socket))   // For BaseStation
+                        hc.SetText(this, arr[i, 1], "Close"); }
+            catch (Exception)
+            { }
         }
 
         private void lblConnection_TextChanged(object sender, EventArgs e)
@@ -529,28 +521,30 @@ namespace BaseStation
                 arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
             else
                 arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)
                     n = i;
-            if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open"))
-            {
-                arr[n, 0].BackColor = Color.SeaGreen;
-                for (int i = 0; i < arr.GetLength(1); i++)
-                    arr[n, i].Enabled = true;
-            }
-            else
-            {
-                if (obj == lblConnectionBS.Name)
-                    addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
-                else
-                    addCommand("\n# " + arr[n, 1].Text + " has DISCONNECTED :<");
-                _socketDict.Remove(arr[n, 1].Text);
-                arr[n, 0].BackColor = Color.Firebrick;
-                for (int i = 0; i < arr.GetLength(1); i++)
-                    if (i != 0)
-                        arr[n, i].Enabled = false;
-            }
+
+            if (n != -1) { 
+                if ((arr[n, 0].Text == "Connected") ^ (arr[n, 0].Text == "Open")) {
+                    notConnectionCollect.Remove(arr[n, 1].Text);
+                    arr[n, 0].BackColor = Color.SeaGreen;
+                    for (int i = 0; i < arr.GetLength(1); i++)
+                        arr[n, i].Enabled = true; }
+                else {
+                    if (obj == lblConnectionBS.Name)
+                        addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
+                    else
+                        addCommand("\n# " + arr[n, 1].Text + " has DISCONNECTED :<");
+                    if (_socketDict.ContainsKey(arr[n, 1].Text))
+                        _socketDict.Remove(arr[n, 1].Text);
+                    notConnectionCollect.Add(arr[n, 1].Text);
+                    arr[n, 0].BackColor = Color.Firebrick;
+                    for (int i = 0; i < arr.GetLength(1); i++)
+                        if (i != 0)
+                            arr[n, i].Enabled = false;
+                } }
         }
 
         string socketToIP(Socket socket)
@@ -576,14 +570,17 @@ namespace BaseStation
                 _toServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 //_toServerSocket.Connect(IPAddress.Parse(ipDst = "169.254.162.201"), 100);
                 _toServerSocket.Connect(IPAddress.Parse(ipDst), int.Parse(port));
-                if (_socketDict.ContainsKey(keyName))
-                    return;
-                _socketDict.Add(keyName, _toServerSocket);
-                if (_toServerSocket.Connected)
+                if (_toServerSocket.Connected) {
+                    if (_socketDict.ContainsKey(keyName))
+                        return;
+                    _socketDict.Add(keyName, _toServerSocket);
                     addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ") \t Port : " + port);
-                hc.SetText(this, connection, "Connected");
-                SendCallBack(_toServerSocket, this.Text);
-                _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+                    hc.SetText(this, connection, "Connected");
+                    SendCallBack(_toServerSocket, this.Text);
+                    _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket); }
+                else
+                    _toServerSocket.Dispose();
+                connectingCollect.Remove(keyName);
             }
             catch (SocketException)
             {
@@ -591,9 +588,8 @@ namespace BaseStation
                 addCommand("# IP This Device  : " + myIP + " (" + this.Text + ")");
                 addCommand("# IP Destination  : " + ipDst + " (" + keyName + ") \t Port : " + port);
                 addCommand("# Connection attempts: " + attempts.ToString());
-                Reconnect(_toServerSocket);
-                notConnectionCollect.Add(connection);
-                autoReconnectCollect.Add(connection);
+                notConnectionCollect.Add(keyName);
+                connectingCollect.Remove(keyName);
             }
         }
 
@@ -610,15 +606,15 @@ namespace BaseStation
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                     addCommand("# Open for IP : " + tbxIPBS.Text + " (" + this.Text + ") \t Port : " + port);
                     hc.SetText(this, lblConnectionBS, "Open");
+                    connectingCollect.Remove(lblBaseStation.Text);
                 }
             }
             catch (Exception e)
             {
                 hc.SetText(this, tbxStatus, string.Empty);
                 addCommand("# FAILED to open server connection \n\n" + e);
-                Reconnect(lblBaseStation.Text);
-                notConnectionCollect.Add(lblConnectionBS);
-                autoReconnectCollect.Add(lblConnectionBS);
+                notConnectionCollect.Add(lblBaseStation.Text);
+                connectingCollect.Remove(lblBaseStation.Text);
             }
         }
 
@@ -639,8 +635,8 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                //addCommand("# FAILED to connect \n\n" + e);
-                Reconnect(socket);
+                addCommand("# FAILED to connect \n\n" + e);
+                forceDisconnect(lblBaseStation.Text);
             }
         }
 
@@ -657,6 +653,7 @@ namespace BaseStation
                 message = new string(message.Where(c => !char.IsControl(c)).ToArray());
                 if (_socketDict.ContainsValue(socket)) { 
                     if (string.IsNullOrWhiteSpace(message)) {
+                        forceDisconnect(socket);
                         socket.Disconnect(true);
                         return; }
                     if ((!string.IsNullOrWhiteSpace(message)) && (!Regex.IsMatch(message, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")))
@@ -667,7 +664,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to receive message \n\n" + e);
-                Reconnect(socket);
+                forceDisconnect(socket);
             }
         }
 
@@ -691,7 +688,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to send message \n\n" + e);
-                Reconnect(_dstSocket);
+                forceDisconnect(_dstSocket);
             }
         }
 
@@ -710,7 +707,7 @@ namespace BaseStation
             catch (Exception e)
             {
                 addCommand("# FAILED to send message \n\n" + e);
-                Reconnect(_dstSocket);
+                forceDisconnect(_dstSocket);
             }
         }
 
@@ -1149,37 +1146,37 @@ namespace BaseStation
         {
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { chkR1, lblRobot1 }, { chkR2, lblRobot2 }, { chkR3, lblRobot3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj)
                         n = i;
-            if (arr[n, 0].Checked == true)
+
+            if (n != -1) { 
+                if (arr[n, 0].Checked == true)
                 _chkRobotCollect.Add(arr[n, 1].Text);
-            else
-                _chkRobotCollect.Remove(arr[n, 1].Text);
-            _chkRobotCollect.Sort();
-            if (_chkRobotCollect.Count == 0)
-                chkRobotCollect = string.Empty;
-            for (int i = 0; i < _chkRobotCollect.Count; i++)
-            {
-                if (i == 0)
-                    chkRobotCollect = _chkRobotCollect.ElementAtOrDefault(i);
                 else
-                    chkRobotCollect += "," + _chkRobotCollect.ElementAtOrDefault(i);
-            }
+                    _chkRobotCollect.Remove(arr[n, 1].Text);
+                _chkRobotCollect.Sort();
+                if (_chkRobotCollect.Count == 0)
+                    chkRobotCollect = string.Empty;
+                for (int i = 0; i < _chkRobotCollect.Count; i++) {
+                    if (i == 0)
+                        chkRobotCollect = _chkRobotCollect.ElementAtOrDefault(i);
+                    else
+                        chkRobotCollect += "," + _chkRobotCollect.ElementAtOrDefault(i); } }
         }
 
         private void grpBaseStation_Click(object sender, EventArgs e)
         {
-            if ((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+            if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                 new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
         }
 
         private void tbxOpenBS_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                if ((lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
+                if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
                     new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
         }
 
@@ -1188,13 +1185,17 @@ namespace BaseStation
             try {
                 var obj = ((dynamic)sender).Name;
                 dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
-                int n = 0;
+                int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     for (int j = 0; j < arr.GetLength(1); j++)
                         if (arr[i, j].Name == obj)
                             n = i;
-                if ((notConnectionCollect.Remove(arr[n, 2])) && (arr[n, 2].Text == "Disconnected") && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
-                    new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+                if (n != -1)
+                    if ((connectingCollect.Add(arr[n, 1].Text)) && (arr[n, 2].Text == "Disconnected"))
+                        if ((!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                            new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+                        else
+                            connectingCollect.Remove(arr[n, 1].Text);
             }
             catch (Exception)
             { }
@@ -1208,23 +1209,20 @@ namespace BaseStation
 
         private void Disconnect_byDistinct(object sender, EventArgs e)
         {
-            try
-            { 
-            var obj = ((dynamic)sender).Name;
-            dynamic[,] arr = { { lblBaseStation, lblConnectionBS}, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
-            int n = 0;
-            for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 1].Name == obj)
-                    n = i;
-            if (autoReconnectCollect.Contains(arr[n, 1]))
-                autoReconnectCollect.Remove(arr[n, 1]);
-            if (arr[n,1].Text == "Connected") {
-                _socketDict[arr[n,0].Text].Dispose();
-                hc.SetText(this, arr[n,1], "Disconnected"); }
-            else if (arr[n, 1].Text == "Open") {
-                _serverSocket.Dispose();
-                hc.SetText(this, arr[n, 1], "Close"); }
-            }
+            try { 
+                var obj = ((dynamic)sender).Name;
+                dynamic[,] arr = { { lblBaseStation, lblConnectionBS}, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                int n = -1;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if (arr[i, 1].Name == obj)
+                        n = i;
+
+                if (n != -1)
+                    if (arr[n,1].Text == "Connected") {
+                        hc.SetText(this, arr[n,1], "Disconnected"); }
+                    else if (arr[n, 1].Text == "Open") {
+                        hc.SetText(this, arr[n, 1], "Close");
+                        _serverSocket.Dispose(); } }
             catch (Exception)
             { }
         }
@@ -1233,14 +1231,15 @@ namespace BaseStation
         {
             var obj = ((dynamic)sender).Name;
             dynamic[,] arr = { { btnDtR1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { btnDtR2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { btnDtR3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)
                     n = i;
 
-            tbxGotoX.Text = arr[n, 1].Text;
-            tbxGotoY.Text = arr[n, 2].Text;
-            tbxGotoAngle.Text = arr[n, 3].Text;
+            if (n != -1) { 
+                tbxGotoX.Text = arr[n, 1].Text;
+                tbxGotoY.Text = arr[n, 2].Text;
+                tbxGotoAngle.Text = arr[n, 3].Text; }
         }
 
         void sendFromTextBox()
