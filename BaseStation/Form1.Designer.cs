@@ -164,6 +164,7 @@
             this.tglAutoReconR3 = new MetroFramework.Controls.MetroToggle();
             this.tglAutoReconRB = new MetroFramework.Controls.MetroToggle();
             this.tglAutoReconBS = new MetroFramework.Controls.MetroToggle();
+            this.btnRestart = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -2250,6 +2251,16 @@
             this.tglAutoReconBS.UseCompatibleTextRendering = true;
             this.tglAutoReconBS.UseVisualStyleBackColor = true;
             // 
+            // btnRestart
+            // 
+            this.btnRestart.Location = new System.Drawing.Point(1199, 4);
+            this.btnRestart.Name = "btnRestart";
+            this.btnRestart.Size = new System.Drawing.Size(60, 20);
+            this.btnRestart.TabIndex = 235;
+            this.btnRestart.Text = "Restart";
+            this.btnRestart.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2258,6 +2269,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.tglAutoReconBS);
             this.Controls.Add(this.tglAutoReconRB);
             this.Controls.Add(this.tglAutoReconR3);
@@ -2394,7 +2406,6 @@
             this.Controls.Add(this.picTimer);
             this.Controls.Add(this.lblDiv2);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "Form1";
@@ -2561,6 +2572,7 @@
         private MetroFramework.Controls.MetroToggle tglAutoReconR3;
         private MetroFramework.Controls.MetroToggle tglAutoReconRB;
         private MetroFramework.Controls.MetroToggle tglAutoReconBS;
+        private MetroFramework.Controls.MetroButton btnRestart;
     }
 }
 

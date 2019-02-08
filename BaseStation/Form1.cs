@@ -110,7 +110,7 @@ namespace BaseStation
                     hc.SetVisible(this, ProgressTM, false);
                     hc.SetVisible(this, picTimer, false);
                     ProgressTM.ProgressColor = Color.SeaGreen; }
-                else if (ProgressTM.Value <= ProgressTM.MaxValue / 2)
+                else if ((ProgressTM.Value <= ProgressTM.MaxValue / 2) && (ProgressTM.MaxValue > 10))
                     ProgressTM.ProgressColor = Color.Goldenrod;
                 else if (ProgressTM.Value <= 10)
                     ProgressTM.ProgressColor = Color.Firebrick;
@@ -124,38 +124,49 @@ namespace BaseStation
         void setTimer(string obj, int time)
         {
             dynamic[,] arr = { { "Robot1", ProgressR1, lblTimerR1 }, { "Robot2", ProgressR2, lblTimerR2 }, { "Robot3", ProgressR3, lblTimerR3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 0] == obj)
+                if (obj.StartsWith(arr[i, 0]))
                     n = i;
-            arr[n, 1].MaxValue = time; hc.SetValue(this, arr[n, 1], time);
-            hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
-            hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
-            timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000)));
+
+            if (n != -1) { 
+                if (!timerDict.ContainsKey(obj)) { 
+                    arr[n, 1].MaxValue = time; hc.SetValue(this, arr[n, 1], time);
+                    hc.SetText(this, arr[n, 2], arr[n, 1].MaxValue.ToString());
+                    hc.SetVisible(this, arr[n, 1], true); hc.SetVisible(this, arr[n, 2], true);
+                    timerDict.Add(obj, (new System.Threading.Timer(new TimerCallback(tickRobot), obj, 1000, 1000))); }
+            }
         }
 
         void tickRobot(object state)
         {
-            var obj = state;
+            var obj = state.ToString();
             dynamic[,] arr =  { { "Robot1", ProgressR1, lblTimerR1, YCard1R1, YCard2R1 }, { "Robot2", ProgressR2, lblTimerR2, YCard1R2, YCard2R2 }, { "Robot3", ProgressR3, lblTimerR3, YCard1R3, YCard2R3 } };
-            int n = 0;
+            int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
-                if (arr[i, 0] == obj)
+                if (obj.StartsWith(arr[i, 0]))
                     n = i;
-            hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 1));
-            hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 1).ToString());
-            if (arr[n, 1].Value == 0)
-            {
-                hc.SetVisible(this, arr[n, 1], false);
-                timerDict[arr[n, 0]].Change(Timeout.Infinite, Timeout.Infinite);
-                timerDict.Remove(arr[n, 0]);
-                arr[n, 1].ProgressColor = Color.SeaGreen;
-                setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
-            }
-            else if (arr[n, 1].Value <= arr[n, 1].MaxValue / 2)
-                arr[n, 1].ProgressColor = Color.Goldenrod;
-            else if (arr[n, 1].Value <= 10)
-                arr[n, 1].ProgressColor = Color.Firebrick;
+
+            if (n != -1) { 
+                hc.SetValue(this, arr[n, 1], (arr[n, 1].Value - 1));
+                hc.SetText(this, arr[n, 2], (int.Parse(arr[n, 2].Text) - 1).ToString());
+                if (arr[n, 1].Value == 0)
+                {
+                    hc.SetVisible(this, arr[n, 1], false);
+                    timerDict[obj].Change(Timeout.Infinite, Timeout.Infinite);
+                    if (timerDict.ContainsKey(obj))
+                        timerDict.Remove(obj);
+                    arr[n, 1].ProgressColor = Color.SeaGreen;
+
+                    if (obj.EndsWith("DYCard"))
+                        setCard(@"images\YellowCardNoFill.png", new dynamic[] { arr[n, 3], arr[n, 4] });
+                }
+                else if ((arr[n, 1].Value <= arr[n, 1].MaxValue / 2) && (arr[n, 1].Value > 10))
+                    arr[n, 1].ProgressColor = Color.Goldenrod;
+                else if (arr[n, 1].Value <= 10)
+                    arr[n, 1].ProgressColor = Color.Firebrick;
+                else if (arr[n, 1].Value > arr[n, 1].MaxValue / 2)
+                    arr[n, 1].ProgressColor = Color.SeaGreen; }
         }
 
         delegate void addCommandCallback(string text);
@@ -311,18 +322,20 @@ namespace BaseStation
         {
             foreach (var dt in sourceCollect.Split(',')) {
                 dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
-                int n = 0;
+                int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == dt)
                         n = i;
-                if ((dtXYZ.Equals("tbx")) && (!string.IsNullOrEmpty(sourceCollect))) { 
-                    if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
-                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1))); }
-                else if (dtXYZ.Equals("tbx"))
-                    MessageBox.Show("# Please Select/Checklist the Robot");
-                else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
-                    var _dtXYZ = dtXYZ.Substring(2).Split(',');
-                    threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), 20, 20, 1))); }
+
+                if (n != -1)
+                    if ((dtXYZ.Equals("tbx")) && (!string.IsNullOrEmpty(sourceCollect))) { 
+                        if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
+                            threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1))); }
+                    else if (dtXYZ.Equals("tbx"))
+                        MessageBox.Show("# Please Select/Checklist the Robot");
+                    else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
+                        var _dtXYZ = dtXYZ.Substring(2).Split(',');
+                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), 20, 20, 1))); }
             }
         }
 
@@ -429,6 +442,7 @@ namespace BaseStation
             dynamic[] arr = { tbxEncXR1, tbxEncYR1, tbxEncXR2, tbxEncYR2, tbxEncXR3, tbxEncYR3, tbxScrXR1, tbxScrYR1, tbxScrXR2, tbxScrYR2, tbxScrXR3, tbxScrYR3, tbxGotoX, tbxGotoY, tbxAngleR1, tbxAngleR2, tbxAngleR3, tbxGotoAngle };
             foreach (var i in arr)
                 i.Text = "0";
+            tbxMessage.Clear();
         }
 
         void setFormation()
@@ -502,13 +516,18 @@ namespace BaseStation
 
         private void forceDisconnect(dynamic socket)
         {
+            //MessageBox.Show((socket.GetType() != typeof(string)).ToString());
+            //MessageBox.Show(socket.GetType().ToString());
             try {   // Force for Disconnect  
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
-                    if ((lblBaseStation.Text != socket) && ((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint)))    // For RefreeBox & Robot
+                    if ((i != 0) && (socket.GetType() != typeof(string)) && ((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint))) {    // For RefreeBox & Robot
                         hc.SetText(this, arr[i, 1], "Disconnected");
-                    else if ((i == 0) && (socket.GetType() == typeof(string)) && (lblBaseStation.Text == socket))   // For BaseStation
-                        hc.SetText(this, arr[i, 1], "Close"); }
+                        _socketDict[arr[n, 0]].Dispose(); }
+                    else if ((i == 0) && (socket.GetType() == typeof(string)) && (arr[i, 0].Text == socket)) {   // For BaseStation
+                        hc.SetText(this, arr[i, 1], "Close");
+                        _serverSocket.Dispose(); } }
             catch (Exception)
             { }
         }
@@ -643,8 +662,7 @@ namespace BaseStation
         void ReceiveCallBack(IAsyncResult AR) /**/
         {
             Socket socket = null;
-            try
-            {
+            try {
                 socket = (Socket)AR.AsyncState;
                 int received = socket.EndReceive(AR);
                 byte[] dataBuf = new byte[received];
@@ -824,14 +842,17 @@ namespace BaseStation
                         objName = _temp.Key.ToString();
 
                 dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
-                int n = 0;
+                int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0].Text == objName)
                         n = i;
-                hc.SetText(this, arr[n, 1], posXYZ[0]);          // On encoder tbx
-                hc.SetText(this, arr[n, 2], posXYZ[1]);
-                hc.SetText(this, arr[n, 3], posXYZ[2]);
-                //text = "X:" + posXYZ[0] + " Y:" + posXYZ[1] + " ∠:" + posXYZ[2] + "°";
+
+                if (n != -1) { 
+                    hc.SetText(this, arr[n, 1], posXYZ[0]);          // On encoder tbx
+                    hc.SetText(this, arr[n, 2], posXYZ[1]);
+                    hc.SetText(this, arr[n, 3], posXYZ[2]);
+                    //text = "X:" + posXYZ[0] + " Y:" + posXYZ[1] + " ∠:" + posXYZ[2] + "°";
+                }
             }
             else if (Regex.IsMatch(_dtMessage[0], "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$"))
             {
@@ -843,19 +864,20 @@ namespace BaseStation
             {
                 // If will rename key in socket dictionary
                 dynamic[,] arr = { { lblRobot1.Text, lblConnectionR1, tbxIPR1, tbxPortR1 }, { lblRobot2.Text, lblConnectionR2, tbxIPR2, tbxPortR2 }, { lblRobot3.Text, lblConnectionR3, tbxIPR3, tbxPortR3 } };
-                int n = 0;
+                int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if (arr[i, 0] == _dtMessage[0])
                         n = i;
-                if (_socketDict.ContainsKey(socket.RemoteEndPoint.ToString()))
-                {
-                    Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
-                    _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
-                    _socketDict.Add(_dtMessage[0], temp);                           // Add with new key
-                    hc.SetText(this, arr[n, 1], "Connected");
-                    hc.SetText(this, arr[n, 2], socketToIP(socket));
-                    hc.SetText(this, arr[n, 3], this.port.ToString());
-                }
+                if (n != -1)
+                    if (_socketDict.ContainsKey(socket.RemoteEndPoint.ToString()))
+                    {
+                        Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
+                        _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
+                        _socketDict.Add(_dtMessage[0], temp);                           // Add with new key
+                        hc.SetText(this, arr[n, 1], "Connected");
+                        hc.SetText(this, arr[n, 2], socketToIP(socket));
+                        hc.SetText(this, arr[n, 3], this.port.ToString());
+                    }
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)
@@ -871,7 +893,7 @@ namespace BaseStation
                         goto broadcast;
                     case "s": //START
                         text = "START";
-                        timer.Change(1000, 1000);
+                        timer.Change(500, 1000);
                         goto broadcast;
                     case "W": //WELCOME (welcome _dtMessage[0])
                         text = "WELCOME";
@@ -947,9 +969,9 @@ namespace BaseStation
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
                             //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
-                            setTimer("Robot1", 120);
-                            setTimer("Robot2", 120);
-                            setTimer("Robot3", 120);
+                            setTimer("Robot1-DYCard", 120);
+                            setTimer("Robot2-DYCard", 120);
+                            setTimer("Robot3-DYCard", 120);
                             goto broadcast;
 
                         /// 4. GOAL STATUS ///
@@ -987,6 +1009,9 @@ namespace BaseStation
                             goto broadcast;
                         case "O": //REPAIR_CYAN
                             text = "REPAIR_CYAN";
+                            setTimer("Robot1-Repair", 30);
+                            setTimer("Robot2-Repair", 30);
+                            setTimer("Robot3-Repair", 30);
                             goto broadcast;
                     }
                 }
@@ -1010,9 +1035,9 @@ namespace BaseStation
                             setMatchInfo(new dynamic[] { lblYCard, lblFouls });
                             setCard(@"images\YellowCardFill.png", new dynamic[] { YCard2R1, YCard2R2, YCard2R3 });
                             //setCard(@"images\RedCardFill.png", new dynamic[] { RCardR1, RCardR2, RCardR3 });
-                            setTimer("Robot1", 120);
-                            setTimer("Robot2", 120);
-                            setTimer("Robot3", 120);
+                            setTimer("Robot1-DYCard", 120);
+                            setTimer("Robot2-DYCard", 120);
+                            setTimer("Robot3-DYCard", 120);
                             goto broadcast;
 
                         /// 4. GOAL STATUS ///
@@ -1050,6 +1075,9 @@ namespace BaseStation
                             goto broadcast;
                         case "o": //REPAIR_MAGENTA
                             text = "REPAIR_MAGENTA";
+                            setTimer("Robot1-Repair", 30);
+                            setTimer("Robot2-Repair", 30);
+                            setTimer("Robot3-Repair", 30);
                             goto broadcast;
                     }
                 }
@@ -1094,6 +1122,10 @@ namespace BaseStation
                         goto multicast;
 
                     /// OTHERS ///
+                    case "quit": //Quit/Close Robot
+                        text = "Quit/Close " + socketToName(socket);
+                        forceDisconnect(socket);
+                        break;
                     case "ping": //PING-REPLY
                         respone = "Reply " + this.Text;
                         goto multicast;
@@ -1219,7 +1251,8 @@ namespace BaseStation
 
                 if (n != -1)
                     if (arr[n,1].Text == "Connected") {
-                        hc.SetText(this, arr[n,1], "Disconnected"); }
+                        hc.SetText(this, arr[n,1], "Disconnected");
+                        _socketDict[arr[n, 0]].Dispose(); }
                     else if (arr[n, 1].Text == "Open") {
                         hc.SetText(this, arr[n, 1], "Close");
                         _serverSocket.Dispose(); } }
@@ -1297,9 +1330,17 @@ namespace BaseStation
             if (cbxFormation.SelectedIndex != -1)
                 setFormation();
         }
-        
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+            Environment.Exit(0);
+        }
+
         private void btnTO_Click(object sender, EventArgs e)
         {
+            //forceDisconnect(lblBaseStation.Text);
+            //forceDisconnect(_socketDict["Robot1"]);
             //MessageBox.Show((Regex.IsMatch(tbxMessage.Text, "^(Robot[0-9])$")).ToString());
             //var a = (_socketDict.ElementAtOrDefault(0).Key).ToString();
             //MessageBox.Show(a.ToString());
