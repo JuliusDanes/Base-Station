@@ -5155,6 +5155,32 @@
         h+vkG/H5DgYAliVUJO3c1LclUKEE2kYJtIkSaBMl0BYJ+g+8N0M+mZwk0gAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="LRSwitch.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAGQAAAA4CAYAAAALrl3YAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF4SURBVHhe7dFLrsIwEERR1sL+R2+DvAFXslAK8rMbi9yS
+        zqztONU3c4H83e+PK+B350x68JVQw/eTHndl1FKf9Bg11FST9AAtUde4pI9qHfX1TfqQtqPGPkkf0H7U
+        eS7pYh1HrceSLtR51Ls/6TKdR737ki5SP9S8LekC9Ufd60mH1R91f046qHGo/X3SIY1D7TnpgMaj/mXS
+        sMaj/tekQdVgBa9Jg6rDGlrSkOqwhpY0pDqsoSUNqQ5reCYNqBareCYNqB7rcCGzYB0uZBasw4XMgnW4
+        kFmwDhcyC9bhQmbAKlrSkOqwhpY0pDqsoSUNqQ5raElDqsMaWtKQarCCZdKwxqP+ZdKwxqP+nHRA41D7
+        +6RDGofaPycdVH/UvZ50WP1R97akC9QPNe9LukjnUe/+pMt0HvUeS7pQx1HruaSLtR919kn6gLajxr5J
+        H9I66huX9FEtUVdN0gPUUFN90mOujFq+n/S4K6GGOZMe/Iv4XfO7ud3+AT210Mofzc54AAAAAElFTkSu
+        QmCC
+</value>
+  </data>
+  <data name="TransposeSwitch.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAGQAAAA4CAYAAAALrl3YAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF4SURBVHhe7dFLrsIwEERR1sL+R2+DvAFXslAK8rMbi9yS
+        zqztONU3c4H83e+PK+B350x68JVQw/eTHndl1FKf9Bg11FST9AAtUde4pI9qHfX1TfqQtqPGPkkf0H7U
+        eS7pYh1HrceSLtR51Ls/6TKdR737ki5SP9S8LekC9Ufd60mH1R91f046qHGo/X3SIY1D7TnpgMaj/mXS
+        sMaj/tekQdVgBa9Jg6rDGlrSkOqwhpY0pDqsoSUNqQ5reCYNqBareCYNqB7rcCGzYB0uZBasw4XMgnW4
+        kFmwDhcyC9bhQmbAKlrSkOqwhpY0pDqsoSUNqQ5raElDqsMaWtKQarCCZdKwxqP+ZdKwxqP+nHRA41D7
+        +6RDGofaPycdVH/UvZ50WP1R97akC9QPNe9LukjnUe/+pMt0HvUeS7pQx1HruaSLtR919kn6gLajxr5J
+        H9I66huX9FEtUVdN0gPUUFN90mOujFq+n/S4K6GGOZMe/Iv4XfO7ud3+AT210Mofzc54AAAAAElFTkSu
+        QmCC
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>41</value>
   </metadata>

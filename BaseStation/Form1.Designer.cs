@@ -165,6 +165,11 @@
             this.tglAutoReconRB = new MetroFramework.Controls.MetroToggle();
             this.tglAutoReconBS = new MetroFramework.Controls.MetroToggle();
             this.btnRestart = new MetroFramework.Controls.MetroButton();
+            this.LRSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
+            this.lblTeam = new System.Windows.Forms.Label();
+            this.lblLR = new System.Windows.Forms.Label();
+            this.lblTranspose = new System.Windows.Forms.Label();
+            this.TransposeSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -1352,9 +1357,6 @@
             // 
             this.cbxFormation.FormattingEnabled = true;
             this.cbxFormation.ItemHeight = 23;
-            this.cbxFormation.Items.AddRange(new object[] {
-            "Stand By",
-            "Kick Off"});
             this.cbxFormation.Location = new System.Drawing.Point(1046, 263);
             this.cbxFormation.Name = "cbxFormation";
             this.cbxFormation.Size = new System.Drawing.Size(120, 29);
@@ -1878,12 +1880,14 @@
             this.picTimer.BackColor = System.Drawing.Color.Transparent;
             this.picTimer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picTimer.BackgroundImage")));
             this.picTimer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picTimer.Enabled = false;
             this.picTimer.Location = new System.Drawing.Point(907, 26);
             this.picTimer.Name = "picTimer";
             this.picTimer.Size = new System.Drawing.Size(55, 80);
             this.picTimer.TabIndex = 168;
             this.picTimer.TabStop = false;
+            this.picTimer.Tag = "start";
+            this.picTimer.Click += new System.EventHandler(this.picTimer_Click);
+            this.picTimer.DoubleClick += new System.EventHandler(this.picTimer_DoubleClick);
             // 
             // tbxAngleR1
             // 
@@ -2253,13 +2257,79 @@
             // 
             // btnRestart
             // 
-            this.btnRestart.Location = new System.Drawing.Point(1199, 4);
+            this.btnRestart.Location = new System.Drawing.Point(1199, 3);
             this.btnRestart.Name = "btnRestart";
             this.btnRestart.Size = new System.Drawing.Size(60, 20);
             this.btnRestart.TabIndex = 235;
             this.btnRestart.Text = "Restart";
             this.btnRestart.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
+            // LRSwitch
+            // 
+            this.LRSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.LRSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LRSwitch.BackgroundImage")));
+            this.LRSwitch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LRSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LRSwitch.Location = new System.Drawing.Point(1, 46);
+            this.LRSwitch.Name = "LRSwitch";
+            this.LRSwitch.OffColor = System.Drawing.Color.Firebrick;
+            this.LRSwitch.OnColor = System.Drawing.Color.SeaGreen;
+            this.LRSwitch.Size = new System.Drawing.Size(35, 20);
+            this.LRSwitch.TabIndex = 239;
+            this.LRSwitch.Value = false;
+            this.LRSwitch.OnValueChange += new System.EventHandler(this.LRSwitch_OnValueChange);
+            // 
+            // lblTeam
+            // 
+            this.lblTeam.BackColor = System.Drawing.Color.Transparent;
+            this.lblTeam.Font = new System.Drawing.Font("Bahnschrift", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTeam.ForeColor = System.Drawing.Color.MintCream;
+            this.lblTeam.Location = new System.Drawing.Point(41, 20);
+            this.lblTeam.Name = "lblTeam";
+            this.lblTeam.Size = new System.Drawing.Size(42, 21);
+            this.lblTeam.TabIndex = 240;
+            this.lblTeam.Text = "Team";
+            this.lblTeam.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblLR
+            // 
+            this.lblLR.BackColor = System.Drawing.Color.Black;
+            this.lblLR.Font = new System.Drawing.Font("Bahnschrift", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLR.ForeColor = System.Drawing.Color.MintCream;
+            this.lblLR.Location = new System.Drawing.Point(42, 50);
+            this.lblLR.Name = "lblLR";
+            this.lblLR.Size = new System.Drawing.Size(36, 18);
+            this.lblLR.TabIndex = 241;
+            this.lblLR.Text = "LR";
+            this.lblLR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblTranspose
+            // 
+            this.lblTranspose.BackColor = System.Drawing.Color.Transparent;
+            this.lblTranspose.Font = new System.Drawing.Font("Bahnschrift", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTranspose.ForeColor = System.Drawing.Color.MintCream;
+            this.lblTranspose.Location = new System.Drawing.Point(41, 74);
+            this.lblTranspose.Name = "lblTranspose";
+            this.lblTranspose.Size = new System.Drawing.Size(77, 21);
+            this.lblTranspose.TabIndex = 242;
+            this.lblTranspose.Text = "No Transpose";
+            this.lblTranspose.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TransposeSwitch
+            // 
+            this.TransposeSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.TransposeSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TransposeSwitch.BackgroundImage")));
+            this.TransposeSwitch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TransposeSwitch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.TransposeSwitch.Location = new System.Drawing.Point(1, 72);
+            this.TransposeSwitch.Name = "TransposeSwitch";
+            this.TransposeSwitch.OffColor = System.Drawing.Color.Firebrick;
+            this.TransposeSwitch.OnColor = System.Drawing.Color.SeaGreen;
+            this.TransposeSwitch.Size = new System.Drawing.Size(35, 20);
+            this.TransposeSwitch.TabIndex = 243;
+            this.TransposeSwitch.Value = false;
+            this.TransposeSwitch.OnValueChange += new System.EventHandler(this.TransposeSwitch_OnValueChange);
             // 
             // Form1
             // 
@@ -2269,6 +2339,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.TransposeSwitch);
+            this.Controls.Add(this.lblTranspose);
+            this.Controls.Add(this.lblLR);
+            this.Controls.Add(this.lblTeam);
+            this.Controls.Add(this.LRSwitch);
             this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.tglAutoReconBS);
             this.Controls.Add(this.tglAutoReconRB);
@@ -2573,6 +2648,11 @@
         private MetroFramework.Controls.MetroToggle tglAutoReconRB;
         private MetroFramework.Controls.MetroToggle tglAutoReconBS;
         private MetroFramework.Controls.MetroButton btnRestart;
+        private Bunifu.Framework.UI.BunifuiOSSwitch LRSwitch;
+        protected System.Windows.Forms.Label lblTeam;
+        protected System.Windows.Forms.Label lblLR;
+        protected System.Windows.Forms.Label lblTranspose;
+        private Bunifu.Framework.UI.BunifuiOSSwitch TransposeSwitch;
     }
 }
 

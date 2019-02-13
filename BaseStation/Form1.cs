@@ -60,8 +60,10 @@ namespace BaseStation
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
 
             resetText();
+            resetToogle();
             foreach (var picRobot in new dynamic[] { picRobot1, picRobot2, picRobot3 })
                 picRobot.BackgroundImage = null;
+            addFormation();
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
@@ -194,8 +196,15 @@ namespace BaseStation
         ///
         Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
         Image[] imgRobot = { Image.FromFile("images/Robot 1 Attacker.png"), Image.FromFile("images/Robot 2 Defence.png"), Image.FromFile("images/Robot 3 Kiper.png") };
+        private readonly int[] _Nol         = { 0, 0, 0,            0, 0, 0,            0, 0, 0 };
+        private readonly int[] _StandBy     = { 0, 6000, 0,         0, 5120, 0,         0, 4380, 0 };
+        private readonly int[] _KickOff     = { 4200, 3000, 0,      3000, 4100, 0,      100, 3000, 0 };
+        private readonly int[] _Penalty     = { 7400, 3000, 0 };
+        private readonly int[] _CorrnerA    = { 9000, 0, 135 };
+        private readonly int[] _CorrnerB    = { 9000, 6000, 225 };
+        private readonly int[] _FreeKick    = { 0, 0, 0 };
 
-        void setTransparent(dynamic backImage, dynamic[] frontImages)
+        private void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
             foreach (var frontImage in frontImages)
             {
@@ -206,15 +215,108 @@ namespace BaseStation
             }
         }
 
-        void moveLoc(int encodX, int encodY, dynamic robot)
+        private void setFormation()
         {
-            Point point00Lap = new Point(27, 20);                                           // Reference (0, 0) of Arena
+            string formation = cbxFormation.SelectedItem.ToString();
+            int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
+            dynamic[,] arr = null;
+            if (formation == "Nol")
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_Nol[0]), _Nol[1], mirrorAngle(_Nol[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_Nol[3]), _Nol[4], mirrorAngle(_Nol[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_Nol[6]), _Nol[7], mirrorAngle(_Nol[8]) } };
+            else if (formation == "Stand By")
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_StandBy[0]), mirrorY(_StandBy[1]), mirrorAngle(_StandBy[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_StandBy[3]), mirrorY(_StandBy[4]), mirrorAngle(_StandBy[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_StandBy[6]), mirrorY(_StandBy[7]), mirrorAngle(_StandBy[8]) } };
+            else if (formation == "Kick Off")
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_KickOff[0]), mirrorY(_KickOff[1]), mirrorAngle(_KickOff[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_KickOff[3]), mirrorY(_KickOff[4]), mirrorAngle(_KickOff[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_KickOff[6]), mirrorY(_KickOff[7]), mirrorAngle(_KickOff[8]) } };
+            else if (formation == "Penalty") {
+                priorityRobot = "Robot1,Robot2,Robot3";
+                if (priorityRobot != null)
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_Penalty[0]), mirrorY(_Penalty[1]), mirrorAngle(_Penalty[2]) } }; }
+            else if (formation == "Corrner A") { 
+                priorityRobot = "Robot2,Robot1,Robot3";
+                if (priorityRobot != null)
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerA[0]), mirrorY(_CorrnerA[1]), mirrorAngle(_CorrnerA[2]) } }; }
+            else if (formation == "Corrner B") { 
+                priorityRobot = "Robot2,Robot1,Robot3";
+                if (priorityRobot != null)
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerB[0]), mirrorY(_CorrnerB[1]), mirrorAngle(_CorrnerB[2]) } }; }
+            else if (formation == "Free Kick") {
+                priorityRobot = "Robot1,Robot2,Robot3";
+                if (priorityRobot != null)
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_FreeKick[0]), mirrorY(_FreeKick[1]), mirrorAngle(_FreeKick[2]) } }; }
+
+            //threadGoto(arr[0, 0].Text, new Thread(obj => GotoLoc(arr[0, 0].Text, arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], arr[0, 6], shift[0], shift[1], shift[2])));
+            //threadGoto(arr[1, 0].Text, new Thread(obj => GotoLoc(arr[1, 0].Text, arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], arr[1, 6], shift[0], shift[1], shift[2])));
+            //threadGoto(arr[2, 0].Text, new Thread(obj => GotoLoc(arr[2, 0].Text, arr[2, 1], arr[2, 2], arr[2, 3], arr[2, 4], arr[2, 5], arr[2, 6], shift[0], shift[1], shift[2])));
+            if (arr != null)
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    int j = i;
+                    threadGoto(arr[j, 0].Text, new Thread(obj => GotoLoc(arr[j, 0].Text, arr[j, 1], arr[j, 2], arr[j, 3], arr[j, 4], arr[j, 5], arr[j, 6], shift[0], shift[1], shift[2]))); }
+        }
+
+        private dynamic[] _priorityRobot = null;
+
+        dynamic priorityRobot
+        {
+            get {
+                return _priorityRobot; }
+            set {
+                this._priorityRobot = null;
+                dynamic[][] arr = { new dynamic[] { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, lblConnectionR1 }, new dynamic[] { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, lblConnectionR2 }, new dynamic[] { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, lblConnectionR3 } };
+                foreach (var val in value.ToString().Split(','))
+                    for (int i = 0; i < arr.GetLength(0); i++)
+                        if ((arr[i][0].Text == val.ToString()) && (arr[i][4].Text == "Connected")) {
+                            this._priorityRobot = arr[i];
+                            return; }
+            }
+        }
+
+        private int mirrorX(int value)
+        {
+            int refMirrorX = 4500;      // Half Long/Width of Arena
+            if (LRSwitch.Value == true)     // If condition is RIGHT
+                return refMirrorX + (refMirrorX - value);
+            return value;                   // If condition is LEFT
+        }
+
+        private int mirrorY(int value)
+        {
+            int refMirrorY = 3000;      // Half Wide/Height of Arena
+            if (LRSwitch.Value == true)     // If condition is RIGHT
+                return refMirrorY + (refMirrorY - value);
+            return value;                   // If condition is LEFT
+        }
+
+        private int mirrorAngle(int value)
+        {
+            if ((LRSwitch.Value == true) && (value < 180))          // If condition is RIGHT
+                return value + 180;
+            else if ((LRSwitch.Value == true) && (value >= 180))    // If condition is RIGHT
+                return value - 180;
+            return value;                                           // If condition is LEFT
+        }
+
+        private void addFormation()
+        {
+            string[] items = {
+                "Nol",
+                "Stand By",
+                "Kick Off",
+                "Penalty",
+                "Corrner A",
+                "Corrner B",
+                "Free Kick",
+            };
+            cbxFormation.Items.AddRange(items);
+        }
+
+        private void moveLoc(int encodX, int encodY, dynamic robot)
+        {
+            Point point00Lap = new Point(30, 20);                                           // Reference (0, 0) of Arena
             Point point00Robot = new Point(robot.Size.Width / 2, robot.Size.Height / 2);    // Reference (0, 0) of Robot
             Point newLoc = new Point((point00Lap.X + encodX - point00Robot.X), (point00Lap.Y + encodY - point00Robot.Y));
             hc.SetLocation(this, robot, newLoc);
         }
 
-        void changeCounter(object sender, KeyEventArgs e)
+        private void changeCounter(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { tbxScrXR3, tbxScrYR3, tbxAngleR3 }, { tbxGotoX, tbxGotoY, tbxGotoAngle } };
@@ -252,7 +354,6 @@ namespace BaseStation
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
             int n = -1;
-            int[] val = new int[2];
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if ((j != 6) && (arr[i, j].Name == obj.Name))
@@ -377,6 +478,10 @@ namespace BaseStation
             {
                 int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text), startAngle = int.Parse(angleRobot.Text);
                 addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
+                hc.SetText(this, tbxGotoX, endX.ToString());
+                hc.SetText(this, tbxGotoY, endY.ToString());
+                hc.SetText(this, tbxGotoAngle, endAngle.ToString());
+
                 bool[] chk = { true, true, true };
                 while (chk[0] |= chk[1] |= chk[2])
                 {
@@ -445,21 +550,13 @@ namespace BaseStation
             tbxMessage.Clear();
         }
 
-        void setFormation()
+        void resetToogle()
         {
-            string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
-            dynamic[,] arr = null;
-            if (formation == "Stand By")
-                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, 0, 6000, 0 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, 0, 5120, 0 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, 0, 4380, 0 } };
-            else if (formation == "Kick Off")
-                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, 4300, 3000, 0 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, 3000, 4100, 0 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, 100, 3000, 0 } };                //for (int i = 0; i < arr.GetLength(0); i++)
-
-            threadGoto(arr[0, 0].Text, new Thread(obj => GotoLoc(arr[0, 0].Text, arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], arr[0, 6], shift[0], shift[1], shift[2])));
-            threadGoto(arr[1, 0].Text, new Thread(obj => GotoLoc(arr[1, 0].Text, arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], arr[1, 6], shift[0], shift[1], shift[2])));
-            threadGoto(arr[2, 0].Text, new Thread(obj => GotoLoc(arr[2, 0].Text, arr[2, 1], arr[2, 2], arr[2, 3], arr[2, 4], arr[2, 5], arr[2, 6], shift[0], shift[1], shift[2])));
-            //for (int i = 0; i <2; i++)
-            //    threadGoto(arr[i, 0].Text, new Thread(obj => GotoLoc(arr[i, 0].Text, arr[i, 1], arr[i, 2], arr[i, 3], arr[i, 4], arr[i, 5], arr[i, 6], shift[0], shift[1], shift[2])));
+            dynamic[] arr = { tglAutoReconBS, tglAutoReconRB, tglAutoReconR1, tglAutoReconR2, tglAutoReconR3 };
+            foreach (var i in arr)
+                i.Checked = true;
+            TeamSwitch.Value = true;
+            LRSwitch.Value = TransposeSwitch.Value = false;
         }
 
 
@@ -889,10 +986,12 @@ namespace BaseStation
                     /// 1. DEFAULT COMMANDS ///
                     case "S": //STOP
                         text = "STOP";
+                        picTimer.Tag = "stop";
                         timer.Change(Timeout.Infinite, Timeout.Infinite);
                         goto broadcast;
                     case "s": //START
                         text = "START";
+                        picTimer.Tag = "start";
                         timer.Change(500, 1000);
                         goto broadcast;
                     case "W": //WELCOME (welcome _dtMessage[0])
@@ -1293,6 +1392,22 @@ namespace BaseStation
                 sendFromTextBox();
         }
 
+        private void LRSwitch_OnValueChange(object sender, EventArgs e)
+        {
+            if (LRSwitch.Value == true)
+                hc.SetText(this, lblLR, "Right");
+            else
+                hc.SetText(this, lblLR, "Left");
+        }
+
+        private void TransposeSwitch_OnValueChange(object sender, EventArgs e)
+        {
+            if (TransposeSwitch.Value == true)
+                hc.SetText(this, lblTranspose, "Transpose");
+            else
+                hc.SetText(this, lblTranspose, "No Transpose");
+        }
+
         private void tbxStatus_TextChanged(object sender, EventArgs e)
         {
             try
@@ -1306,15 +1421,30 @@ namespace BaseStation
             }
         }
 
+        private void picTimer_DoubleClick(object sender, EventArgs e)
+        {
+            hc.SetText(this, lblTimer, "00:00");
+        }
+
+        private void picTimer_Click(object sender, EventArgs e)
+        {
+            if (picTimer.Tag == "start") { 
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+                picTimer.Tag = "stop"; }
+            else { 
+                timer.Change(500, 1000);                
+                picTimer.Tag = "start"; }
+        }
+
         private void lblTimer_TextChanged(object sender, EventArgs e)
         {
-            if (lblTimer.Text == "00:00")
-            {
+            if (lblTimer.Text == "00:00") {
+                picTimer.Tag = "start";
                 ProgressTM.MaxValue = 900;
                 hc.SetValue(this, ProgressTM, 900);
                 hc.SetVisible(this, ProgressTM, true);
                 hc.SetVisible(this, picTimer, true);
-            }
+                timer.Change(1000, 1000); }
         }
         
         private void TeamSwitch_OnValueChange(object sender, EventArgs e)
