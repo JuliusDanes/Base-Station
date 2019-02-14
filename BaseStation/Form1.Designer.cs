@@ -150,7 +150,6 @@
             this.lblPipe2R3 = new System.Windows.Forms.Label();
             this.tbxAngleR3 = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.btnTO = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
             this.lblDegGoto = new System.Windows.Forms.Label();
             this.lblPipeGoto = new System.Windows.Forms.Label();
             this.tbxGotoAngle = new MaterialSkin.Controls.MaterialSingleLineTextField();
@@ -170,6 +169,10 @@
             this.lblLR = new System.Windows.Forms.Label();
             this.lblTranspose = new System.Windows.Forms.Label();
             this.TransposeSwitch = new Bunifu.Framework.UI.BunifuiOSSwitch();
+            this.lblDiv2 = new MaterialSkin.Controls.MaterialDivider();
+            this.OSR1 = new MaterialSkin.Controls.MaterialDivider();
+            this.OSR2 = new MaterialSkin.Controls.MaterialDivider();
+            this.OSR3 = new MaterialSkin.Controls.MaterialDivider();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -2062,19 +2065,6 @@
             this.btnTO.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnTO.Click += new System.EventHandler(this.btnTO_Click);
             // 
-            // lblDiv2
-            // 
-            this.lblDiv2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblDiv2.Depth = 0;
-            this.lblDiv2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDiv2.ForeColor = System.Drawing.Color.Black;
-            this.lblDiv2.Location = new System.Drawing.Point(1036, 251);
-            this.lblDiv2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblDiv2.Name = "lblDiv2";
-            this.lblDiv2.Size = new System.Drawing.Size(140, 20);
-            this.lblDiv2.TabIndex = 219;
-            this.lblDiv2.Text = "0";
-            // 
             // lblDegGoto
             // 
             this.lblDegGoto.BackColor = System.Drawing.Color.Transparent;
@@ -2336,6 +2326,64 @@
             this.TransposeSwitch.Value = false;
             this.TransposeSwitch.OnValueChange += new System.EventHandler(this.TransposeSwitch_OnValueChange);
             // 
+            // lblDiv2
+            // 
+            this.lblDiv2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDiv2.Depth = 0;
+            this.lblDiv2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiv2.ForeColor = System.Drawing.Color.Black;
+            this.lblDiv2.Location = new System.Drawing.Point(1036, 251);
+            this.lblDiv2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDiv2.Name = "lblDiv2";
+            this.lblDiv2.Size = new System.Drawing.Size(140, 20);
+            this.lblDiv2.TabIndex = 219;
+            this.lblDiv2.Text = "0";
+            // 
+            // OSR1
+            // 
+            this.OSR1.BackColor = System.Drawing.Color.Firebrick;
+            this.OSR1.Depth = 0;
+            this.OSR1.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OSR1.ForeColor = System.Drawing.Color.Black;
+            this.OSR1.Location = new System.Drawing.Point(103, 326);
+            this.OSR1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.OSR1.Name = "OSR1";
+            this.OSR1.Size = new System.Drawing.Size(15, 5);
+            this.OSR1.TabIndex = 244;
+            this.OSR1.Tag = "Outside Robot";
+            this.OSR1.Text = "0";
+            this.OSR1.Visible = false;
+            // 
+            // OSR2
+            // 
+            this.OSR2.BackColor = System.Drawing.Color.Firebrick;
+            this.OSR2.Depth = 0;
+            this.OSR2.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OSR2.ForeColor = System.Drawing.Color.Black;
+            this.OSR2.Location = new System.Drawing.Point(103, 427);
+            this.OSR2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.OSR2.Name = "OSR2";
+            this.OSR2.Size = new System.Drawing.Size(15, 5);
+            this.OSR2.TabIndex = 245;
+            this.OSR2.Tag = "Outside Robot";
+            this.OSR2.Text = "0";
+            this.OSR2.Visible = false;
+            // 
+            // OSR3
+            // 
+            this.OSR3.BackColor = System.Drawing.Color.Firebrick;
+            this.OSR3.Depth = 0;
+            this.OSR3.Font = new System.Drawing.Font("OCR A Extended", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OSR3.ForeColor = System.Drawing.Color.Black;
+            this.OSR3.Location = new System.Drawing.Point(103, 528);
+            this.OSR3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.OSR3.Name = "OSR3";
+            this.OSR3.Size = new System.Drawing.Size(15, 5);
+            this.OSR3.TabIndex = 246;
+            this.OSR3.Tag = "Outside Robot";
+            this.OSR3.Text = "0";
+            this.OSR3.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2344,6 +2392,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.OSR3);
+            this.Controls.Add(this.OSR2);
+            this.Controls.Add(this.OSR1);
             this.Controls.Add(this.TransposeSwitch);
             this.Controls.Add(this.lblTranspose);
             this.Controls.Add(this.lblLR);
@@ -2638,7 +2689,6 @@
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressR3;
         protected Bunifu.Framework.UI.BunifuCircleProgressbar ProgressTM;
         protected Bunifu.Framework.UI.BunifuThinButton2 btnTO;
-        protected MaterialSkin.Controls.MaterialDivider lblDiv2;
         protected System.Windows.Forms.Label lblDegGoto;
         protected System.Windows.Forms.Label lblPipeGoto;
         protected MaterialSkin.Controls.MaterialSingleLineTextField tbxGotoAngle;
@@ -2658,6 +2708,10 @@
         protected System.Windows.Forms.Label lblLR;
         protected System.Windows.Forms.Label lblTranspose;
         private Bunifu.Framework.UI.BunifuiOSSwitch TransposeSwitch;
+        protected MaterialSkin.Controls.MaterialDivider lblDiv2;
+        protected MaterialSkin.Controls.MaterialDivider OSR1;
+        protected MaterialSkin.Controls.MaterialDivider OSR2;
+        protected MaterialSkin.Controls.MaterialDivider OSR3;
     }
 }
 

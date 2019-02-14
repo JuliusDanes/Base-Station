@@ -388,7 +388,7 @@ namespace BaseStation
         private void tbxXYZChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender);
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0], lblRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1], lblRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2], lblRobot3 } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0], lblRobot1, OSR1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1], lblRobot2, OSR2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2], lblRobot3, OSR3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -418,9 +418,11 @@ namespace BaseStation
                     if (TransposeSwitch.Value == true) { 
                         w = 6000; h = 9000; }
                     if ((obj.Name.StartsWith("tbxEnc")) && (((int.Parse(arr[n, 0].Text) < 0) ^ (int.Parse(arr[n, 0].Text) > w)) || ((int.Parse(arr[n, 1].Text) < 0) ^ (int.Parse(arr[n, 1].Text) > h)))) { 
-                        if (!notifDict.ContainsKey(arr[n, 7].Text))      /// Notification that Robot is Outside
-                            notifDict.Add(arr[n, 7].Text, (new System.Threading.Timer(new TimerCallback(notifOutside), arr[n, 7].Text, 0, 3000))); }
+                        if (!notifDict.ContainsKey(arr[n, 7].Text)) {      /// Notification that Robot is Outside
+                            hc.SetVisible(this, arr[n, 8], true);
+                            notifDict.Add(arr[n, 7].Text, (new System.Threading.Timer(new TimerCallback(notifOutside), arr[n, 7].Text, 0, 3000))); } }
                     else if ((obj.Name.StartsWith("tbxEnc")) && (notifDict.ContainsKey(arr[n, 7].Text))) {
+                        hc.SetVisible(this, arr[n, 8], false);
                         notifDict[arr[n, 7].Text].Change(Timeout.Infinite, Timeout.Infinite);
                         notifDict.Remove(arr[n, 7].Text); }
                 }
