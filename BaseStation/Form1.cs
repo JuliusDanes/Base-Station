@@ -71,7 +71,7 @@ namespace BaseStation
         }
 
         System.Threading.Timer time, timer, chkConnection, chkAppResponding;
-        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>();
+        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>(), notifDict = new Dictionary<string, System.Threading.Timer>();
 
         void checkAppResponding(object state)
         {
@@ -170,6 +170,12 @@ namespace BaseStation
                     arr[n, 1].ProgressColor = Color.Firebrick;
                 else if (arr[n, 1].Value > arr[n, 1].MaxValue / 2)
                     arr[n, 1].ProgressColor = Color.SeaGreen; }
+        }
+
+        void notifOutside(object state)
+        {
+            if (_socketDict.ContainsKey(state.ToString()))
+                SendCallBack(_socketDict[state.ToString()], "OS");      // Send notif Outside to Robot
         }
 
         delegate void addCommandCallback(string text);
@@ -382,12 +388,13 @@ namespace BaseStation
         private void tbxXYZChanged(object sender, EventArgs e)
         {
             var obj = ((dynamic)sender);
-            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0] }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1] }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2] } };
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, picRobot1, imgRobot[0], lblRobot1 }, { tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, picRobot2, imgRobot[1], lblRobot2 }, { tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, picRobot3, imgRobot[2], lblRobot3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if ((j != 6) && (arr[i, j].Name == obj.Name))
                         n = i;
+
             if (n != -1)
                 if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
                     /// Using Scale 1:20
@@ -403,9 +410,19 @@ namespace BaseStation
                             hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
 
                     if (obj.Name.StartsWith("tbxScr"))
-                        moveLoc(int.Parse(arr[n, 2].Text), int.Parse(arr[n, 3].Text), arr[n, 5]);     /// Display Location on Screen
+                        moveLoc(int.Parse(arr[n, 2].Text), int.Parse(arr[n, 3].Text), arr[n, 5]);               /// Display Location on Screen
                     else if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
                         RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
+
+                    int w = 9000, h = 6000;
+                    if (TransposeSwitch.Value == true) { 
+                        w = 6000; h = 9000; }
+                    if ((obj.Name.StartsWith("tbxEnc")) && (((int.Parse(arr[n, 0].Text) < 0) ^ (int.Parse(arr[n, 0].Text) > w)) || ((int.Parse(arr[n, 1].Text) < 0) ^ (int.Parse(arr[n, 1].Text) > h)))) { 
+                        if (!notifDict.ContainsKey(arr[n, 7].Text))      /// Notification that Robot is Outside
+                            notifDict.Add(arr[n, 7].Text, (new System.Threading.Timer(new TimerCallback(notifOutside), arr[n, 7].Text, 0, 3000))); }
+                    else if ((obj.Name.StartsWith("tbxEnc")) && (notifDict.ContainsKey(arr[n, 7].Text))) {
+                        notifDict[arr[n, 7].Text].Change(Timeout.Infinite, Timeout.Infinite);
+                        notifDict.Remove(arr[n, 7].Text); }
                 }
         }
 
