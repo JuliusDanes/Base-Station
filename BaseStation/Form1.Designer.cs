@@ -2267,6 +2267,8 @@
             // 
             // LRSwitch
             // 
+            this.LRSwitch.AccessibleDescription = "Left or Right";
+            this.LRSwitch.AccessibleName = "Left or Right";
             this.LRSwitch.BackColor = System.Drawing.Color.Transparent;
             this.LRSwitch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LRSwitch.BackgroundImage")));
             this.LRSwitch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -2279,6 +2281,7 @@
             this.LRSwitch.TabIndex = 239;
             this.LRSwitch.Value = false;
             this.LRSwitch.OnValueChange += new System.EventHandler(this.LRSwitch_OnValueChange);
+            this.LRSwitch.DoubleClick += new System.EventHandler(this.LRSwitch_DoubleClick);
             // 
             // lblTeam
             // 
@@ -2294,6 +2297,8 @@
             // 
             // lblLR
             // 
+            this.lblLR.AccessibleDescription = "Left or Right";
+            this.lblLR.AccessibleName = "Left or Right";
             this.lblLR.BackColor = System.Drawing.Color.Black;
             this.lblLR.Font = new System.Drawing.Font("Bahnschrift", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLR.ForeColor = System.Drawing.Color.MintCream;

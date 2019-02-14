@@ -64,6 +64,7 @@ namespace BaseStation
             foreach (var picRobot in new dynamic[] { picRobot1, picRobot2, picRobot3 })
                 picRobot.BackgroundImage = null;
             addFormation();
+            LRSwitch_DoubleClick(LRSwitch, EventArgs.Empty);    // Set formation Stand By (Default)
             time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
             time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
@@ -220,28 +221,33 @@ namespace BaseStation
             string formation = cbxFormation.SelectedItem.ToString();
             int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
             dynamic[,] arr = null;
+            int x = 0, y = 1;
+
+            if (TransposeSwitch.Value == true) {    // If condition Transpose is ON
+                x = 1; y = 0; }
+
             if (formation == "Nol")
-                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_Nol[0]), _Nol[1], mirrorAngle(_Nol[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_Nol[3]), _Nol[4], mirrorAngle(_Nol[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_Nol[6]), _Nol[7], mirrorAngle(_Nol[8]) } };
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_Nol[0+x]), mirrorY(_Nol[0+y]), mirrorAngle(_Nol[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_Nol[3+x]), mirrorY(_Nol[3+y]), mirrorAngle(_Nol[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_Nol[6+x]), mirrorY(_Nol[6+y]), mirrorAngle(_Nol[8]) } };
             else if (formation == "Stand By")
-                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_StandBy[0]), mirrorY(_StandBy[1]), mirrorAngle(_StandBy[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_StandBy[3]), mirrorY(_StandBy[4]), mirrorAngle(_StandBy[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_StandBy[6]), mirrorY(_StandBy[7]), mirrorAngle(_StandBy[8]) } };
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_StandBy[0+x]), mirrorY(_StandBy[0+y]), mirrorAngle(_StandBy[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_StandBy[3+x]), mirrorY(_StandBy[3+y]), mirrorAngle(_StandBy[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_StandBy[6+x]), mirrorY(_StandBy[6+y]), mirrorAngle(_StandBy[8]) } };
             else if (formation == "Kick Off")
-                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_KickOff[0]), mirrorY(_KickOff[1]), mirrorAngle(_KickOff[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_KickOff[3]), mirrorY(_KickOff[4]), mirrorAngle(_KickOff[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_KickOff[6]), mirrorY(_KickOff[7]), mirrorAngle(_KickOff[8]) } };
+                arr = new dynamic[,] { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1, mirrorX(_KickOff[0+x]), mirrorY(_KickOff[0+y]), mirrorAngle(_KickOff[2]) }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2, mirrorX(_KickOff[3+x]), mirrorY(_KickOff[3+y]), mirrorAngle(_KickOff[5]) }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3, mirrorX(_KickOff[6+x]), mirrorY(_KickOff[6+y]), mirrorAngle(_KickOff[8]) } };
             else if (formation == "Penalty") {
                 priorityRobot = "Robot1,Robot2,Robot3";
                 if (priorityRobot != null)
-                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_Penalty[0]), mirrorY(_Penalty[1]), mirrorAngle(_Penalty[2]) } }; }
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_Penalty[0+x]), mirrorY(_Penalty[0+y]), mirrorAngle(_Penalty[2]) } }; }
             else if (formation == "Corrner A") { 
                 priorityRobot = "Robot2,Robot1,Robot3";
                 if (priorityRobot != null)
-                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerA[0]), mirrorY(_CorrnerA[1]), mirrorAngle(_CorrnerA[2]) } }; }
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerA[0+x]), mirrorY(_CorrnerA[0+y]), mirrorAngle(_CorrnerA[2]) } }; }
             else if (formation == "Corrner B") { 
                 priorityRobot = "Robot2,Robot1,Robot3";
                 if (priorityRobot != null)
-                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerB[0]), mirrorY(_CorrnerB[1]), mirrorAngle(_CorrnerB[2]) } }; }
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_CorrnerB[0+x]), mirrorY(_CorrnerB[0+y]), mirrorAngle(_CorrnerB[2]) } }; }
             else if (formation == "Free Kick") {
                 priorityRobot = "Robot1,Robot2,Robot3";
                 if (priorityRobot != null)
-                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_FreeKick[0]), mirrorY(_FreeKick[1]), mirrorAngle(_FreeKick[2]) } }; }
+                    arr = new dynamic[,] { { priorityRobot[0], priorityRobot[1], priorityRobot[2], priorityRobot[3], mirrorX(_FreeKick[0+x]), mirrorY(_FreeKick[0+y]), mirrorAngle(_FreeKick[2]) } }; }
 
             //threadGoto(arr[0, 0].Text, new Thread(obj => GotoLoc(arr[0, 0].Text, arr[0, 1], arr[0, 2], arr[0, 3], arr[0, 4], arr[0, 5], arr[0, 6], shift[0], shift[1], shift[2])));
             //threadGoto(arr[1, 0].Text, new Thread(obj => GotoLoc(arr[1, 0].Text, arr[1, 1], arr[1, 2], arr[1, 3], arr[1, 4], arr[1, 5], arr[1, 6], shift[0], shift[1], shift[2])));
@@ -254,7 +260,7 @@ namespace BaseStation
 
         private dynamic[] _priorityRobot = null;
 
-        dynamic priorityRobot
+        internal dynamic priorityRobot
         {
             get {
                 return _priorityRobot; }
@@ -271,17 +277,23 @@ namespace BaseStation
 
         private int mirrorX(int value)
         {
-            int refMirrorX = 4500;      // Half Long/Width of Arena
+            int refMirror=4500;      // Half Long/Width of Arena            
+            if (TransposeSwitch.Value == true)  // If condition Transpose is ON
+                refMirror = 3000;
+
             if (LRSwitch.Value == true)     // If condition is RIGHT
-                return refMirrorX + (refMirrorX - value);
+                return refMirror + (refMirror - value);
             return value;                   // If condition is LEFT
         }
 
         private int mirrorY(int value)
         {
-            int refMirrorY = 3000;      // Half Wide/Height of Arena
+            int refMirror = 3000;      // Half Wide/Height of Arena      
+            if (TransposeSwitch.Value == true)  // If condition Transpose is ON
+                refMirror = 4500;
+
             if (LRSwitch.Value == true)     // If condition is RIGHT
-                return refMirrorY + (refMirrorY - value);
+                return refMirror + (refMirror - value);
             return value;                   // If condition is LEFT
         }
 
@@ -330,22 +342,40 @@ namespace BaseStation
             if (n != -1)
                 if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text))) {
                     if (e.KeyCode == Keys.Right)
-                        arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                            arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+                        else
+                            arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
                     else if (e.KeyCode == Keys.Left)
-                        arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                            arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
+                        else
+                            arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
                     else if (e.KeyCode == Keys.Up)
-                        arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                            arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
+                        else
+                            arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
                     else if (e.KeyCode == Keys.Down)
-                        arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                            arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
+                        else
+                            arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
                     else if (e.KeyCode == Keys.PageUp)
                         arr[n, 2].Text = (int.Parse(arr[n, 2].Text) + 1).ToString();
                     else if (e.KeyCode == Keys.PageDown)
                         arr[n, 2].Text = (int.Parse(arr[n, 2].Text) - 1).ToString();
 
                     if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.Left)))
-                        hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                        if (TransposeSwitch.Value == true)
+                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                        else
+                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
                     else if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)))
-                        hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+                        if (TransposeSwitch.Value == true)
+                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+                        else
+                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
                 }
         }
 
@@ -362,12 +392,19 @@ namespace BaseStation
                 if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
                     /// Using Scale 1:20
                     if (obj.Name.StartsWith("tbxEncX"))
-                        hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                        if (TransposeSwitch.Value == true)
+                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                        else
+                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
                     else if (obj.Name.StartsWith("tbxEncY"))
-                        hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+                        if (TransposeSwitch.Value == true)
+                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+                        else
+                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
 
-                    moveLoc((int.Parse(arr[n, 0].Text) / 20), (int.Parse(arr[n, 1].Text) / 20), arr[n, 5]);     /// Display Location on Screen
-                    if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
+                    if (obj.Name.StartsWith("tbxScr"))
+                        moveLoc(int.Parse(arr[n, 2].Text), int.Parse(arr[n, 3].Text), arr[n, 5]);     /// Display Location on Screen
+                    else if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
                         RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
                 }
         }
@@ -1406,6 +1443,31 @@ namespace BaseStation
                 hc.SetText(this, lblTranspose, "Transpose");
             else
                 hc.SetText(this, lblTranspose, "No Transpose");
+
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
+            for (int i = 0; i < arr.GetLength(0); i++) {    // Swap data X & Y, then sent
+                int n = i;
+                string _temp = arr[n, 1].Text;
+                arr[n, 1].Text = arr[n, 2].Text;
+                arr[n, 2].Text = _temp;
+
+                string dtGoto = "E" + arr[i, 1].Text + "," + arr[i, 2].Text + "," + arr[i, 3].Text;
+                if (_socketDict.ContainsKey(arr[i, 0].Text))
+                    SendCallBack(_socketDict[arr[i, 0].Text], dtGoto);
+                Thread.Sleep(100); }
+        }
+
+        private void LRSwitch_DoubleClick(object sender, EventArgs e)
+        {
+            int x = 0, y = 1;
+            if (TransposeSwitch.Value == true) {    // If condition Transpose is ON
+                x = 1; y = 0; }
+
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
+            for (int i = 0, j = 0; i < arr.GetLength(0); i++, j+=3) { 
+                hc.SetText(this, arr[i, 0], mirrorX(_StandBy[j+x]).ToString());
+                hc.SetText(this, arr[i, 1], mirrorY(_StandBy[j+y]).ToString());
+                hc.SetText(this, arr[i, 2], mirrorAngle(_StandBy[j+2]).ToString()); }
         }
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
