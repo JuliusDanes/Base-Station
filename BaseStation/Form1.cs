@@ -73,6 +73,20 @@ namespace BaseStation
         System.Threading.Timer time, timer, chkConnection, chkAppResponding;
         Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>(), notifDict = new Dictionary<string, System.Threading.Timer>();
 
+        void swap(ref dynamic a, ref dynamic b)
+        {
+            dynamic _temp = a;
+            a = b;
+            b = _temp;
+        }
+
+        void swapObjText(ref dynamic a, ref dynamic b)
+        {
+            dynamic _temp = a.Text;
+            a.Text = b.Text;
+            b.Text = _temp;
+        }
+
         void checkAppResponding(object state)
         {
             try {
@@ -201,15 +215,17 @@ namespace BaseStation
 
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
+        int scale = 20;
+        int[] shift = { 20, 20, 1 };
         Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
         Image[] imgRobot = { Image.FromFile("images/Robot 1 Attacker.png"), Image.FromFile("images/Robot 2 Defence.png"), Image.FromFile("images/Robot 3 Kiper.png") };
-        private readonly int[] _Nol         = { 0, 0, 0,            0, 0, 0,            0, 0, 0 };
-        private readonly int[] _StandBy     = { 0, 6000, 0,         0, 5120, 0,         0, 4380, 0 };
-        private readonly int[] _KickOff     = { 4200, 3000, 0,      3000, 4100, 0,      100, 3000, 0 };
-        private readonly int[] _Penalty     = { 7400, 3000, 0 };
-        private readonly int[] _CorrnerA    = { 9000, 0, 135 };
-        private readonly int[] _CorrnerB    = { 9000, 6000, 225 };
-        private readonly int[] _FreeKick    = { 0, 0, 0 };
+        private readonly int[]  _Nol         = { 0, 0, 0,            0, 0, 0,            0, 0, 0 },
+                                _StandBy     = { 0, 6000, 0,         0, 5120, 0,         0, 4380, 0 },
+                                _KickOff     = { 4200, 3000, 0,      3000, 4100, 0,      100, 3000, 0 },
+                                _Penalty     = { 7400, 3000, 0 }, 
+                                _CorrnerA    = { 9000, 0, 135 },
+                                _CorrnerB    = { 9000, 6000, 225 },
+                                _FreeKick    = { 0, 0, 0 };
 
         private void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
@@ -225,7 +241,7 @@ namespace BaseStation
         private void setFormation()
         {
             string formation = cbxFormation.SelectedItem.ToString();
-            int[] shift = { 20, 20, 1 };   // Distance(cm) per shift
+            int[] shift = { scale, scale, 1 };   // Distance(cm) per shift
             dynamic[,] arr = null;
             int x = 0, y = 1;
 
@@ -348,22 +364,22 @@ namespace BaseStation
             if (n != -1)
                 if ((!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text))) {
                     if (e.KeyCode == Keys.Right)
-                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc") ^ (obj.Tag.StartsWith("tbxGoto"))))
                             arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
                         else
                             arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
                     else if (e.KeyCode == Keys.Left)
-                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc") ^ (obj.Tag.StartsWith("tbxGoto"))))
                             arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
                         else
                             arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
                     else if (e.KeyCode == Keys.Up)
-                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc") ^ (obj.Tag.StartsWith("tbxGoto"))))
                             arr[n, 0].Text = (int.Parse(arr[n, 0].Text) - 1).ToString();
                         else
                             arr[n, 1].Text = (int.Parse(arr[n, 1].Text) - 1).ToString();
                     else if (e.KeyCode == Keys.Down)
-                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc")))
+                        if ((TransposeSwitch.Value == true) && (obj.Name.StartsWith("tbxEnc") ^ (obj.Tag.StartsWith("tbxGoto"))))
                             arr[n, 0].Text = (int.Parse(arr[n, 0].Text) + 1).ToString();
                         else
                             arr[n, 1].Text = (int.Parse(arr[n, 1].Text) + 1).ToString();
@@ -374,14 +390,51 @@ namespace BaseStation
 
                     if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.Left)))
                         if (TransposeSwitch.Value == true)
-                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 0].Text)) * scale).ToString());      // On encoder tbx
                         else
-                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * 20).ToString());      // On encoder tbx
+                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 0].Text)) * scale).ToString());      // On encoder tbx
                     else if ((obj.Name.StartsWith("tbxScr")) && ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)))
                         if (TransposeSwitch.Value == true)
-                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+                            hc.SetText(this, arr[n-3, 0], ((int.Parse(arr[n, 1].Text)) * scale).ToString());      // On encoder tbx
                         else
-                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * 20).ToString());      // On encoder tbx
+                            hc.SetText(this, arr[n-3, 1], ((int.Parse(arr[n, 1].Text)) * scale).ToString());      // On encoder tbx
+                }
+        }
+
+        private void goArrow(object sender, KeyEventArgs e)
+        {
+            var obj = ((dynamic)sender);
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 }/*, { lblRobot1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxScrXR3, tbxScrYR3, tbxAngleR3 }*/ };
+            int n = -1;
+            for (int i = 0; i < arr.GetLength(0); i++)
+                for (int j = 0; j < arr.GetLength(1); j++)
+                    if ((i == 6) && (arr[i, j].Tag == obj.Tag))
+                        n = i;
+                    else if (arr[i, j].Name == obj.Name)
+                        n = i;
+
+            dynamic x = "x", y = "y", z = "z", message = string.Empty;
+            if (TransposeSwitch.Value == true)
+                swap(ref x, ref y);
+
+            if (n != -1)
+                if ((!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)))
+                {
+                    if (e.KeyCode == Keys.Right)
+                        message = x + "+";
+                    else if (e.KeyCode == Keys.Left)
+                        message = x + "-";
+                    else if (e.KeyCode == Keys.Up)
+                        message = y + "-";
+                    else if (e.KeyCode == Keys.Down)
+                        message = y + "+";
+                    else if (e.KeyCode == Keys.PageUp)
+                        message = z + "+";
+                    else if (e.KeyCode == Keys.PageDown)
+                        message = z + "-";
+
+                    if ((!string.IsNullOrWhiteSpace(message)) && (_socketDict.ContainsKey(arr[n, 0].Text)))     //Send command go by arrow
+                        SendCallBack(_socketDict[arr[n, 0].Text], message/*, "GoByArrow"*/);
                 }
         }
 
@@ -400,23 +453,23 @@ namespace BaseStation
                     /// Using Scale 1:20
                     if (obj.Name.StartsWith("tbxEncX"))
                         if (TransposeSwitch.Value == true)
-                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 0].Text)) / scale).ToString());      // On screen tbx
                         else
-                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / 20).ToString());      // On screen tbx
+                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 0].Text)) / scale).ToString());      // On screen tbx
                     else if (obj.Name.StartsWith("tbxEncY"))
                         if (TransposeSwitch.Value == true)
-                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+                            hc.SetText(this, arr[n, 2], ((int.Parse(arr[n, 1].Text)) / scale).ToString());      // On screen tbx
                         else
-                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / 20).ToString());      // On screen tbx
+                            hc.SetText(this, arr[n, 3], ((int.Parse(arr[n, 1].Text)) / scale).ToString());      // On screen tbx
 
                     if (obj.Name.StartsWith("tbxScr"))
                         moveLoc(int.Parse(arr[n, 2].Text), int.Parse(arr[n, 3].Text), arr[n, 5]);               /// Display Location on Screen
                     else if ((obj.Name.StartsWith("tbxAngle")) && ((float.Parse(arr[n, 4].Text) % 2) == 0))
                         RotateImage(arr[n, 5], arr[n, 6], float.Parse(arr[n, 4].Text));                         /// Display Rotate on Screen
 
-                    int w = 9000, h = 6000;
-                    if (TransposeSwitch.Value == true) { 
-                        w = 6000; h = 9000; }
+                    dynamic w = 9000, h = 6000;
+                    if (TransposeSwitch.Value == true)
+                        swap(ref w, ref h);
                     if ((obj.Name.StartsWith("tbxEnc")) && (((int.Parse(arr[n, 0].Text) < 0) ^ (int.Parse(arr[n, 0].Text) > w)) || ((int.Parse(arr[n, 1].Text) < 0) ^ (int.Parse(arr[n, 1].Text) > h)))) { 
                         if (!notifDict.ContainsKey(arr[n, 7].Text)) {      /// Notification that Robot is Outside
                             hc.SetVisible(this, arr[n, 8], true);
@@ -468,10 +521,11 @@ namespace BaseStation
                     case Keys.PageUp:
                     case Keys.PageDown:
                     case Keys.Enter:
-                        changeCounter(sender, e);
-                        string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
-                        if (_socketDict.ContainsKey(arr[n, 0].Text))
-                            SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
+                        goArrow(sender, e);     ///For Arduino is available
+                        //changeCounter(sender, e);     ///For Arduino is NOT available
+                        //string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
+                        //if (_socketDict.ContainsKey(arr[n, 0].Text))
+                        //    SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
                         break; } }
         }
 
@@ -487,12 +541,12 @@ namespace BaseStation
                 if (n != -1)
                     if ((dtXYZ.Equals("tbx")) && (!string.IsNullOrEmpty(sourceCollect))) { 
                         if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
-                            threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), 20, 20, 1))); }
+                            threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), scale, scale, 1))); }
                     else if (dtXYZ.Equals("tbx"))
                         MessageBox.Show("# Please Select/Checklist the Robot");
                     else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
                         var _dtXYZ = dtXYZ.Substring(2).Split(',');
-                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), 20, 20, 1))); }
+                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), scale, scale, 1))); }
             }
         }
 
@@ -981,7 +1035,7 @@ namespace BaseStation
                 respone = _dtMessage[0].Substring(1);
                 goto multicast; }
 
-            if (Regex.IsMatch(_dtMessage[0], "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}"))
+            if (Regex.IsMatch(_dtMessage[0], "^E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$"))
             {
                 // If _dtMessage[0] is data X & Y from encoder
                 /// Scale is 1 : 20 
@@ -1463,16 +1517,15 @@ namespace BaseStation
             else
                 hc.SetText(this, lblTranspose, "No Transpose");
 
-            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { lblGoto, tbxGotoX, tbxGotoY, tbxGotoAngle } };
             for (int i = 0; i < arr.GetLength(0); i++) {    // Swap data X & Y, then sent
                 int n = i;
-                string _temp = arr[n, 1].Text;
-                arr[n, 1].Text = arr[n, 2].Text;
-                arr[n, 2].Text = _temp;
+                swapObjText(ref arr[n, 1], ref arr[n, 2]);
 
-                string dtGoto = "E" + arr[i, 1].Text + "," + arr[i, 2].Text + "," + arr[i, 3].Text;
-                if (_socketDict.ContainsKey(arr[i, 0].Text))
-                    SendCallBack(_socketDict[arr[i, 0].Text], dtGoto);
+                if (i != 3) {    //Is not tbxGoto
+                    string dtGoto = "E" + arr[i, 1].Text + "," + arr[i, 2].Text + "," + arr[i, 3].Text;
+                    if (_socketDict.ContainsKey(arr[i, 0].Text))
+                        SendCallBack(_socketDict[arr[i, 0].Text], dtGoto); }
                 Thread.Sleep(100); }
         }
 
