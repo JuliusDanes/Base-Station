@@ -196,20 +196,14 @@ namespace BaseStation
 
         private void addCommand(string text)
         {
-            try
-            {
-                if (this.tbxStatus.InvokeRequired)
-                {
+            try {
+                if (this.tbxStatus.InvokeRequired) {
                     addCommandCallback d = new addCommandCallback(addCommand);
-                    this.Invoke(d, new object[] { text });
-                }
+                    this.Invoke(d, new object[] { text }); }
                 else
-                    this.tbxStatus.Text += text + Environment.NewLine;
-            }
-            catch (Exception e)
-            {
-                addCommand("# Error set text tbxStatus \n\n" + e);
-            }
+                    this.tbxStatus.Text += text + Environment.NewLine; }
+            catch (Exception e) {
+                addCommand("# Error set text tbxStatus \n\n" + e); }
         }
 
 
@@ -229,13 +223,11 @@ namespace BaseStation
 
         private void setTransparent(dynamic backImage, dynamic[] frontImages)
         {
-            foreach (var frontImage in frontImages)
-            {
+            foreach (var frontImage in frontImages) {
                 var pos = this.PointToScreen(frontImage.Location);
                 pos = backImage.PointToClient(pos);
                 frontImage.Parent = backImage;
-                frontImage.Location = pos;
-            }
+                frontImage.Location = pos; }
         }
 
         private void setFormation()
@@ -277,7 +269,8 @@ namespace BaseStation
             if (arr != null)
                 for (int i = 0; i < arr.GetLength(0); i++) {
                     int j = i;
-                    threadGoto(arr[j, 0].Text, new Thread(obj => GotoLoc(arr[j, 0].Text, arr[j, 1], arr[j, 2], arr[j, 3], arr[j, 4], arr[j, 5], arr[j, 6], shift[0], shift[1], shift[2]))); }
+                    //threadGoto(arr[j, 0].Text, new Thread(obj => GotoLoc(arr[j, 0].Text, arr[j, 1], arr[j, 2], arr[j, 3], arr[j, 4], arr[j, 5], arr[j, 6], shift[0], shift[1], shift[2])));       ///For NOT connected Arduino
+                    GotoLoc(arr[j, 0].Text, arr[j, 4], arr[j, 5], arr[j, 6]);   /*For connected Arduino*/ }
         }
 
         private dynamic[] _priorityRobot = null;
@@ -529,27 +522,6 @@ namespace BaseStation
                         break; } }
         }
 
-        private void runGoto(string dtXYZ, string sourceCollect)
-        {
-            foreach (var dt in sourceCollect.Split(',')) {
-                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
-                int n = -1;
-                for (int i = 0; i < arr.GetLength(0); i++)
-                    if (arr[i, 0].Text == dt)
-                        n = i;
-
-                if (n != -1)
-                    if ((dtXYZ.Equals("tbx")) && (!string.IsNullOrEmpty(sourceCollect))) { 
-                        if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
-                            threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), scale, scale, 1))); }
-                    else if (dtXYZ.Equals("tbx"))
-                        MessageBox.Show("# Please Select/Checklist the Robot");
-                    else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
-                        var _dtXYZ = dtXYZ.Substring(2).Split(',');
-                        threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), scale, scale, 1))); }
-            }
-        }
-
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender);
@@ -582,10 +554,39 @@ namespace BaseStation
             runGoto("tbx", chkRobotCollect);
         }
 
+        private void runGoto(string dtXYZ, string sourceCollect)
+        {
+            foreach (var robot in sourceCollect.Split(',')) {
+                dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 } };
+                int n = -1;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    if (arr[i, 0].Text == robot)
+                        n = i;
+
+                if (n != -1)
+                    if ((dtXYZ.Equals("tbx")) && (!string.IsNullOrEmpty(sourceCollect))) {
+                        if ((!string.IsNullOrWhiteSpace(tbxGotoX.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoY.Text)) && (!string.IsNullOrWhiteSpace(tbxGotoAngle.Text)))
+                            //threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text), scale, scale, 1)));      ///For NOT connected Arduino
+                            GotoLoc(robot, int.Parse(tbxGotoX.Text), int.Parse(tbxGotoY.Text), int.Parse(tbxGotoAngle.Text));   /*For connected Arduino*/ }
+                    else if (dtXYZ.Equals("tbx"))
+                        MessageBox.Show("# Please Select/Checklist the Robot");
+                    else if (Regex.IsMatch(dtXYZ, "^(go|Go|gO|GO)[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}$")) {
+                        var _dtXYZ = dtXYZ.Substring(2).Split(',');
+                        //threadGoto(arr[n, 0].Text, new Thread(obj => GotoLoc(arr[n, 0].Text, arr[n, 1], arr[n, 2], arr[n, 3], int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]), scale, scale, 1)));       ///For NOT connected Arduino
+                        GotoLoc(robot, int.Parse(_dtXYZ[0]), int.Parse(_dtXYZ[1]), int.Parse(_dtXYZ[2]));   /*For connected Arduino*/ }
+            }
+        }
+
+        void GotoLoc(string socketKey, int endX, int endY, int endAngle)
+        {
+            if (_socketDict.ContainsKey(socketKey)) {
+                addCommand("@ " + socketToName(_socketDict[socketKey]) + " : Goto >> " + ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
+                SendCallBack(_socketDict[socketKey], ("go"+ endX + "," + endY + "," + endAngle), "Goto"); }
+        }
+
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
         {
-            try
-            {
+            try {
                 int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text), startAngle = int.Parse(angleRobot.Text);
                 addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
                 hc.SetText(this, tbxGotoX, endX.ToString());
@@ -593,8 +594,7 @@ namespace BaseStation
                 hc.SetText(this, tbxGotoAngle, endAngle.ToString());
 
                 bool[] chk = { true, true, true };
-                while (chk[0] |= chk[1] |= chk[2])
-                {
+                while ((gotoDict.ContainsKey(Robot)) && (chk[0] |= chk[1] |= chk[2])) {
                     if (startX > 12000)
                         startX = int.Parse(startX.ToString().Substring(0, 4));
                     if (startY > 9000)
@@ -637,8 +637,7 @@ namespace BaseStation
                     string dtGoto = "E" + startX + "," + startY + "," + startAngle;
                     SendCallBack(_socketDict[Robot], dtGoto, "Goto");
                     Thread.Sleep(100);    // time per limit (milisecond)
-                }
-            }
+                } }
             catch (Exception)
             { }
         }
@@ -723,8 +722,6 @@ namespace BaseStation
 
         private void forceDisconnect(dynamic socket)
         {
-            //MessageBox.Show((socket.GetType() != typeof(string)).ToString());
-            //MessageBox.Show(socket.GetType().ToString());
             try {   // Force for Disconnect  
                 dynamic[,] arr = { { lblBaseStation, lblConnectionBS }, { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
                 int n = -1;
