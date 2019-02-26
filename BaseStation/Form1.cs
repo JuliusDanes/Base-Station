@@ -26,9 +26,9 @@ namespace BaseStation
             setTransparent(picArena, new dynamic[] { picBall, picRobot1, picRobot2, picRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblPipe2R1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, lblDegR1, tbxAngleR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblPipe2R2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, lblDegR2, tbxAngleR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblPipe2R3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, lblDegR3, tbxAngleR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblPipe2R1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, lblDegR1, tbxAngleR1, lblSpeedR1, lblSpeedValR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblPipe2R2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, lblDegR2, tbxAngleR2, lblSpeedR2, lblSpeedValR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblPipe2R3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, lblDegR3, tbxAngleR3, lblSpeedR3, lblSpeedValR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
             setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 }); setTransparent(picTimer, new dynamic[] { ProgressTM });
 
@@ -47,6 +47,8 @@ namespace BaseStation
 
         HelperClass hc = new HelperClass();
         Dictionary<int, Thread> threadDict = new Dictionary<int, Thread>();
+        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>(), notifDict = new Dictionary<string, System.Threading.Timer>();
+        System.Threading.Timer time, timer, chkConnection, chkAppResponding, timerSpeed;
         int thID = 0;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -65,13 +67,9 @@ namespace BaseStation
                 picRobot.BackgroundImage = null;
             addFormation();
             LRSwitch_DoubleClick(LRSwitch, EventArgs.Empty);    // Set formation Stand By (Default)
-            time = new System.Threading.Timer(new TimerCallback(tickTime)); timer = new System.Threading.Timer(new TimerCallback(tickTimer)); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection));
-            time.Change(1000, 1000); timer.Change(1000, 1000); chkConnection.Change(10, 10);
+            time = new System.Threading.Timer(new TimerCallback(tickTime), null, 1000, 1000); timer = new System.Threading.Timer(new TimerCallback(tickTimer), null, 1000, 1000); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection), null, 10, 10); timerSpeed = new System.Threading.Timer(new TimerCallback(tickSpeed), 500, 500, 500);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
         }
-
-        System.Threading.Timer time, timer, chkConnection, chkAppResponding;
-        Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>(), notifDict = new Dictionary<string, System.Threading.Timer>();
 
         void swap(ref dynamic a, ref dynamic b)
         {
@@ -186,6 +184,19 @@ namespace BaseStation
                     arr[n, 1].ProgressColor = Color.SeaGreen; }
         }
 
+        void tickSpeed(object state)
+        {
+            double time = Convert.ToDouble(state);
+            dynamic[,] arr =  { { tbxEncXR1, tbxEncYR1, tbxAngleR1, lblSpeedValR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, lblSpeedValR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, lblSpeedValR3 } };
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                double  Vx = Math.Abs(int.Parse(arr[i, 0].Text) - tempPosXYZ[i, 0]) / time, 
+                        Vy = Math.Abs(int.Parse(arr[i, 1].Text) - tempPosXYZ[i, 1]) / time, 
+                        V = (Math.Ceiling((Math.Sqrt(Math.Pow(Vx, 2) + Math.Pow(Vy, 2))) * 100) / 100);
+                hc.SetText(this, arr[i, 3], (V.ToString() + "m/s"));
+                for (int j = 0; j < 3; j++)
+                    tempPosXYZ[i, j] = int.Parse(arr[i, j].Text); }
+        }
+
         void notifOutside(object state)
         {
             if (_socketDict.ContainsKey(state.ToString()))
@@ -210,6 +221,7 @@ namespace BaseStation
         //////////////////////////////////////////////////////////////      TRACK LOCACTION       //////////////////////////////////////////////////////////////
         ///
         int scale = 20;
+        int[,] tempPosXYZ = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
         int[] shift = { 20, 20, 1 };
         Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
         Image[] imgRobot = { Image.FromFile("images/Robot 1 Attacker.png"), Image.FromFile("images/Robot 2 Defence.png"), Image.FromFile("images/Robot 3 Kiper.png") };
@@ -397,7 +409,7 @@ namespace BaseStation
         private void goArrow(object sender, KeyEventArgs e)
         {
             var obj = ((dynamic)sender);
-            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 }/*, { lblRobot1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxScrXR3, tbxScrYR3, tbxAngleR3 }*/ };
+            dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxAngleR3 }, { lblRobot1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 for (int j = 0; j < arr.GetLength(1); j++)
@@ -743,7 +755,7 @@ namespace BaseStation
             if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
                 arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
             else
-                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3 } };
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1, lblSpeedR1, lblSpeedValR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2, lblSpeedR2, lblSpeedValR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3, lblSpeedR3, lblSpeedValR3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)

@@ -173,6 +173,12 @@
             this.OSR1 = new MaterialSkin.Controls.MaterialDivider();
             this.OSR2 = new MaterialSkin.Controls.MaterialDivider();
             this.OSR3 = new MaterialSkin.Controls.MaterialDivider();
+            this.lblSpeedR1 = new System.Windows.Forms.Label();
+            this.lblSpeedValR1 = new System.Windows.Forms.Label();
+            this.lblSpeedValR2 = new System.Windows.Forms.Label();
+            this.lblSpeedR2 = new System.Windows.Forms.Label();
+            this.lblSpeedValR3 = new System.Windows.Forms.Label();
+            this.lblSpeedR3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -2384,6 +2390,81 @@
             this.OSR3.Text = "0";
             this.OSR3.Visible = false;
             // 
+            // lblSpeedR1
+            // 
+            this.lblSpeedR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedR1.Enabled = false;
+            this.lblSpeedR1.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedR1.Location = new System.Drawing.Point(18, 398);
+            this.lblSpeedR1.Name = "lblSpeedR1";
+            this.lblSpeedR1.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR1.TabIndex = 247;
+            this.lblSpeedR1.Text = "Speed   :";
+            // 
+            // lblSpeedValR1
+            // 
+            this.lblSpeedValR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedValR1.Enabled = false;
+            this.lblSpeedValR1.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedValR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedValR1.Location = new System.Drawing.Point(73, 396);
+            this.lblSpeedValR1.Name = "lblSpeedValR1";
+            this.lblSpeedValR1.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR1.TabIndex = 248;
+            this.lblSpeedValR1.Text = "0m/s";
+            this.lblSpeedValR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSpeedValR2
+            // 
+            this.lblSpeedValR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedValR2.Enabled = false;
+            this.lblSpeedValR2.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedValR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedValR2.Location = new System.Drawing.Point(73, 496);
+            this.lblSpeedValR2.Name = "lblSpeedValR2";
+            this.lblSpeedValR2.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR2.TabIndex = 250;
+            this.lblSpeedValR2.Text = "0m/s";
+            this.lblSpeedValR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSpeedR2
+            // 
+            this.lblSpeedR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedR2.Enabled = false;
+            this.lblSpeedR2.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedR2.Location = new System.Drawing.Point(18, 499);
+            this.lblSpeedR2.Name = "lblSpeedR2";
+            this.lblSpeedR2.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR2.TabIndex = 249;
+            this.lblSpeedR2.Text = "Speed   :";
+            // 
+            // lblSpeedValR3
+            // 
+            this.lblSpeedValR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedValR3.Enabled = false;
+            this.lblSpeedValR3.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedValR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedValR3.Location = new System.Drawing.Point(73, 597);
+            this.lblSpeedValR3.Name = "lblSpeedValR3";
+            this.lblSpeedValR3.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR3.TabIndex = 252;
+            this.lblSpeedValR3.Text = "0m/s";
+            this.lblSpeedValR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSpeedR3
+            // 
+            this.lblSpeedR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblSpeedR3.Enabled = false;
+            this.lblSpeedR3.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSpeedR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblSpeedR3.Location = new System.Drawing.Point(18, 600);
+            this.lblSpeedR3.Name = "lblSpeedR3";
+            this.lblSpeedR3.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR3.TabIndex = 251;
+            this.lblSpeedR3.Text = "Speed   :";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2392,6 +2473,12 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblSpeedValR3);
+            this.Controls.Add(this.lblSpeedR3);
+            this.Controls.Add(this.lblSpeedValR2);
+            this.Controls.Add(this.lblSpeedR2);
+            this.Controls.Add(this.lblSpeedValR1);
+            this.Controls.Add(this.lblSpeedR1);
             this.Controls.Add(this.OSR3);
             this.Controls.Add(this.OSR2);
             this.Controls.Add(this.OSR1);
@@ -2712,6 +2799,12 @@
         protected MaterialSkin.Controls.MaterialDivider OSR1;
         protected MaterialSkin.Controls.MaterialDivider OSR2;
         protected MaterialSkin.Controls.MaterialDivider OSR3;
+        protected System.Windows.Forms.Label lblSpeedR1;
+        protected System.Windows.Forms.Label lblSpeedValR1;
+        protected System.Windows.Forms.Label lblSpeedValR2;
+        protected System.Windows.Forms.Label lblSpeedR2;
+        protected System.Windows.Forms.Label lblSpeedValR3;
+        protected System.Windows.Forms.Label lblSpeedR3;
     }
 }
 
