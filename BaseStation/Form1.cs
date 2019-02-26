@@ -26,9 +26,9 @@ namespace BaseStation
             setTransparent(picArena, new dynamic[] { picBall, picRobot1, picRobot2, picRobot3 });
             setTransparent(grpBaseStation, new dynamic[] { lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS, lblPipeBS });
             setTransparent(grpRefereeBox, new dynamic[] { lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB, lblPipeRB });
-            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblPipe2R1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, lblDegR1, tbxAngleR1, lblSpeedR1, lblSpeedValR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
-            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblPipe2R2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, lblDegR2, tbxAngleR2, lblSpeedR2, lblSpeedValR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
-            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblPipe2R3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, lblDegR3, tbxAngleR3, lblSpeedR3, lblSpeedValR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
+            setTransparent(grpRobot1, new dynamic[] { lblRobot1, lblConnectionR1, chkR1, ballR1, tbxIPR1, tbxPortR1, lblPipeR1, lblPipe2R1, lblEncoderR1, lblEncCommaR1, tbxEncXR1, tbxEncYR1, lblScreenR1, tbxScrXR1, tbxScrYR1, lblScrCommaR1, lblDegR1, tbxAngleR1, lblSpeedR1, lblSpeedValR1, lblTimeRelayR1, YCard1R1, YCard2R1, RCardR1, ProgressR1 });
+            setTransparent(grpRobot2, new dynamic[] { lblRobot2, lblConnectionR2, chkR2, ballR2, tbxIPR2, tbxPortR2, lblPipeR2, lblPipe2R2, lblEncoderR2, lblEncCommaR2, tbxEncXR2, tbxEncYR2, lblScreenR2, tbxScrXR2, tbxScrYR2, lblScrCommaR2, lblDegR2, tbxAngleR2, lblSpeedR2, lblSpeedValR2, lblTimeRelayR2, YCard1R2, YCard2R2, RCardR2, ProgressR2 });
+            setTransparent(grpRobot3, new dynamic[] { lblRobot3, lblConnectionR3, chkR3, ballR3, tbxIPR3, tbxPortR3, lblPipeR3, lblPipe2R3, lblEncoderR3, lblEncCommaR3, tbxEncXR3, tbxEncYR3, lblScreenR3, tbxScrXR3, tbxScrYR3, lblScrCommaR3, lblDegR3, tbxAngleR3, lblSpeedR3, lblSpeedValR3, lblTimeRelayR3, YCard1R3, YCard2R3, RCardR3, ProgressR3 });
             setTransparent(lblDiv, new dynamic[] { lblPenalty, lblYCard, lblRCard, lblFouls, lblCorner, lblGoalKick });
             setTransparent(ProgressR1, new dynamic[] { lblTimerR1 }); setTransparent(ProgressR2, new dynamic[] { lblTimerR2 }); setTransparent(ProgressR3, new dynamic[] { lblTimerR3 }); setTransparent(picTimer, new dynamic[] { ProgressTM });
 
@@ -47,9 +47,9 @@ namespace BaseStation
 
         HelperClass hc = new HelperClass();
         Dictionary<int, Thread> threadDict = new Dictionary<int, Thread>();
+        Dictionary<string, TimeSpan> timeTicks = new Dictionary<string, TimeSpan>();
         Dictionary<string, System.Threading.Timer> timerDict = new Dictionary<string, System.Threading.Timer>(), notifDict = new Dictionary<string, System.Threading.Timer>();
-        System.Threading.Timer time, timer, chkConnection, chkAppResponding, timerSpeed;
-        int thID = 0;
+        System.Threading.Timer time, timer, chkConnection, chkAppResponding, timerSpeed, timeRelay;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -67,7 +67,7 @@ namespace BaseStation
                 picRobot.BackgroundImage = null;
             addFormation();
             LRSwitch_DoubleClick(LRSwitch, EventArgs.Empty);    // Set formation Stand By (Default)
-            time = new System.Threading.Timer(new TimerCallback(tickTime), null, 1000, 1000); timer = new System.Threading.Timer(new TimerCallback(tickTimer), null, 1000, 1000); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection), null, 10, 10); timerSpeed = new System.Threading.Timer(new TimerCallback(tickSpeed), 500, 500, 500);
+            time = new System.Threading.Timer(new TimerCallback(tickTime), null, 1000, 1000); timer = new System.Threading.Timer(new TimerCallback(tickTimer), null, 1000, 1000); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection), null, 10, 10); timerSpeed = new System.Threading.Timer(new TimerCallback(tickSpeed), 500, 500, 500); timeRelay = new System.Threading.Timer(new TimerCallback(tickTimeRelay), null, 1000, 1000);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
         }
 
@@ -105,8 +105,7 @@ namespace BaseStation
 
         private void tickTimer(object state)
         {
-            try
-            {
+            try {
                 string time = lblTimer.Text;
                 var _time = time.Split(':');            // split minute and second
                 int count = int.Parse(_time[1]);
@@ -130,8 +129,7 @@ namespace BaseStation
                 else if (ProgressTM.Value <= 10)
                     ProgressTM.ProgressColor = Color.Firebrick;
                 else if (ProgressTM.Value > ProgressTM.MaxValue / 2)
-                    ProgressTM.ProgressColor = Color.SeaGreen;
-            }
+                    ProgressTM.ProgressColor = Color.SeaGreen; }
             catch (Exception)
             { }
         }
@@ -195,6 +193,16 @@ namespace BaseStation
                 hc.SetText(this, arr[i, 3], (V.ToString() + "m/s"));
                 for (int j = 0; j < 3; j++)
                     tempPosXYZ[i, j] = int.Parse(arr[i, j].Text); }
+        }
+
+        void tickTimeRelay(object state)
+        {
+            dynamic[,] arr =  { { lblRobot1, lblTimeRelayR1 }, { lblRobot2, lblTimeRelayR2 }, { lblRobot3, lblTimeRelayR3 } };
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                if (!timeTicks.ContainsKey(arr[i, 0].Text))
+                    timeTicks.Add(arr[i, 0].Text, DateTime.Now.TimeOfDay);
+                if (_socketDict.ContainsKey(arr[i, 0].Text))
+                    SendCallBack(_socketDict[arr[i, 0].Text], ".", "TimeRelay"); }
         }
 
         void notifOutside(object state)
@@ -755,7 +763,7 @@ namespace BaseStation
             if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
                 arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
             else
-                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1, lblSpeedR1, lblSpeedValR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2, lblSpeedR2, lblSpeedValR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3, lblSpeedR3, lblSpeedValR3 } };
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1, lblSpeedR1, lblSpeedValR1, lblTimeRelayR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2, lblSpeedR2, lblSpeedValR2, lblTimeRelayR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3, lblSpeedR3, lblSpeedValR3, lblTimeRelayR3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)
@@ -856,23 +864,18 @@ namespace BaseStation
         void AcceptCallback(IAsyncResult AR)
         {
             Socket socket = null;
-            try
-            {
+            try {
                 socket = _serverSocket.EndAccept(AR);
-                if (socket.Connected)
-                {
+                if (socket.Connected) {
                     _socketDict.Add(socket.RemoteEndPoint.ToString(), socket);
                     socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket);
                     _serverSocket.BeginAccept(new AsyncCallback(AcceptCallback), null);
                     addCommand("# Success Connected to: " + socketToIP(socket));
                     //MessageBox.Show(_toServerSocketDict.Keys.Where(item => item.StartsWith("192.168.1.107")).ElementAt(0))  
-                }
-            }
-            catch (Exception e)
-            {
+                } }
+            catch (Exception e) {
                 addCommand("# FAILED to connect \n\n" + e);
-                forceDisconnect(lblBaseStation.Text);
-            }
+                forceDisconnect(lblBaseStation.Text); }
         }
 
         void ReceiveCallBack(IAsyncResult AR) /**/
@@ -890,22 +893,30 @@ namespace BaseStation
                         forceDisconnect(socket);
                         socket.Disconnect(true);
                         return; }
+                    if ((!string.IsNullOrWhiteSpace(message)) && (message.StartsWith(".")) && (timeTicks.ContainsKey(socketToName(socket)))) {
+                        dynamic[,] arr = { { lblRobot1, lblTimeRelayR1 }, { lblRobot2, lblTimeRelayR2 }, { lblRobot3, lblTimeRelayR3 } };
+                        int n = -1;
+                        for (int i = 0; i < arr.GetLength(0); i++)
+                            if ((socketToName(socket)) == (arr[i, 0].Text))
+                                n = i;
+                        if (n != -1) { 
+                            string diff = (DateTime.Now.TimeOfDay - timeTicks[socketToName(socket)]).Milliseconds.ToString();
+                            hc.SetText(this, arr[n, 1], ((diff.Length > 4 ? diff.Substring(0, 4) : diff) + "ms"));
+                            timeTicks.Remove(socketToName(socket));
+                            goto end; } }
                     if ((!string.IsNullOrWhiteSpace(message)) && (!Regex.IsMatch(message, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")))
                         addCommand("> " + socketToName(socket) + " : " + message);
                     ResponeReceivedCallback(message, socket);
-                    socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket); }
-            }
-            catch (Exception e)
-            {
+                    end:
+                    socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket); } }
+            catch (Exception e) {
                 addCommand("# FAILED to receive message \n\n" + e);
-                forceDisconnect(socket);
-            }
+                forceDisconnect(socket); }
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage)
         {
-            try
-            {
+            try {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
                 if ((_socketDict.ContainsValue(_dstSocket)) && (!string.IsNullOrWhiteSpace(txtMessage))) {                     
                     if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
@@ -917,57 +928,49 @@ namespace BaseStation
                     txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                     _dstSocket.Send(buffer);
-                    _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); }
-            }
-            catch (Exception e)
-            {
+                    _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); } }
+            catch (Exception e) {
                 addCommand("# FAILED to send message \n\n" + e);
-                forceDisconnect(_dstSocket);
-            }
+                forceDisconnect(_dstSocket); }
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage, string Goto)
         {
-            try
-            {
+            try {
                 txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
                 if ((_socketDict.ContainsValue(_dstSocket)) && (!string.IsNullOrWhiteSpace(txtMessage))) {
                     //var pos = txtMessage.Split(',');
                     //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                     _dstSocket.Send(buffer);
-                    _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); }
-            }
-            catch (Exception e)
-            {
+                    _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); } }
+            catch (Exception e) {
                 addCommand("# FAILED to send message \n\n" + e);
-                forceDisconnect(_dstSocket);
-            }
+                forceDisconnect(_dstSocket); }
         }
 
         void sendByHostList(dynamic inputHostList, string txtMsg)
         {
-            try
-            {
+            try {
                 var hostList = inputHostList.Split(',');
-                foreach (var _hostList in hostList)
-                {
-                    try
-                    {
-                        SendCallBack(_socketDict[_socketDict.Keys.Where(host => host.StartsWith(_hostList)).ElementAtOrDefault(0).ToString()], txtMsg);
-                    }
-                    catch (Exception)
-                    {
+                foreach (var _hostList in hostList) {
+                    try {
+                        SendCallBack(_socketDict[_socketDict.Keys.Where(host => host.StartsWith(_hostList)).ElementAtOrDefault(0).ToString()], txtMsg); }
+                    catch (Exception) {
                         continue;   // If host not found then Skip
-                    }
-                }
-            }
-            catch (Exception e)
-            {
+                    } } }
+            catch (Exception e) {
                 addCommand("# FAILED to send message \n\n" + e);
                 //MessageBox.Show("host Not Found :<");
             }
         }
+
+        void sendBySocketKey(string keyName, string message)
+        {
+            if (_socketDict.ContainsKey(keyName))
+                SendCallBack(_socketDict[keyName], message);
+        }
+
         string ResponeSendCallback(string message)
         {
             string respone = string.Empty, text = string.Empty;
@@ -1085,15 +1088,13 @@ namespace BaseStation
                     if (arr[i, 0] == _dtMessage[0])
                         n = i;
                 if (n != -1)
-                    if (_socketDict.ContainsKey(socket.RemoteEndPoint.ToString()))
-                    {
+                    if (_socketDict.ContainsKey(socket.RemoteEndPoint.ToString())) {
                         Socket temp = _socketDict[socket.RemoteEndPoint.ToString()];    // Backup
                         _socketDict.Remove(socket.RemoteEndPoint.ToString());           // Remove with old key
                         _socketDict.Add(_dtMessage[0], temp);                           // Add with new key
                         hc.SetText(this, arr[n, 1], "Connected");
                         hc.SetText(this, arr[n, 2], socketToIP(socket));
-                        hc.SetText(this, arr[n, 3], this.port.ToString());
-                    }
+                        hc.SetText(this, arr[n, 3], this.port.ToString()); }
             }
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)

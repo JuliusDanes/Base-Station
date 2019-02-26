@@ -179,6 +179,9 @@
             this.lblSpeedR2 = new System.Windows.Forms.Label();
             this.lblSpeedValR3 = new System.Windows.Forms.Label();
             this.lblSpeedR3 = new System.Windows.Forms.Label();
+            this.lblTimeRelayR1 = new System.Windows.Forms.Label();
+            this.lblTimeRelayR2 = new System.Windows.Forms.Label();
+            this.lblTimeRelayR3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -1411,16 +1414,15 @@
             // lblTime
             // 
             this.lblTime.AutoEllipsis = true;
-            this.lblTime.AutoSize = true;
             this.lblTime.BackColor = System.Drawing.Color.Transparent;
             this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTime.ForeColor = System.Drawing.Color.YellowGreen;
-            this.lblTime.Location = new System.Drawing.Point(785, 535);
+            this.lblTime.Location = new System.Drawing.Point(767, 535);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(43, 20);
+            this.lblTime.Size = new System.Drawing.Size(97, 20);
             this.lblTime.TabIndex = 125;
             this.lblTime.Text = "Time";
-            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblDiv
             // 
@@ -2465,6 +2467,45 @@
             this.lblSpeedR3.TabIndex = 251;
             this.lblSpeedR3.Text = "Speed   :";
             // 
+            // lblTimeRelayR1
+            // 
+            this.lblTimeRelayR1.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimeRelayR1.Enabled = false;
+            this.lblTimeRelayR1.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblTimeRelayR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblTimeRelayR1.Location = new System.Drawing.Point(71, 319);
+            this.lblTimeRelayR1.Name = "lblTimeRelayR1";
+            this.lblTimeRelayR1.Size = new System.Drawing.Size(55, 15);
+            this.lblTimeRelayR1.TabIndex = 253;
+            this.lblTimeRelayR1.Text = "0ms";
+            this.lblTimeRelayR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTimeRelayR2
+            // 
+            this.lblTimeRelayR2.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimeRelayR2.Enabled = false;
+            this.lblTimeRelayR2.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblTimeRelayR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblTimeRelayR2.Location = new System.Drawing.Point(71, 420);
+            this.lblTimeRelayR2.Name = "lblTimeRelayR2";
+            this.lblTimeRelayR2.Size = new System.Drawing.Size(55, 15);
+            this.lblTimeRelayR2.TabIndex = 254;
+            this.lblTimeRelayR2.Text = "0ms";
+            this.lblTimeRelayR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTimeRelayR3
+            // 
+            this.lblTimeRelayR3.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimeRelayR3.Enabled = false;
+            this.lblTimeRelayR3.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblTimeRelayR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblTimeRelayR3.Location = new System.Drawing.Point(71, 523);
+            this.lblTimeRelayR3.Name = "lblTimeRelayR3";
+            this.lblTimeRelayR3.Size = new System.Drawing.Size(55, 15);
+            this.lblTimeRelayR3.TabIndex = 255;
+            this.lblTimeRelayR3.Text = "0ms";
+            this.lblTimeRelayR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2473,6 +2514,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.lblTimeRelayR3);
+            this.Controls.Add(this.lblTimeRelayR2);
+            this.Controls.Add(this.lblTimeRelayR1);
             this.Controls.Add(this.lblSpeedValR3);
             this.Controls.Add(this.lblSpeedR3);
             this.Controls.Add(this.lblSpeedValR2);
@@ -2782,19 +2826,10 @@
         protected System.Windows.Forms.Label btnDtR1;
         protected System.Windows.Forms.Label btnDtR3;
         protected System.Windows.Forms.Label btnDtR2;
-        private MaterialSkin.Controls.MaterialDivider LaserLine;
         protected System.Windows.Forms.Label lblFormation;
-        private MetroFramework.Controls.MetroToggle tglAutoReconR1;
-        private MetroFramework.Controls.MetroToggle tglAutoReconR2;
-        private MetroFramework.Controls.MetroToggle tglAutoReconR3;
-        private MetroFramework.Controls.MetroToggle tglAutoReconRB;
-        private MetroFramework.Controls.MetroToggle tglAutoReconBS;
-        private MetroFramework.Controls.MetroButton btnRestart;
-        private Bunifu.Framework.UI.BunifuiOSSwitch LRSwitch;
         protected System.Windows.Forms.Label lblTeam;
         protected System.Windows.Forms.Label lblLR;
         protected System.Windows.Forms.Label lblTranspose;
-        private Bunifu.Framework.UI.BunifuiOSSwitch TransposeSwitch;
         protected MaterialSkin.Controls.MaterialDivider lblDiv2;
         protected MaterialSkin.Controls.MaterialDivider OSR1;
         protected MaterialSkin.Controls.MaterialDivider OSR2;
@@ -2805,6 +2840,18 @@
         protected System.Windows.Forms.Label lblSpeedR2;
         protected System.Windows.Forms.Label lblSpeedValR3;
         protected System.Windows.Forms.Label lblSpeedR3;
+        protected System.Windows.Forms.Label lblTimeRelayR1;
+        protected System.Windows.Forms.Label lblTimeRelayR2;
+        protected System.Windows.Forms.Label lblTimeRelayR3;
+        protected MaterialSkin.Controls.MaterialDivider LaserLine;
+        protected MetroFramework.Controls.MetroToggle tglAutoReconR1;
+        protected MetroFramework.Controls.MetroToggle tglAutoReconR2;
+        protected MetroFramework.Controls.MetroToggle tglAutoReconR3;
+        protected MetroFramework.Controls.MetroToggle tglAutoReconRB;
+        protected MetroFramework.Controls.MetroToggle tglAutoReconBS;
+        protected MetroFramework.Controls.MetroButton btnRestart;
+        protected Bunifu.Framework.UI.BunifuiOSSwitch LRSwitch;
+        protected Bunifu.Framework.UI.BunifuiOSSwitch TransposeSwitch;
     }
 }
 
