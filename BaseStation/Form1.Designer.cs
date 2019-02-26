@@ -386,7 +386,7 @@
             this.lblEncoderR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblEncoderR1.Location = new System.Drawing.Point(18, 364);
             this.lblEncoderR1.Name = "lblEncoderR1";
-            this.lblEncoderR1.Size = new System.Drawing.Size(58, 20);
+            this.lblEncoderR1.Size = new System.Drawing.Size(58, 18);
             this.lblEncoderR1.TabIndex = 57;
             this.lblEncoderR1.Text = "Encoder:";
             // 
@@ -398,7 +398,7 @@
             this.lblScreenR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR1.Location = new System.Drawing.Point(18, 381);
             this.lblScreenR1.Name = "lblScreenR1";
-            this.lblScreenR1.Size = new System.Drawing.Size(58, 20);
+            this.lblScreenR1.Size = new System.Drawing.Size(58, 18);
             this.lblScreenR1.TabIndex = 58;
             this.lblScreenR1.Text = "Screen  :";
             // 
@@ -406,6 +406,7 @@
             // 
             this.YCard1R1.BackColor = System.Drawing.Color.Transparent;
             this.YCard1R1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard1R1.BackgroundImage")));
+            this.YCard1R1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard1R1.Location = new System.Drawing.Point(211, 381);
             this.YCard1R1.Name = "YCard1R1";
             this.YCard1R1.Size = new System.Drawing.Size(15, 25);
@@ -416,6 +417,7 @@
             // 
             this.RCardR1.BackColor = System.Drawing.Color.Transparent;
             this.RCardR1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RCardR1.BackgroundImage")));
+            this.RCardR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RCardR1.Location = new System.Drawing.Point(253, 381);
             this.RCardR1.Name = "RCardR1";
             this.RCardR1.Size = new System.Drawing.Size(15, 25);
@@ -426,6 +428,7 @@
             // 
             this.YCard2R1.BackColor = System.Drawing.Color.Transparent;
             this.YCard2R1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard2R1.BackgroundImage")));
+            this.YCard2R1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard2R1.Location = new System.Drawing.Point(232, 381);
             this.YCard2R1.Name = "YCard2R1";
             this.YCard2R1.Size = new System.Drawing.Size(15, 25);
@@ -748,6 +751,7 @@
             // 
             this.YCard2R2.BackColor = System.Drawing.Color.Transparent;
             this.YCard2R2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard2R2.BackgroundImage")));
+            this.YCard2R2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard2R2.Location = new System.Drawing.Point(232, 482);
             this.YCard2R2.Name = "YCard2R2";
             this.YCard2R2.Size = new System.Drawing.Size(15, 25);
@@ -762,7 +766,7 @@
             this.lblScreenR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR2.Location = new System.Drawing.Point(18, 482);
             this.lblScreenR2.Name = "lblScreenR2";
-            this.lblScreenR2.Size = new System.Drawing.Size(58, 20);
+            this.lblScreenR2.Size = new System.Drawing.Size(58, 18);
             this.lblScreenR2.TabIndex = 83;
             this.lblScreenR2.Text = "Screen  :";
             // 
@@ -775,7 +779,7 @@
             this.lblEncoderR2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.lblEncoderR2.Location = new System.Drawing.Point(18, 465);
             this.lblEncoderR2.Name = "lblEncoderR2";
-            this.lblEncoderR2.Size = new System.Drawing.Size(58, 20);
+            this.lblEncoderR2.Size = new System.Drawing.Size(58, 18);
             this.lblEncoderR2.TabIndex = 82;
             this.lblEncoderR2.Text = "Encoder:";
             // 
@@ -864,6 +868,7 @@
             // 
             this.RCardR2.BackColor = System.Drawing.Color.Transparent;
             this.RCardR2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RCardR2.BackgroundImage")));
+            this.RCardR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RCardR2.Location = new System.Drawing.Point(253, 482);
             this.RCardR2.Name = "RCardR2";
             this.RCardR2.Size = new System.Drawing.Size(15, 25);
@@ -874,6 +879,7 @@
             // 
             this.YCard1R2.BackColor = System.Drawing.Color.Transparent;
             this.YCard1R2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard1R2.BackgroundImage")));
+            this.YCard1R2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard1R2.Location = new System.Drawing.Point(211, 482);
             this.YCard1R2.Name = "YCard1R2";
             this.YCard1R2.Size = new System.Drawing.Size(15, 25);
@@ -1136,6 +1142,7 @@
             // 
             this.YCard2R3.BackColor = System.Drawing.Color.Transparent;
             this.YCard2R3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard2R3.BackgroundImage")));
+            this.YCard2R3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard2R3.Location = new System.Drawing.Point(232, 583);
             this.YCard2R3.Name = "YCard2R3";
             this.YCard2R3.Size = new System.Drawing.Size(15, 25);
@@ -1150,7 +1157,7 @@
             this.lblScreenR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblScreenR3.Location = new System.Drawing.Point(18, 583);
             this.lblScreenR3.Name = "lblScreenR3";
-            this.lblScreenR3.Size = new System.Drawing.Size(58, 20);
+            this.lblScreenR3.Size = new System.Drawing.Size(58, 18);
             this.lblScreenR3.TabIndex = 103;
             this.lblScreenR3.Text = "Screen  :";
             // 
@@ -1163,7 +1170,7 @@
             this.lblEncoderR3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.lblEncoderR3.Location = new System.Drawing.Point(18, 566);
             this.lblEncoderR3.Name = "lblEncoderR3";
-            this.lblEncoderR3.Size = new System.Drawing.Size(58, 20);
+            this.lblEncoderR3.Size = new System.Drawing.Size(58, 18);
             this.lblEncoderR3.TabIndex = 102;
             this.lblEncoderR3.Text = "Encoder:";
             // 
@@ -1252,6 +1259,7 @@
             // 
             this.RCardR3.BackColor = System.Drawing.Color.Transparent;
             this.RCardR3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RCardR3.BackgroundImage")));
+            this.RCardR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RCardR3.Location = new System.Drawing.Point(253, 583);
             this.RCardR3.Name = "RCardR3";
             this.RCardR3.Size = new System.Drawing.Size(15, 25);
@@ -1262,6 +1270,7 @@
             // 
             this.YCard1R3.BackColor = System.Drawing.Color.Transparent;
             this.YCard1R3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("YCard1R3.BackgroundImage")));
+            this.YCard1R3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.YCard1R3.Location = new System.Drawing.Point(211, 583);
             this.YCard1R3.Name = "YCard1R3";
             this.YCard1R3.Size = new System.Drawing.Size(15, 25);
@@ -1852,7 +1861,6 @@
             this.ballR1.BackColor = System.Drawing.Color.Transparent;
             this.ballR1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR1.BackgroundImage")));
             this.ballR1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ballR1.Enabled = false;
             this.ballR1.Location = new System.Drawing.Point(83, 321);
             this.ballR1.Name = "ballR1";
             this.ballR1.Size = new System.Drawing.Size(15, 15);
@@ -1865,7 +1873,6 @@
             this.ballR2.BackColor = System.Drawing.Color.Transparent;
             this.ballR2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR2.BackgroundImage")));
             this.ballR2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ballR2.Enabled = false;
             this.ballR2.Location = new System.Drawing.Point(83, 422);
             this.ballR2.Name = "ballR2";
             this.ballR2.Size = new System.Drawing.Size(15, 15);
@@ -1878,7 +1885,6 @@
             this.ballR3.BackColor = System.Drawing.Color.Transparent;
             this.ballR3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ballR3.BackgroundImage")));
             this.ballR3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ballR3.Enabled = false;
             this.ballR3.Location = new System.Drawing.Point(83, 523);
             this.ballR3.Name = "ballR3";
             this.ballR3.Size = new System.Drawing.Size(15, 15);
@@ -2297,12 +2303,12 @@
             // 
             this.lblLR.AccessibleDescription = "Left or Right";
             this.lblLR.AccessibleName = "Left or Right";
-            this.lblLR.BackColor = System.Drawing.Color.Black;
+            this.lblLR.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.lblLR.Font = new System.Drawing.Font("Bahnschrift", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLR.ForeColor = System.Drawing.Color.MintCream;
-            this.lblLR.Location = new System.Drawing.Point(42, 50);
+            this.lblLR.Location = new System.Drawing.Point(42, 51);
             this.lblLR.Name = "lblLR";
-            this.lblLR.Size = new System.Drawing.Size(36, 18);
+            this.lblLR.Size = new System.Drawing.Size(36, 16);
             this.lblLR.TabIndex = 241;
             this.lblLR.Text = "LR";
             this.lblLR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2398,9 +2404,9 @@
             this.lblSpeedR1.Enabled = false;
             this.lblSpeedR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedR1.Location = new System.Drawing.Point(18, 398);
+            this.lblSpeedR1.Location = new System.Drawing.Point(18, 396);
             this.lblSpeedR1.Name = "lblSpeedR1";
-            this.lblSpeedR1.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR1.Size = new System.Drawing.Size(58, 18);
             this.lblSpeedR1.TabIndex = 247;
             this.lblSpeedR1.Text = "Speed   :";
             // 
@@ -2410,9 +2416,9 @@
             this.lblSpeedValR1.Enabled = false;
             this.lblSpeedValR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedValR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedValR1.Location = new System.Drawing.Point(73, 396);
+            this.lblSpeedValR1.Location = new System.Drawing.Point(74, 398);
             this.lblSpeedValR1.Name = "lblSpeedValR1";
-            this.lblSpeedValR1.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR1.Size = new System.Drawing.Size(52, 14);
             this.lblSpeedValR1.TabIndex = 248;
             this.lblSpeedValR1.Text = "0m/s";
             this.lblSpeedValR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2423,9 +2429,9 @@
             this.lblSpeedValR2.Enabled = false;
             this.lblSpeedValR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedValR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedValR2.Location = new System.Drawing.Point(73, 496);
+            this.lblSpeedValR2.Location = new System.Drawing.Point(74, 499);
             this.lblSpeedValR2.Name = "lblSpeedValR2";
-            this.lblSpeedValR2.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR2.Size = new System.Drawing.Size(52, 14);
             this.lblSpeedValR2.TabIndex = 250;
             this.lblSpeedValR2.Text = "0m/s";
             this.lblSpeedValR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2436,9 +2442,9 @@
             this.lblSpeedR2.Enabled = false;
             this.lblSpeedR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedR2.Location = new System.Drawing.Point(18, 499);
+            this.lblSpeedR2.Location = new System.Drawing.Point(18, 498);
             this.lblSpeedR2.Name = "lblSpeedR2";
-            this.lblSpeedR2.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR2.Size = new System.Drawing.Size(58, 18);
             this.lblSpeedR2.TabIndex = 249;
             this.lblSpeedR2.Text = "Speed   :";
             // 
@@ -2448,9 +2454,9 @@
             this.lblSpeedValR3.Enabled = false;
             this.lblSpeedValR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedValR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedValR3.Location = new System.Drawing.Point(73, 597);
+            this.lblSpeedValR3.Location = new System.Drawing.Point(74, 600);
             this.lblSpeedValR3.Name = "lblSpeedValR3";
-            this.lblSpeedValR3.Size = new System.Drawing.Size(52, 20);
+            this.lblSpeedValR3.Size = new System.Drawing.Size(52, 14);
             this.lblSpeedValR3.TabIndex = 252;
             this.lblSpeedValR3.Text = "0m/s";
             this.lblSpeedValR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2461,9 +2467,9 @@
             this.lblSpeedR3.Enabled = false;
             this.lblSpeedR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblSpeedR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblSpeedR3.Location = new System.Drawing.Point(18, 600);
+            this.lblSpeedR3.Location = new System.Drawing.Point(18, 599);
             this.lblSpeedR3.Name = "lblSpeedR3";
-            this.lblSpeedR3.Size = new System.Drawing.Size(58, 20);
+            this.lblSpeedR3.Size = new System.Drawing.Size(58, 18);
             this.lblSpeedR3.TabIndex = 251;
             this.lblSpeedR3.Text = "Speed   :";
             // 
@@ -2473,7 +2479,7 @@
             this.lblTimeRelayR1.Enabled = false;
             this.lblTimeRelayR1.Font = new System.Drawing.Font("Arial", 9F);
             this.lblTimeRelayR1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblTimeRelayR1.Location = new System.Drawing.Point(71, 319);
+            this.lblTimeRelayR1.Location = new System.Drawing.Point(171, 346);
             this.lblTimeRelayR1.Name = "lblTimeRelayR1";
             this.lblTimeRelayR1.Size = new System.Drawing.Size(55, 15);
             this.lblTimeRelayR1.TabIndex = 253;
@@ -2486,7 +2492,7 @@
             this.lblTimeRelayR2.Enabled = false;
             this.lblTimeRelayR2.Font = new System.Drawing.Font("Arial", 9F);
             this.lblTimeRelayR2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblTimeRelayR2.Location = new System.Drawing.Point(71, 420);
+            this.lblTimeRelayR2.Location = new System.Drawing.Point(171, 447);
             this.lblTimeRelayR2.Name = "lblTimeRelayR2";
             this.lblTimeRelayR2.Size = new System.Drawing.Size(55, 15);
             this.lblTimeRelayR2.TabIndex = 254;
@@ -2499,7 +2505,7 @@
             this.lblTimeRelayR3.Enabled = false;
             this.lblTimeRelayR3.Font = new System.Drawing.Font("Arial", 9F);
             this.lblTimeRelayR3.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lblTimeRelayR3.Location = new System.Drawing.Point(71, 523);
+            this.lblTimeRelayR3.Location = new System.Drawing.Point(171, 548);
             this.lblTimeRelayR3.Name = "lblTimeRelayR3";
             this.lblTimeRelayR3.Size = new System.Drawing.Size(55, 15);
             this.lblTimeRelayR3.TabIndex = 255;
@@ -2514,6 +2520,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.OSR1);
+            this.Controls.Add(this.ballR1);
+            this.Controls.Add(this.lblSpeedR1);
+            this.Controls.Add(this.lblSpeedValR1);
             this.Controls.Add(this.lblTimeRelayR3);
             this.Controls.Add(this.lblTimeRelayR2);
             this.Controls.Add(this.lblTimeRelayR1);
@@ -2521,11 +2531,8 @@
             this.Controls.Add(this.lblSpeedR3);
             this.Controls.Add(this.lblSpeedValR2);
             this.Controls.Add(this.lblSpeedR2);
-            this.Controls.Add(this.lblSpeedValR1);
-            this.Controls.Add(this.lblSpeedR1);
             this.Controls.Add(this.OSR3);
             this.Controls.Add(this.OSR2);
-            this.Controls.Add(this.OSR1);
             this.Controls.Add(this.TransposeSwitch);
             this.Controls.Add(this.lblTranspose);
             this.Controls.Add(this.lblLR);
@@ -2557,7 +2564,6 @@
             this.Controls.Add(this.tbxAngleR1);
             this.Controls.Add(this.ballR3);
             this.Controls.Add(this.ballR2);
-            this.Controls.Add(this.ballR1);
             this.Controls.Add(this.ProgressTM);
             this.Controls.Add(this.lblTimerR3);
             this.Controls.Add(this.ProgressR3);
