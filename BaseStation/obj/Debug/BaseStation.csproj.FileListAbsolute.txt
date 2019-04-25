@@ -52,3 +52,17 @@ D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.cs
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.exe
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.pdb
 D:\Danes\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csprojAssemblyReference.cache
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\BaseStation.exe.config
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\BaseStation.exe
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\BaseStation.pdb
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\Bunifu_UI_v1.5.3.dll
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MaterialSkin.dll
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MetroFramework.dll
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\bin\Debug\MetroFramework.Fonts.dll
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.Form1.resources
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.Properties.Resources.resources
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.GenerateResource.cache
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.CoreCompileInputs.cache
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.csproj.CopyComplete
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.exe
+E:\KRSBI\Verocia-Project\Base-Station\BaseStation\obj\Debug\BaseStation.pdb

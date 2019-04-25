@@ -182,6 +182,8 @@
             this.lblTimeRelayR1 = new System.Windows.Forms.Label();
             this.lblTimeRelayR2 = new System.Windows.Forms.Label();
             this.lblTimeRelayR3 = new System.Windows.Forms.Label();
+            this.btnStart = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.btnStop = new Bunifu.Framework.UI.BunifuThinButton2();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).BeginInit();
@@ -458,6 +460,7 @@
             this.tbxEncXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncXR1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // tbxEncYR1
             // 
@@ -482,6 +485,7 @@
             this.tbxEncYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncYR1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblEncCommaR1
             // 
@@ -711,6 +715,7 @@
             this.tbxEncYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncYR2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblEncCommaR2
             // 
@@ -746,6 +751,7 @@
             this.tbxEncXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncXR2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // YCard2R2
             // 
@@ -925,6 +931,7 @@
             this.tbxScrYR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrYR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrYR1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblScrCommaR1
             // 
@@ -960,6 +967,7 @@
             this.tbxScrXR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrXR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrXR1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // tbxScrYR2
             // 
@@ -984,6 +992,7 @@
             this.tbxScrYR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrYR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrYR2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblScrCommaR2
             // 
@@ -1019,6 +1028,7 @@
             this.tbxScrXR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrXR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrXR2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // tbxScrYR3
             // 
@@ -1043,6 +1053,7 @@
             this.tbxScrYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxScrYR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrYR3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblScrCommaR3
             // 
@@ -1078,6 +1089,7 @@
             this.tbxScrXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxScrXR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxScrXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxScrXR3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // tbxEncYR3
             // 
@@ -1102,6 +1114,7 @@
             this.tbxEncYR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxEncYR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncYR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncYR3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblEncCommaR3
             // 
@@ -1137,6 +1150,7 @@
             this.tbxEncXR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxEncXR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxEncXR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxEncXR3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // YCard2R3
             // 
@@ -1929,6 +1943,7 @@
             this.tbxAngleR1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxAngleR1.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxAngleR1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxAngleR1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblPipe2R1
             // 
@@ -2003,6 +2018,7 @@
             this.tbxAngleR2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxAngleR2.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxAngleR2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxAngleR2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // lblDegR3
             // 
@@ -2052,14 +2068,15 @@
             this.tbxAngleR3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbxAngleR3.OnValueChanged += new System.EventHandler(this.tbxXYZChanged);
             this.tbxAngleR3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyDown);
+            this.tbxAngleR3.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxEncScrAng_KeyUp);
             // 
             // btnTO
             // 
             this.btnTO.ActiveBorderThickness = 1;
             this.btnTO.ActiveCornerRadius = 20;
-            this.btnTO.ActiveFillColor = System.Drawing.Color.Firebrick;
+            this.btnTO.ActiveFillColor = System.Drawing.Color.DarkGray;
             this.btnTO.ActiveForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnTO.ActiveLineColor = System.Drawing.Color.Firebrick;
+            this.btnTO.ActiveLineColor = System.Drawing.Color.DarkGray;
             this.btnTO.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
             this.btnTO.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTO.BackgroundImage")));
             this.btnTO.ButtonText = "Try Out";
@@ -2068,10 +2085,10 @@
             this.btnTO.ForeColor = System.Drawing.Color.SeaGreen;
             this.btnTO.IdleBorderThickness = 1;
             this.btnTO.IdleCornerRadius = 40;
-            this.btnTO.IdleFillColor = System.Drawing.Color.Maroon;
-            this.btnTO.IdleForecolor = System.Drawing.Color.Gainsboro;
-            this.btnTO.IdleLineColor = System.Drawing.Color.Firebrick;
-            this.btnTO.Location = new System.Drawing.Point(1086, 535);
+            this.btnTO.IdleFillColor = System.Drawing.Color.Gray;
+            this.btnTO.IdleForecolor = System.Drawing.Color.Black;
+            this.btnTO.IdleLineColor = System.Drawing.Color.DarkGray;
+            this.btnTO.Location = new System.Drawing.Point(1171, 564);
             this.btnTO.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnTO.Name = "btnTO";
             this.btnTO.Size = new System.Drawing.Size(80, 50);
@@ -2512,6 +2529,58 @@
             this.lblTimeRelayR3.Text = "0ms";
             this.lblTimeRelayR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // btnStart
+            // 
+            this.btnStart.ActiveBorderThickness = 1;
+            this.btnStart.ActiveCornerRadius = 20;
+            this.btnStart.ActiveFillColor = System.Drawing.Color.Orange;
+            this.btnStart.ActiveForecolor = System.Drawing.Color.Black;
+            this.btnStart.ActiveLineColor = System.Drawing.Color.Orange;
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.btnStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStart.BackgroundImage")));
+            this.btnStart.ButtonText = "START";
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStart.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStart.ForeColor = System.Drawing.Color.Maroon;
+            this.btnStart.IdleBorderThickness = 1;
+            this.btnStart.IdleCornerRadius = 40;
+            this.btnStart.IdleFillColor = System.Drawing.Color.DarkOrange;
+            this.btnStart.IdleForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnStart.IdleLineColor = System.Drawing.Color.Orange;
+            this.btnStart.Location = new System.Drawing.Point(936, 567);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(80, 47);
+            this.btnStart.TabIndex = 258;
+            this.btnStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.ActiveBorderThickness = 1;
+            this.btnStop.ActiveCornerRadius = 20;
+            this.btnStop.ActiveFillColor = System.Drawing.Color.Orange;
+            this.btnStop.ActiveForecolor = System.Drawing.Color.Black;
+            this.btnStop.ActiveLineColor = System.Drawing.Color.Orange;
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(187)))), ((int)(((byte)(187)))));
+            this.btnStop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStop.BackgroundImage")));
+            this.btnStop.ButtonText = "STOP";
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStop.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStop.ForeColor = System.Drawing.Color.Maroon;
+            this.btnStop.IdleBorderThickness = 1;
+            this.btnStop.IdleCornerRadius = 40;
+            this.btnStop.IdleFillColor = System.Drawing.Color.DarkOrange;
+            this.btnStop.IdleForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnStop.IdleLineColor = System.Drawing.Color.Orange;
+            this.btnStop.Location = new System.Drawing.Point(1034, 567);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(80, 47);
+            this.btnStop.TabIndex = 259;
+            this.btnStop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2520,6 +2589,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnStop);
+            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.OSR1);
             this.Controls.Add(this.ballR1);
             this.Controls.Add(this.lblSpeedR1);
@@ -2680,6 +2751,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot1)).EndInit();
@@ -2858,6 +2930,8 @@
         protected MetroFramework.Controls.MetroButton btnRestart;
         protected Bunifu.Framework.UI.BunifuiOSSwitch LRSwitch;
         protected Bunifu.Framework.UI.BunifuiOSSwitch TransposeSwitch;
+        protected Bunifu.Framework.UI.BunifuThinButton2 btnStart;
+        protected Bunifu.Framework.UI.BunifuThinButton2 btnStop;
     }
 }
 

@@ -185,14 +185,18 @@ namespace BaseStation
         void tickSpeed(object state)
         {
             double time = Convert.ToDouble(state);
-            dynamic[,] arr =  { { tbxEncXR1, tbxEncYR1, tbxAngleR1, lblSpeedValR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, lblSpeedValR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, lblSpeedValR3 } };
-            for (int i = 0; i < arr.GetLength(0); i++) {
-                double  Vx = Math.Abs(int.Parse(arr[i, 0].Text) - tempPosXYZ[i, 0]) / time, 
-                        Vy = Math.Abs(int.Parse(arr[i, 1].Text) - tempPosXYZ[i, 1]) / time, 
+            dynamic[,] arr = { { tbxEncXR1, tbxEncYR1, tbxAngleR1, lblSpeedValR1 }, { tbxEncXR2, tbxEncYR2, tbxAngleR2, lblSpeedValR2 }, { tbxEncXR3, tbxEncYR3, tbxAngleR3, lblSpeedValR3 } };
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                hc.SetText(this, arr[i, 0], arr[i, 0].Text);
+                hc.SetText(this, arr[i, 1], arr[i, 1].Text);
+                double Vx = Math.Abs(int.Parse(arr[i, 0].Text) - tempPosXYZ[i, 0]) / time,
+                        Vy = Math.Abs(int.Parse(arr[i, 1].Text) - tempPosXYZ[i, 1]) / time,
                         V = (Math.Ceiling((Math.Sqrt(Math.Pow(Vx, 2) + Math.Pow(Vy, 2))) * 100) / 100);
                 hc.SetText(this, arr[i, 3], (V.ToString() + "m/s"));
                 for (int j = 0; j < 3; j++)
-                    tempPosXYZ[i, j] = int.Parse(arr[i, j].Text); }
+                    tempPosXYZ[i, j] = int.Parse(arr[i, j].Text);
+            }
         }
 
         void tickTimeRelay(object state)
@@ -232,6 +236,8 @@ namespace BaseStation
         int[,] tempPosXYZ = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
         int[] shift = { 20, 20, 1 };
         Dictionary<string, Thread> gotoDict = new Dictionary<string, Thread>();
+        Dictionary<dynamic, dynamic> keyPressDict = new Dictionary<dynamic, dynamic>();
+        HashSet<dynamic> keyPressCollect = new HashSet<dynamic>();
         Image[] imgRobot = { Image.FromFile("images/Robot 1 Attacker.png"), Image.FromFile("images/Robot 2 Defence.png"), Image.FromFile("images/Robot 3 Kiper.png") };
         private readonly int[]  _Nol         = { 0, 0, 0,            0, 0, 0,            0, 0, 0 },
                                 _StandBy     = { 0, 6000, 0,         0, 5120, 0,         0, 4380, 0 },
@@ -426,29 +432,79 @@ namespace BaseStation
                     else if (arr[i, j].Name == obj.Name)
                         n = i;
 
-            dynamic x = "x", y = "y", z = "z", message = string.Empty;
+            dynamic x = "x", y = "y", z = "z", message = string.Empty, keyForRobot = ((dynamic)sender);
             if (TransposeSwitch.Value == true)
                 swap(ref x, ref y);
+
+            //if (n != -1)
+            //    if ((!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)))
+            //    {
+            //        if (e.KeyCode == Keys.Right)
+            //            message = x + "+";
+            //        else if (e.KeyCode == Keys.Left)
+            //            message = x + "-";
+            //        else if (e.KeyCode == Keys.Up)
+            //            message = y + "-";
+            //        else if (e.KeyCode == Keys.Down)
+            //            message = y + "+";
+            //        else if (e.KeyCode == Keys.PageUp)
+            //            message = z + "+";
+            //        else if (e.KeyCode == Keys.PageDown)
+            //            message = z + "-";
+
+            //        if ((!string.IsNullOrWhiteSpace(message)) && (_socketDict.ContainsKey(arr[n, 0].Text)))     //Send command go by arrow
+            //            SendCallBack(_socketDict[arr[n, 0].Text], message/*, "GoByArrow"*/);
+            //    }
+
+            //if ((!string.IsNullOrWhiteSpace(message)) && (_socketDict.ContainsKey(arr[n, 0].Text)))     //Send command go by arrow
+            //    SendCallBack(_socketDict[arr[n, 0].Text], message/*, "GoByArrow"*/);
 
             if (n != -1)
                 if ((!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)))
                 {
-                    if (e.KeyCode == Keys.Right)
+                    switch (e.KeyCode) {
+                        case Keys.Right: case Keys.Left: case Keys.Up: case Keys.Down: case Keys.PageUp: case Keys.PageDown:
+                            keyForRobot = lblRobot1; break;
+                        case Keys.D: case Keys.A: case Keys.W: case Keys.S: case Keys.E: case Keys.Q:
+                            keyForRobot = lblRobot2; break;
+                        case Keys.L: case Keys.J: case Keys.I: case Keys.K: case Keys.O: case Keys.U:
+                            keyForRobot = lblRobot3; break; }
+
+                    if ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.D) || (e.KeyCode == Keys.L)) 
                         message = x + "+";
-                    else if (e.KeyCode == Keys.Left)
+                    else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.A) || (e.KeyCode == Keys.J)) 
                         message = x + "-";
-                    else if (e.KeyCode == Keys.Up)
+                    else if ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.W) || (e.KeyCode == Keys.I)) 
                         message = y + "-";
-                    else if (e.KeyCode == Keys.Down)
+                    else if ((e.KeyCode == Keys.Down) || (e.KeyCode == Keys.S) || (e.KeyCode == Keys.K)) 
                         message = y + "+";
-                    else if (e.KeyCode == Keys.PageUp)
+                    else if ((e.KeyCode == Keys.PageUp) || (e.KeyCode == Keys.E) || (e.KeyCode == Keys.O)) 
                         message = z + "+";
-                    else if (e.KeyCode == Keys.PageDown)
+                    else if ((e.KeyCode == Keys.PageDown) || (e.KeyCode == Keys.Q) || (e.KeyCode == Keys.U)) 
                         message = z + "-";
 
-                    if ((!string.IsNullOrWhiteSpace(message)) && (_socketDict.ContainsKey(arr[n, 0].Text)))     //Send command go by arrow
-                        SendCallBack(_socketDict[arr[n, 0].Text], message/*, "GoByArrow"*/);
+                    DateTime timestamp = DateTime.Now;
+                    Thread.Sleep(60);
+                    while (keyPressCollect.Contains(e.KeyCode)) {
+                        if ((DateTime.Now - timestamp).TotalSeconds >= 10)  {
+                            keyPressCollect.Clear();
+                            break; }
+                        if ((!string.IsNullOrWhiteSpace(message)) && (_socketDict.ContainsKey(arr[n, 0].Text)))     //Send command go by arrow
+                            if (_socketDict.ContainsKey(keyForRobot.Text))
+                                SendCallBack(_socketDict[keyForRobot.Text], message/*, "GoByArrow"*/);
+                        Thread.Sleep(60); }
                 }
+        }        
+
+        private string toNumber(dynamic input)
+        {
+            dynamic output="";
+            if (string.IsNullOrWhiteSpace(input))
+                return "0";
+            foreach (char i in input)
+                if (char.IsNumber(i))
+                    output += i;
+            return output;
         }
 
         private void tbxXYZChanged(object sender, EventArgs e)
@@ -461,7 +517,8 @@ namespace BaseStation
                     if ((j != 6) && (arr[i, j].Name == obj.Name))
                         n = i;
 
-            if (n != -1)
+            if (n != -1) {
+                obj.Text = toNumber(obj.Text).ToString();
                 if ((Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$")) && (!string.IsNullOrWhiteSpace(arr[n, 0].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 1].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 2].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text))) {
                     /// Using Scale 1:20
                     if (obj.Name.StartsWith("tbxEncX"))
@@ -483,7 +540,7 @@ namespace BaseStation
                     dynamic w = 9000, h = 6000;
                     if (TransposeSwitch.Value == true)
                         swap(ref w, ref h);
-                    if ((obj.Name.StartsWith("tbxEnc")) && (((int.Parse(arr[n, 0].Text) < 0) ^ (int.Parse(arr[n, 0].Text) > w)) || ((int.Parse(arr[n, 1].Text) < 0) ^ (int.Parse(arr[n, 1].Text) > h)))) { 
+                    if ((obj.Name.StartsWith("tbxEnc")) && (((int.Parse(arr[n, 0].Text) < 0) ^ (int.Parse(arr[n, 0].Text) > w)) || ((int.Parse(arr[n, 1].Text) < 0) ^ (int.Parse(arr[n, 1].Text) > h)))) {
                         if (!notifDict.ContainsKey(arr[n, 7].Text)) {      /// Notification that Robot is Outside
                             hc.SetVisible(this, arr[n, 8], true);
                             notifDict.Add(arr[n, 7].Text, (new System.Threading.Timer(new TimerCallback(notifOutside), arr[n, 7].Text, 0, 3000))); } }
@@ -492,6 +549,7 @@ namespace BaseStation
                         notifDict[arr[n, 7].Text].Change(Timeout.Infinite, Timeout.Infinite);
                         notifDict.Remove(arr[n, 7].Text); }
                 }
+            }
         }
 
         private Image RotateImage(dynamic pictureBox, Image imgPbx, float rotationAngle)
@@ -516,6 +574,7 @@ namespace BaseStation
 
         private void tbxEncScrAng_KeyDown(object sender, KeyEventArgs e)
         {
+            //Thread.Sleep(10);
             var obj = ((dynamic)sender);
             dynamic[,] arr = { { lblRobot1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1 }, { lblRobot2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2 }, { lblRobot3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3 } };
             int n = -1;
@@ -523,23 +582,30 @@ namespace BaseStation
                 for (int j = 0; j < arr.GetLength(1); j++)
                     if (arr[i, j].Name == obj.Name)
                         n = i;
-            if (n != -1) { 
+            if (n != -1) {
                 if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
-                addCommand("# Only Can Input Number [0-9] :<");
+                    addCommand("# Only Can Input Number [0-9] :<");
                 switch (e.KeyCode) {
-                    case Keys.Right:
-                    case Keys.Left:
-                    case Keys.Up:
-                    case Keys.Down:
-                    case Keys.PageUp:
-                    case Keys.PageDown:
+                    case Keys.Right: case Keys.Left: case Keys.Up: case Keys.Down: case Keys.PageUp: case Keys.PageDown:
+                    case Keys.D: case Keys.A: case Keys.W: case Keys.S: case Keys.E: case Keys.Q:
+                    case Keys.L: case Keys.J: case Keys.I: case Keys.K: case Keys.O: case Keys.U:
                     case Keys.Enter:
-                        goArrow(sender, e);     ///For Arduino is available
+                        if (keyPressCollect.Add(e.KeyCode)) {
+                            Thread th_keyPress = new Thread(objs => goArrow(sender, e));
+                            th_keyPress.Start(); }    ///For Arduino is available
+                        //goArrow(sender, e);     ///For Arduino is available
                         //changeCounter(sender, e);     ///For Arduino is NOT available
                         //string dtGoto = "E" + arr[n, 1].Text + "," + arr[n, 2].Text + "," + arr[n, 5].Text;
                         //if (_socketDict.ContainsKey(arr[n, 0].Text))
                         //    SendCallBack(_socketDict[arr[n, 0].Text], dtGoto);
                         break; } }
+        }
+
+        private void tbxEncScrAng_KeyUp(object sender, KeyEventArgs e)
+        {
+            //Thread.Sleep(10);
+            while (keyPressCollect.Contains(e.KeyCode)) { 
+                keyPressCollect.Remove(e.KeyCode); }
         }
 
         private void tbxGoto_KeyDown(object sender, KeyEventArgs e)
@@ -550,9 +616,9 @@ namespace BaseStation
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i].Tag == obj.Tag)
                     n = i;
-            if (n != -1) { 
+            if (n != -1) {
                 if (!Regex.IsMatch(obj.Text, "^[-]{0,1}[0-9]{1,4}$"))
-                addCommand("# Only Can Input Number [0-9] :<");
+                    addCommand("# Only Can Input Number [0-9] :<");
                 switch (e.KeyCode)
                 {
                     case Keys.Right:
@@ -601,14 +667,14 @@ namespace BaseStation
         {
             if (_socketDict.ContainsKey(socketKey)) {
                 addCommand("@ " + socketToName(_socketDict[socketKey]) + " : Goto >> " + ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
-                SendCallBack(_socketDict[socketKey], ("go"+ endX + "," + endY + "," + endAngle), "Goto"); }
+                SendCallBack(_socketDict[socketKey], ("go" + endX + "," + endY + "," + endAngle), "Goto"); }
         }
 
         void GotoLoc(string Robot, dynamic encXRobot, dynamic encYRobot, dynamic angleRobot, int endX, int endY, int endAngle, int shiftX, int shiftY, int shiftAngle)
         {
             try {
                 int startX = int.Parse(encXRobot.Text), startY = int.Parse(encYRobot.Text), startAngle = int.Parse(angleRobot.Text);
-                addCommand("@ " + socketToName(_socketDict[Robot]) +" : Goto >> "+ ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
+                addCommand("@ " + socketToName(_socketDict[Robot]) + " : Goto >> " + ("X:" + endX + " Y:" + endY + " ∠:" + endAngle + "°"));
                 hc.SetText(this, tbxGotoX, endX.ToString());
                 hc.SetText(this, tbxGotoY, endY.ToString());
                 hc.SetText(this, tbxGotoAngle, endAngle.ToString());
@@ -976,6 +1042,12 @@ namespace BaseStation
             string respone = string.Empty, text = string.Empty;
             var _dtMessage = message.Split('|');
 
+            if ((_dtMessage.Length > 1)) {
+                var cc = _dtMessage[1].Split(',');
+                for (int i = 0; i < cc.Length; i++) { 
+                    cc[i] = "Robot" + cc[i][cc[i].Length-1];
+                _dtMessage[1] = string.Join(",", cc); } }
+
             if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {        // Broadcast message
                 _dtMessage = new string[] { _dtMessage[0].Substring(1), "Robot1,Robot2,Robot3" }; }
             if ((_dtMessage[0].StartsWith("**")) && (_dtMessage[0].Length > 2)) {       // Forward & Broadcast message
@@ -1037,6 +1109,12 @@ namespace BaseStation
         {
             string respone = string.Empty, text = string.Empty;
             var _dtMessage = message.Split('|');
+            
+            if ((_dtMessage.Length > 1)) {
+                var cc = _dtMessage[1].Split(',');
+                for (int i = 0; i < cc.Length; i++) { 
+                    cc[i] = "Robot" + cc[i][cc[i].Length-1];
+                _dtMessage[1] = string.Join(",", cc); } }
             
             if ((_dtMessage[0].StartsWith("!")) && (_dtMessage[0].Length > 1)) {        // Broadcast message
                 _dtMessage = new string[] { _dtMessage[0].Substring(1), "Robot1,Robot2,Robot3" }; }
@@ -1108,6 +1186,7 @@ namespace BaseStation
                         text = "STOP";
                         picTimer.Tag = "stop";
                         timer.Change(Timeout.Infinite, Timeout.Infinite);
+                        keyPressCollect.Clear();
                         goto broadcast;
                     case "s": //START
                         text = "START";
@@ -1420,15 +1499,21 @@ namespace BaseStation
 
         private void grpBaseStation_Click(object sender, EventArgs e)
         {
-            if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
-                new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
+            if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close"))
+                if ((Regex.IsMatch(tbxIPBS.Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")) && (Regex.IsMatch(tbxPortBS.Text.Trim(), "^[0-9]{1,4}$")))
+                    new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
+                else
+                    connectingCollect.Remove(lblBaseStation.Text);
         }
 
         private void tbxOpenBS_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close") && (!string.IsNullOrWhiteSpace(tbxIPBS.Text)) && (!string.IsNullOrWhiteSpace(tbxPortBS.Text)))
-                    new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
+                if (connectingCollect.Add(lblBaseStation.Text) && (lblConnectionBS.Text == "Close"))
+                    if ((Regex.IsMatch(tbxIPBS.Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")) && (Regex.IsMatch(tbxPortBS.Text.Trim(), "^[0-9]{1,4}$")))
+                        new Thread(obj => SetupServer(tbxPortBS.Text)).Start();
+                    else
+                        connectingCollect.Remove(lblBaseStation.Text);
         }
 
         private void Connection_byDistinct(object sender, EventArgs e)
@@ -1443,7 +1528,7 @@ namespace BaseStation
                             n = i;
                 if (n != -1)
                     if ((connectingCollect.Add(arr[n, 1].Text)) && (arr[n, 2].Text == "Disconnected"))
-                        if ((!string.IsNullOrWhiteSpace(arr[n, 3].Text)) && (!string.IsNullOrWhiteSpace(arr[n, 4].Text)))
+                        if ((Regex.IsMatch(arr[n, 3].Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")) && (Regex.IsMatch(arr[n, 4].Text.Trim(), "^[0-9]{1,4}$")))
                             new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
                         else
                             connectingCollect.Remove(arr[n, 1].Text);
@@ -1452,6 +1537,12 @@ namespace BaseStation
             { }
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            var obj = ((dynamic)sender);
+            obj.Text = toNumber(obj.Text).ToString();
+        }               
+        
         private void Connection_keyEnter(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -1605,10 +1696,96 @@ namespace BaseStation
                 setFormation();
         }
 
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            ResponeSendCallback("!s");   //START
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            ResponeSendCallback("!S");   //STOP
+        }
+
         private void btnRestart_Click(object sender, EventArgs e)
         {
             Application.Restart();
             Environment.Exit(0);
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.F1) && (e.Modifiers == Keys.Shift)) {   /// Change Auto Reconnect Robot 1
+                if (tglAutoReconR1.Checked == true)
+                    tglAutoReconR1.Checked = false;
+                else
+                    tglAutoReconR1.Checked = true; }
+            else if ((e.KeyCode == Keys.F2) && (e.Modifiers == Keys.Shift)) {   /// Change Auto Reconnect Robot 2
+                if (tglAutoReconR2.Checked == true)
+                    tglAutoReconR2.Checked = false;
+                else
+                    tglAutoReconR2.Checked = true; }
+            else if ((e.KeyCode == Keys.F3) && (e.Modifiers == Keys.Shift)) {  /// Change Auto Reconnect Robot 3
+                if (tglAutoReconR3.Checked == true)
+                    tglAutoReconR3.Checked = false;
+                else
+                    tglAutoReconR3.Checked = true; }
+            else if ((e.KeyCode == Keys.F4) && (e.Modifiers == Keys.Shift)) {  /// Change Auto Reconnect RefreeBox
+                if (tglAutoReconRB.Checked == true)
+                    tglAutoReconRB.Checked = false;
+                else
+                    tglAutoReconR3.Checked = true; }
+            else if ((e.KeyCode == Keys.F5) && (e.Modifiers == Keys.Shift)) {  /// Change Auto Reopen Port BaseStation
+                if (tglAutoReconBS.Checked == true)
+                    tglAutoReconBS.Checked = false;
+                else
+                    tglAutoReconBS.Checked = true; }
+            else if ((e.KeyCode == Keys.F1) && (e.Modifiers == Keys.Alt)) {   /// Change CC Message for Robot 1
+                if (chkR1.Checked == true)
+                    chkR1.Checked = false;
+                else
+                    chkR1.Checked = true; }
+            else if ((e.KeyCode == Keys.F2) && (e.Modifiers == Keys.Alt)) {   /// Change CC Message for Robot 2
+                if (chkR2.Checked == true)
+                    chkR2.Checked = false;
+                else
+                    chkR2.Checked = true; }
+            else if ((e.KeyCode == Keys.F3) && (e.Modifiers == Keys.Alt)) {  /// Change CC Message for Robot 3
+                if (chkR3.Checked == true)
+                    chkR3.Checked = false;
+                else
+                    chkR3.Checked = true; }
+            else if (e.KeyCode == Keys.F1) {   /// Change Team
+                if (TeamSwitch.Value == true)
+                    TeamSwitch.Value = false;
+                else
+                    TeamSwitch.Value = true; }
+            else if (e.KeyCode == Keys.F2) {   /// Change Left or Right Position of Team
+                if (LRSwitch.Value == true)
+                    LRSwitch.Value = false;
+                else
+                    LRSwitch.Value = true; }
+            else if (e.KeyCode == Keys.F3) {   /// Change Transpose or Not
+                if (TransposeSwitch.Value == true)
+                    TransposeSwitch.Value = false;
+                else
+                    TransposeSwitch.Value = true; }
+            else if ((e.KeyCode == Keys.F4) && (e.Modifiers == Keys.Control)) {   /// Change Reset Timer of Match
+                picTimer_DoubleClick(picTimer, EventArgs.Empty); }
+            else if (e.KeyCode == Keys.F4) {   /// Change Pause Timer of Match
+                picTimer_Click(picTimer, EventArgs.Empty); }
+            else if (e.KeyCode == Keys.F5) {  /// Restart the aplication BaseStation
+                btnRestart_Click(btnRestart, EventArgs.Empty); }
+            else if (e.KeyCode == Keys.F6) {  /// Robot START
+                ResponeSendCallback("!s"); }
+            else if (e.KeyCode == Keys.F7) {  /// Robot STOP
+                ResponeSendCallback("!S"); }
+            else if (e.KeyCode == Keys.F8) {  /// Robot To Focus for Game Control
+                if (lblRobot1.Enabled == true)
+                    tbxEncXR1.Focus();
+                else if (lblRobot2.Enabled == true)
+                    tbxEncXR2.Focus();
+                else if (lblRobot3.Enabled == true)
+                    tbxEncXR3.Focus(); }
         }
 
         private void btnTO_Click(object sender, EventArgs e)
@@ -1629,6 +1806,11 @@ namespace BaseStation
             //int a = 95000;
             //if (a.ToString().Length > 4)
             //    a = int.Parse(a.ToString().Substring(1));
+
+            //DateTime timestamp = DateTime.Now;
+            //Thread.Sleep(2900);
+            //addCommand((DateTime.Now - timestamp).TotalSeconds.ToString());
+            MessageBox.Show((Regex.IsMatch(tbxIPR1.Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")).ToString());
         }        
     }
 }
