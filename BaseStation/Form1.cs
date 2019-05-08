@@ -56,10 +56,19 @@ namespace BaseStation
             addCommand("~ Welcome to Base Station ~");
             tbxIPBS.Text = GetMyIP() /*= "192.168.165.10"*/;
             tbxPortBS.Text = "8686";
-            tbxIPRB.Text = "169.254.162.201";
+            tbxIPRB.Text = /*"169.254.162.201"*/  "172.16.0.10";
             tbxPortRB.Text = "28097";
             tbxIPR1.Text = tbxIPR2.Text = tbxIPR3.Text = GetMyIP();
             tbxPortR1.Text = tbxPortR2.Text = tbxPortR3.Text = "8686";
+
+            tbxIPR1.Text = "172.16.19.11";
+            tbxIPR2.Text = "172.16.19.12";
+            tbxIPR3.Text = "172.16.19.13";
+
+            tbxPortR1.Text = "8181";
+            tbxPortR2.Text = "8282";
+            tbxPortR3.Text = "8383";
+
 
             resetText();
             resetToogle();
@@ -69,6 +78,8 @@ namespace BaseStation
             LRSwitch_DoubleClick(LRSwitch, EventArgs.Empty);    // Set formation Stand By (Default)
             time = new System.Threading.Timer(new TimerCallback(tickTime), null, 1000, 1000); timer = new System.Threading.Timer(new TimerCallback(tickTimer), null, 1000, 1000); chkConnection = new System.Threading.Timer(new TimerCallback(checkConnection), null, 10, 10); timerSpeed = new System.Threading.Timer(new TimerCallback(tickSpeed), 500, 500, 500); timeRelay = new System.Threading.Timer(new TimerCallback(tickTimeRelay), null, 1000, 1000);
             //chkAppResponding = new System.Threading.Timer(new TimerCallback(checkAppResponding), null, 10, 10);
+
+            TeamSwitch.Value = false;   //Select Team
         }
 
         void swap(ref dynamic a, ref dynamic b)
@@ -471,13 +482,13 @@ namespace BaseStation
                             keyForRobot = lblRobot3; break; }
 
                     if ((e.KeyCode == Keys.Right) || (e.KeyCode == Keys.D) || (e.KeyCode == Keys.L)) 
-                        message = x + "+";
-                    else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.A) || (e.KeyCode == Keys.J)) 
-                        message = x + "-";
-                    else if ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.W) || (e.KeyCode == Keys.I)) 
-                        message = y + "-";
-                    else if ((e.KeyCode == Keys.Down) || (e.KeyCode == Keys.S) || (e.KeyCode == Keys.K)) 
                         message = y + "+";
+                    else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.A) || (e.KeyCode == Keys.J)) 
+                        message = y + "-";
+                    else if ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.W) || (e.KeyCode == Keys.I)) 
+                        message = x + "+";
+                    else if ((e.KeyCode == Keys.Down) || (e.KeyCode == Keys.S) || (e.KeyCode == Keys.K)) 
+                        message = x + "-";
                     else if ((e.KeyCode == Keys.PageUp) || (e.KeyCode == Keys.E) || (e.KeyCode == Keys.O)) 
                         message = z + "+";
                     else if ((e.KeyCode == Keys.PageDown) || (e.KeyCode == Keys.Q) || (e.KeyCode == Keys.U)) 
@@ -763,7 +774,8 @@ namespace BaseStation
         Dictionary<string, Socket> _socketDict = new Dictionary<string, Socket>();
         HashSet<string> notConnectionCollect = new HashSet<string>(), connectingCollect = new HashSet<string>();
         List<dynamic> _chkRobotCollect = new List<dynamic>();
-        internal int port, attempts = 0, ctr = 0;
+        internal int[] attempts = { 0, 0, 0, 0 };
+        internal int port, ctr = 0;
         internal string myIP, chkRobotCollect = string.Empty, ballOn = string.Empty;
 
         string GetMyIP()
@@ -813,6 +825,7 @@ namespace BaseStation
                 int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     if ((i != 0) && (socket.GetType() != typeof(string)) && ((_socketDict.ContainsKey(arr[i, 0].Text)) && (_socketDict[arr[i, 0].Text].RemoteEndPoint == socket.RemoteEndPoint))) {    // For RefreeBox & Robot
+                        hc.SetText(this, arr[i, 1], ".");
                         hc.SetText(this, arr[i, 1], "Disconnected");
                         _socketDict[arr[n, 0]].Dispose(); }
                     else if ((i == 0) && (socket.GetType() == typeof(string)) && (arr[i, 0].Text == socket)) {   // For BaseStation
@@ -829,7 +842,7 @@ namespace BaseStation
             if ((obj == lblConnectionBS.Name) ^ (obj == lblConnectionRB.Name))
                 arr = new dynamic[,] { { lblConnectionBS, lblBaseStation }, { lblConnectionRB, lblRefereeBox } };
             else
-                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, chkR1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1, lblSpeedR1, lblSpeedValR1, lblTimeRelayR1 }, { lblConnectionR2, lblRobot2, chkR2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2, lblSpeedR2, lblSpeedValR2, lblTimeRelayR2 }, { lblConnectionR3, lblRobot3, chkR3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3, lblSpeedR3, lblSpeedValR3, lblTimeRelayR3 } };
+                arr = new dynamic[,] { { lblConnectionR1, lblRobot1, lblEncoderR1, lblScreenR1, tbxEncXR1, tbxEncYR1, tbxScrXR1, tbxScrYR1, tbxAngleR1, lblDegR1, lblSpeedR1, lblSpeedValR1, lblTimeRelayR1 }, { lblConnectionR2, lblRobot2, lblEncoderR2, lblScreenR2, tbxEncXR2, tbxEncYR2, tbxScrXR2, tbxScrYR2, tbxAngleR2, lblDegR2, lblSpeedR2, lblSpeedValR2, lblTimeRelayR2 }, { lblConnectionR3, lblRobot3, lblEncoderR3, lblScreenR3, tbxEncXR3, tbxEncYR3, tbxScrXR3, tbxScrYR3, tbxAngleR3, lblDegR3, lblSpeedR3, lblSpeedValR3, lblTimeRelayR3 } };
             int n = -1;
             for (int i = 0; i < arr.GetLength(0); i++)
                 if (arr[i, 0].Name == obj)
@@ -841,7 +854,7 @@ namespace BaseStation
                     arr[n, 0].BackColor = Color.SeaGreen;
                     for (int i = 0; i < arr.GetLength(1); i++)
                         arr[n, i].Enabled = true; }
-                else {
+                else if ((arr[n, 0].Text == "Disconnected") ^ (arr[n, 0].Text == "Close")) {
                     if (obj == lblConnectionBS.Name)
                         addCommand("\n# " + arr[n, 1].Text + " server is CLOSE :<");
                     else
@@ -870,7 +883,7 @@ namespace BaseStation
             return socket.RemoteEndPoint.ToString();
         }
 
-        void requestConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection)
+        void requestConnect(dynamic ipDst, dynamic port, string keyName, dynamic connection, ref int attempts)
         {
             addCommand("# Connecting to " + ipDst + " (" + keyName + ") \t Port : " + port);
             try
@@ -886,7 +899,8 @@ namespace BaseStation
                     addCommand("# Success Connecting to: " + ipDst + " (" + keyName + ") \t Port : " + port);
                     hc.SetText(this, connection, "Connected");
                     SendCallBack(_toServerSocket, this.Text);
-                    _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket); }
+                    _toServerSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _toServerSocket);
+                    attempts = 0; }
                 else
                     _toServerSocket.Dispose();
                 connectingCollect.Remove(keyName);
@@ -976,22 +990,22 @@ namespace BaseStation
                     end:
                     socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), socket); } }
             catch (Exception e) {
-                addCommand("# FAILED to receive message \n\n" + e);
+                //addCommand("# FAILED to receive message \n\n" + e);
                 forceDisconnect(socket); }
         }
 
         void SendCallBack(Socket _dstSocket, string txtMessage)
         {
             try {
-                txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
+                //txtMessage = new string(txtMessage.Trim().Where(c => !char.IsControl(c)).ToArray());
                 if ((_socketDict.ContainsValue(_dstSocket)) && (!string.IsNullOrWhiteSpace(txtMessage))) {                     
-                    if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
-                        //var pos = txtMessage.Split(',');
-                        //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
-                    } else
+                    //if (Regex.IsMatch(txtMessage, "E[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4},[-]{0,1}[0-9]{1,4}")) {
+                    //    //var pos = txtMessage.Split(',');
+                    //    //addCommand("@ " + socketToName(_dstSocket) + " : " + ("X:" + pos[0] + " Y:" + pos[1] + " ∠:" + pos[2] + "°"));
+                    //} else
                     addCommand("@ " + socketToName(_dstSocket) + " : " + txtMessage);
 
-                    txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
+                    //txtMessage = new string(txtMessage.Where(c => !char.IsControl(c)).ToArray());
                     byte[] buffer = Encoding.ASCII.GetBytes(txtMessage);
                     _dstSocket.Send(buffer);
                     _dstSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), _dstSocket); } }
@@ -1177,8 +1191,115 @@ namespace BaseStation
             else if ((_socketDict.ContainsKey("RefereeBox")) && (socket.RemoteEndPoint.ToString().Contains(_socketDict["RefereeBox"].RemoteEndPoint.ToString())))
             //else if (true)
             {
+
                 // If socket is Referee Box socket 
                 respone = _dtMessage[0]; //Forward the _dtMessage[0]
+
+                ///// 1. DEFAULT COMMANDS ///
+                //if (_dtMessage[0].Contains("s"))
+                //{//STOP
+                //    text = "STOP";
+                //    picTimer.Tag = "stop";
+                //    timer.Change(Timeout.Infinite, Timeout.Infinite);
+                //    keyPressCollect.Clear();
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("S"))
+                //{//START
+                //    text = "START";
+                //    picTimer.Tag = "start";
+                //    timer.Change(500, 1000);
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("W"))
+                //{//WELCOME
+                //    text = "WELCOME";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("Z"))
+                //{
+                //    //RESET (Reset Game)
+                //        text = "RESET";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("U"))
+                //{
+                //    //TESTMODE_ON (TestMode On)
+                //        text = "TESTMODE_ON";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("u"))
+                //{
+                //    //TESTMODE_OFF (TestMode Off)
+                //        text = "TESTMODE_OFF";
+                //    goto broadcast;
+                //}
+
+
+                ///// 3. GAME FLOW COMMANDS ///
+                //if (_dtMessage[0].Contains("1"))
+                //{
+                //    //FIRST_HALF
+                //        text = "FIRST_HALF";
+                //    hc.SetText(this, lblHalf, "1");
+                //    hc.SetText(this, lblTimer, "00:00");
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("2"))
+                //{
+                //    //SECOND_HALF
+                //        text = "SECOND_HALF";
+                //    hc.SetText(this, lblHalf, "2");
+                //    hc.SetText(this, lblTimer, "00:00");
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("3"))
+                //{
+                //    //FIRST_HALF_OVERTIME
+                //        text = "FIRST_HALF_OVERTIME";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("4"))
+                //{
+                //    //SECOND_HALF_OVERTIME
+                //        text = "SECOND_HALF_OVERTIME";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("h"))
+                //{
+                //     //HALF_TIME
+                //        text = "HALF_TIME";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("e"))
+                //{
+                //     //END_GAME (ends 2nd part, may go into overtime)
+                //        text = "END_GAME";
+                //    timer.Change(Timeout.Infinite, Timeout.Infinite);
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("z"))
+                //{
+                //     //GAMEOVER (Game Over)
+                //        text = "GAMEOVER";
+                //    timer.Change(Timeout.Infinite, Timeout.Infinite);
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("L"))
+                //{
+                //     //PARKING
+                //        text = "PARKING";
+                //    goto broadcast;
+                //}
+                //if (_dtMessage[0].Contains("N"))
+                //{
+                //    //DROP_BALL
+                //    text = "DROP_BALL";
+                //    goto broadcast;
+                //}
+
+
+
                 switch (_dtMessage[0])       // Condition in General
                 {
                     /// 1. DEFAULT COMMANDS ///
@@ -1520,7 +1641,7 @@ namespace BaseStation
         {
             try {
                 var obj = ((dynamic)sender).Name;
-                dynamic[,] arr = { { grpBaseStation, lblBaseStation, lblConnectionBS, tbxIPBS, tbxPortBS }, { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
+                dynamic[,] arr = { { grpRefereeBox, lblRefereeBox, lblConnectionRB, tbxIPRB, tbxPortRB }, { grpRobot1, lblRobot1, lblConnectionR1, tbxIPR1, tbxPortR1 }, { grpRobot2, lblRobot2, lblConnectionR2, tbxIPR2, tbxPortR2 }, { grpRobot3, lblRobot3, lblConnectionR3, tbxIPR3, tbxPortR3 } };
                 int n = -1;
                 for (int i = 0; i < arr.GetLength(0); i++)
                     for (int j = 0; j < arr.GetLength(1); j++)
@@ -1528,8 +1649,8 @@ namespace BaseStation
                             n = i;
                 if (n != -1)
                     if ((connectingCollect.Add(arr[n, 1].Text)) && (arr[n, 2].Text == "Disconnected"))
-                        if ((Regex.IsMatch(arr[n, 3].Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")) && (Regex.IsMatch(arr[n, 4].Text.Trim(), "^[0-9]{1,4}$")))
-                            new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2])).Start();
+                            if ((Regex.IsMatch(arr[n, 3].Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")) && (Regex.IsMatch(arr[n, 4].Text.Trim(), "^[0-9]{1,5}$")))
+                                new Thread(objs => requestConnect(arr[n, 3].Text, arr[n, 4].Text, arr[n, 1].Text, arr[n, 2], ref attempts[n])).Start();
                         else
                             connectingCollect.Remove(arr[n, 1].Text);
             }
@@ -1561,6 +1682,7 @@ namespace BaseStation
 
                 if (n != -1)
                     if (arr[n,1].Text == "Connected") {
+                        hc.SetText(this, arr[n,1], ".");
                         hc.SetText(this, arr[n,1], "Disconnected");
                         _socketDict[arr[n, 0]].Dispose(); }
                     else if (arr[n, 1].Text == "Open") {
@@ -1645,14 +1767,11 @@ namespace BaseStation
 
         private void tbxStatus_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 tbxStatus.SelectionStart = tbxStatus.Text.Length;
-                tbxStatus.ScrollToCaret();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("# Error tbxStatus \n\n" + ex);
+                tbxStatus.ScrollToCaret(); }
+            catch (Exception ex) {
+                //MessageBox.Show("# Error tbxStatus \n\n" + ex);
             }
         }
 
@@ -1712,9 +1831,42 @@ namespace BaseStation
             Environment.Exit(0);
         }
 
+        private void resetGrpConnection(object sender, EventArgs ej)
+        {
+            try {
+                var obj = ((dynamic)sender).Name;
+                dynamic[,] arr = { { lblRefereeBox, lblConnectionRB }, { lblRobot1, lblConnectionR1 }, { lblRobot2, lblConnectionR2 }, { lblRobot3, lblConnectionR3 } };
+                int n = -1;
+                for (int i = 0; i < arr.GetLength(0); i++)
+                    for (int j = 0; j < arr.GetLength(1); j++)
+                        if (arr[i, j].Name == obj)
+                            n = i;
+                if (n != -1) { 
+                    hc.SetText(this, arr[n, 1], ".");
+                    hc.SetText(this, arr[n, 1], "Disconnected");
+                    notConnectionCollect.Add(arr[n, 0].Text);
+                    connectingCollect.Remove(arr[n, 0].Text); } }
+            catch (Exception)
+            { }
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode == Keys.F1) && (e.Modifiers == Keys.Shift)) {   /// Change Auto Reconnect Robot 1
+            if ((e.KeyCode == Keys.D1) && (e.Modifiers == Keys.Alt)) {   /// Reset Group Robot 1
+                resetGrpConnection(lblRobot1, EventArgs.Empty); }
+            else if ((e.KeyCode == Keys.D2) && (e.Modifiers == Keys.Alt)) {   /// Reset Group Robot 2
+                resetGrpConnection(lblRobot2, EventArgs.Empty); }
+            else if ((e.KeyCode == Keys.D3) && (e.Modifiers == Keys.Alt)) {   /// Reset Group Robot 3
+                resetGrpConnection(lblRobot3, EventArgs.Empty); }
+            else if ((e.KeyCode == Keys.D4) && (e.Modifiers == Keys.Alt)) {   /// Reset Group RefreeBox
+                resetGrpConnection(lblRefereeBox, EventArgs.Empty); }
+            else if ((e.KeyCode == Keys.D1) && (e.Modifiers == Keys.Control)) {   /// Start Robot 1
+                ResponeSendCallback("s|Robot1"); }
+            else if ((e.KeyCode == Keys.D2) && (e.Modifiers == Keys.Control)) {   /// Start Robot 2
+                ResponeSendCallback("s|Robot2"); }
+            else if ((e.KeyCode == Keys.D3) && (e.Modifiers == Keys.Control)) {   /// Start Robot 3
+                ResponeSendCallback("s|Robot3"); }
+            else if ((e.KeyCode == Keys.F1) && (e.Modifiers == Keys.Control)) {   /// Change Auto Reconnect Robot 1
                 if (tglAutoReconR1.Checked == true)
                     tglAutoReconR1.Checked = false;
                 else
@@ -1733,7 +1885,7 @@ namespace BaseStation
                 if (tglAutoReconRB.Checked == true)
                     tglAutoReconRB.Checked = false;
                 else
-                    tglAutoReconR3.Checked = true; }
+                    tglAutoReconRB.Checked = true; }
             else if ((e.KeyCode == Keys.F5) && (e.Modifiers == Keys.Shift)) {  /// Change Auto Reopen Port BaseStation
                 if (tglAutoReconBS.Checked == true)
                     tglAutoReconBS.Checked = false;
@@ -1773,7 +1925,7 @@ namespace BaseStation
                 picTimer_DoubleClick(picTimer, EventArgs.Empty); }
             else if (e.KeyCode == Keys.F4) {   /// Change Pause Timer of Match
                 picTimer_Click(picTimer, EventArgs.Empty); }
-            else if (e.KeyCode == Keys.F5) {  /// Restart the aplication BaseStation
+            else if ((e.KeyCode == Keys.F5) && (e.Modifiers == Keys.Alt)) {  /// Restart the aplication BaseStation
                 btnRestart_Click(btnRestart, EventArgs.Empty); }
             else if (e.KeyCode == Keys.F6) {  /// Robot START
                 ResponeSendCallback("!s"); }
@@ -1786,6 +1938,19 @@ namespace BaseStation
                     tbxEncXR2.Focus();
                 else if (lblRobot3.Enabled == true)
                     tbxEncXR3.Focus(); }
+            else if ((e.KeyCode == Keys.F10) && (e.Modifiers == Keys.Alt)) {  /// Robot START
+                ResponeSendCallback("!F10"); }
+            else if ((e.KeyCode == Keys.F11) && (e.Modifiers == Keys.Alt)) {  /// ON Ping Continously
+                timeRelay.Change(1000, 1000); 
+                addCommand("ON Ping"); }
+            else if (e.KeyCode == Keys.F11) {  /// OFF Ping Continously
+                timeRelay.Change(Timeout.Infinite, Timeout.Infinite);
+                addCommand("OFF Ping"); }
+        }
+
+        private void Form1_DoubleClick(object sender, EventArgs e)
+        {
+           ResponeSendCallback("!s");   /// Robot START            
         }
 
         private void btnTO_Click(object sender, EventArgs e)
@@ -1810,7 +1975,7 @@ namespace BaseStation
             //DateTime timestamp = DateTime.Now;
             //Thread.Sleep(2900);
             //addCommand((DateTime.Now - timestamp).TotalSeconds.ToString());
-            MessageBox.Show((Regex.IsMatch(tbxIPR1.Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")).ToString());
-        }        
+            //MessageBox.Show((Regex.IsMatch(tbxIPR1.Text.Trim(), "^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$")).ToString());
+        }
     }
 }

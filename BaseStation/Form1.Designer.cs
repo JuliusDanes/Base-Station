@@ -310,6 +310,7 @@
             this.lblRobot1.Size = new System.Drawing.Size(65, 15);
             this.lblRobot1.TabIndex = 48;
             this.lblRobot1.Text = "Robot1";
+            this.lblRobot1.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // lblConnectionR1
             // 
@@ -324,6 +325,7 @@
             this.lblConnectionR1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR1.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             this.lblConnectionR1.Click += new System.EventHandler(this.Disconnect_byDistinct);
+            this.lblConnectionR1.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // lblPipeR1
             // 
@@ -663,6 +665,7 @@
             this.lblConnectionRB.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionRB.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             this.lblConnectionRB.Click += new System.EventHandler(this.Disconnect_byDistinct);
+            this.lblConnectionRB.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // lblRefereeBox
             // 
@@ -675,6 +678,7 @@
             this.lblRefereeBox.Size = new System.Drawing.Size(100, 15);
             this.lblRefereeBox.TabIndex = 71;
             this.lblRefereeBox.Text = "RefereeBox";
+            this.lblRefereeBox.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // grpRefereeBox
             // 
@@ -857,6 +861,7 @@
             this.lblConnectionR2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR2.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             this.lblConnectionR2.Click += new System.EventHandler(this.Disconnect_byDistinct);
+            this.lblConnectionR2.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // lblRobot2
             // 
@@ -869,6 +874,7 @@
             this.lblRobot2.Size = new System.Drawing.Size(65, 15);
             this.lblRobot2.TabIndex = 77;
             this.lblRobot2.Text = "Robot2";
+            this.lblRobot2.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // RCardR2
             // 
@@ -1256,6 +1262,7 @@
             this.lblConnectionR3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblConnectionR3.TextChanged += new System.EventHandler(this.lblConnection_TextChanged);
             this.lblConnectionR3.Click += new System.EventHandler(this.Disconnect_byDistinct);
+            this.lblConnectionR3.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // lblRobot3
             // 
@@ -1268,6 +1275,7 @@
             this.lblRobot3.Size = new System.Drawing.Size(65, 15);
             this.lblRobot3.TabIndex = 97;
             this.lblRobot3.Text = "Robot3";
+            this.lblRobot3.DoubleClick += new System.EventHandler(this.resetGrpConnection);
             // 
             // RCardR3
             // 
@@ -1610,7 +1618,6 @@
             this.chkR1.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
             this.chkR1.Checked = false;
             this.chkR1.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(168)))), ((int)(((byte)(236)))));
-            this.chkR1.Enabled = false;
             this.chkR1.ForeColor = System.Drawing.Color.White;
             this.chkR1.Location = new System.Drawing.Point(258, 314);
             this.chkR1.Name = "chkR1";
@@ -1624,7 +1631,6 @@
             this.chkR2.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
             this.chkR2.Checked = false;
             this.chkR2.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(0)))), ((int)(((byte)(123)))));
-            this.chkR2.Enabled = false;
             this.chkR2.ForeColor = System.Drawing.Color.White;
             this.chkR2.Location = new System.Drawing.Point(258, 415);
             this.chkR2.Name = "chkR2";
@@ -1638,7 +1644,6 @@
             this.chkR3.ChechedOffColor = System.Drawing.Color.FromArgb(((int)(((byte)(132)))), ((int)(((byte)(135)))), ((int)(((byte)(140)))));
             this.chkR3.Checked = false;
             this.chkR3.CheckedOnColor = System.Drawing.Color.Black;
-            this.chkR3.Enabled = false;
             this.chkR3.ForeColor = System.Drawing.Color.White;
             this.chkR3.Location = new System.Drawing.Point(258, 516);
             this.chkR3.Name = "chkR3";
@@ -2751,6 +2756,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BaseStation";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DoubleClick += new System.EventHandler(this.Form1_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picRobot3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRobot2)).EndInit();

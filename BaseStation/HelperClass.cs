@@ -41,7 +41,7 @@ namespace BaseStation
             }
             catch (Exception e)
             {
-                MessageBox.Show("# Error setText " + ctrl + " \n\n" + e);
+                //MessageBox.Show("# Error setText " + ctrl + " \n\n" + e);
             }
         }
 
